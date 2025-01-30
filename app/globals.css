@@ -64,3 +64,26 @@
     @apply bg-background text-foreground;
   }
 }
+
+
+
+
+/* Custom range input styling */
+input[type="range"] {
+  @apply w-full h-[2px] bg-[#131313] rounded-lg appearance-none cursor-pointer;
+}
+
+/* Webkit (Chrome, Safari, Edge) */
+input[type="range"]::-webkit-slider-thumb {
+  @apply appearance-none w-4 h-4 rounded-full bg-[#131313] cursor-pointer;
+}
+
+/* Firefox */
+input[type="range"]::-moz-range-thumb {
+  @apply w-4 h-4 rounded-full bg-[#131313] border-none cursor-pointer;
+}
+
+/* IE */
+input[type="range"]::-ms-thumb {
+  @apply w-4 h-4 rounded-full bg-[#131313] border-none cursor-pointer;
+}

@@ -1,0 +1,117 @@
+"use client";
+import React, { useState } from 'react';
+import { ChevronDown } from 'lucide-react';
+import { Plus_Jakarta_Sans } from "next/font/google";
+
+const plusJakartaSans = Plus_Jakarta_Sans({
+    subsets: ["latin"],
+    weight: ["400", "500", "600", "700"],
+  });
+
+export default function Filter() {
+  const [priceRange, setPriceRange] = useState([50, 1200]);
+  const [departureTime, setDepartureTime] = useState([50, 1200]);
+  const [rating, setRating] = useState<string | null>(null);
+  
+  return (
+    <div className={`${plusJakartaSans.className} min-h-screen pt-10`}>
+      <div className="max-w-sm bg-white rounded-xl shadow-lg p-6">
+        <h2 className="text-xl font-semibold mb-6">Filters</h2>
+        
+        {/* Price Range */}
+        <div className="mb-8">
+          <h3 className="text-gray-900 mb-4">Price</h3>
+          <input
+            type="range"
+            min="50"
+            max="1200"
+            value={priceRange[1]}
+            onChange={(e) => setPriceRange([50, parseInt(e.target.value)])}
+          />
+          <div className="flex justify-between mt-2">
+            <span className="text-sm text-gray-600">${priceRange[0]}</span>
+            <span className="text-sm text-gray-600">${priceRange[1]}</span>
+          </div>
+        </div>
+
+        {/* Departure Time */}
+        <div className="mb-8">
+          <h3 className="text-gray-900 mb-4">Departure Time</h3>
+          <input
+            type="range"
+            min="50"
+            max="1200"
+            value={departureTime[1]}
+            onChange={(e) => setDepartureTime([50, parseInt(e.target.value)])}
+          />
+          <div className="flex justify-between mt-2">
+            <span className="text-sm text-gray-600">${departureTime[0]}</span>
+            <span className="text-sm text-gray-600">${departureTime[1]}</span>
+          </div>
+        </div>
+
+        {/* Rating */}
+        <div className="mb-8">
+          <h3 className="text-gray-900 mb-4">Rating</h3>
+          <div className="flex gap-2">
+            {['0+', '1+', '2+', '3+', '4+'].map((value) => (
+              <button
+                key={value}
+                onClick={() => setRating(value)}
+                className={`px-4 py-2 rounded border ${
+                  rating === value
+                    ? 'bg-black text-white border-black'
+                    : 'bg-white text-gray-700 border-gray-200 hover:border-gray-300'
+                }`}
+              >
+                {value}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        {/* Type */}
+        <div className="mb-8">
+          <h3 className="text-gray-900 mb-4">Type</h3>
+          <div className="relative">
+            <select className="w-full p-3 bg-white border border-gray-200 rounded-lg appearance-none pr-10 focus:outline-none focus:border-gray-300">
+              <option>Luxe</option>
+              <option>Standard</option>
+              <option>Budget</option>
+            </select>
+            <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400 pointer-events-none" />
+          </div>
+        </div>
+
+        {/* Category */}
+        <div className="mb-8">
+          <h3 className="text-gray-900 mb-4">Category</h3>
+          <div className="relative">
+            <select className="w-full p-3 bg-white border border-gray-200 rounded-lg appearance-none pr-10 focus:outline-none focus:border-gray-300">
+              <option>Apartments</option>
+              <option>Houses</option>
+              <option>Hotels</option>
+              <option>Villas</option>
+            </select>
+            <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400 pointer-events-none" />
+          </div>
+        </div>
+
+        {/* Facilities */}
+        <div className="mb-4">
+          <h3 className="text-gray-900 mb-4">Facilities</h3>
+          <div className="relative">
+            <select className="w-full p-3 bg-white border border-gray-200 rounded-lg appearance-none pr-10 focus:outline-none focus:border-gray-300">
+              <option>Select All</option>
+              <option>WiFi</option>
+              <option>Pool</option>
+              <option>Gym</option>
+              <option>Parking</option>
+            </select>
+            <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400 pointer-events-none" />
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
