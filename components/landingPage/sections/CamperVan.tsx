@@ -115,7 +115,6 @@ function CamperCard({
   return (
     <div className="relative rounded-xl">
       <div className="relative aspect-[1] w-full">
-        <Link href="/product">
           <Image
             src={imageUrl}
             alt={title}
@@ -123,7 +122,6 @@ function CamperCard({
             className="rounded-[12px]"
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 60vw, 37vw"
           />
-        </Link>
         <button
           onClick={() => setIsFavorite(!isFavorite)}
           className="absolute top-3 right-3 z-10 p-2 rounded-full"

@@ -4,7 +4,7 @@ import Image1 from "@/public/assets/UniqueStays/image1.png";
 import Image2 from "@/public/assets/UniqueStays/image2.png";
 import Image3 from "@/public/assets/UniqueStays/image3.png";
 import Image4 from "@/public/assets/UniqueStays/image4.png";
-import { Plus_Jakarta_Sans } from "next/font/google"; // Corrected import path
+import { Plus_Jakarta_Sans } from "next/font/google"; 
 import { Heart } from "lucide-react";
 import Image from "next/image";
 import { useState } from "react";
@@ -17,7 +17,7 @@ const plusJakartaSans = Plus_Jakarta_Sans({
 
 const campers = [
   {
-    imageUrl: Image1, // Changed to directly use the image variable
+    imageUrl: Image1,
     title: "New Camper Van, Jaipur",
     rating: 4.91,
     seats: 4,
@@ -111,7 +111,6 @@ function CamperCard({
   return (
     <div className="relative rounded-xl">
       <div className="relative aspect-[1] w-full">
-        <Link href="/product">
           <Image
             src={imageUrl}
             alt={title}
@@ -119,7 +118,6 @@ function CamperCard({
             className="rounded-[12px]"
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 60vw, 37vw"
           />
-        </Link>
         <button
           onClick={() => setIsFavorite(!isFavorite)}
           className="absolute top-3 right-3 z-10 p-2 rounded-full"

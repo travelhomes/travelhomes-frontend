@@ -4,7 +4,7 @@ import Image1 from "@/public/assets/top rated/image1.png";
 import Image2 from "@/public/assets/top rated/image2.png";
 import Image3 from "@/public/assets/top rated/image3.png";
 import Image4 from "@/public/assets/top rated/image4.png";
-import { Plus_Jakarta_Sans } from "next/font/google"; // Corrected import path
+import { Plus_Jakarta_Sans } from "next/font/google";
 import { Heart } from "lucide-react";
 import Image from "next/image";
 import { useState } from "react";
@@ -22,6 +22,7 @@ const campers = [
     rating: 4.91,
     seats: 4,
     sleeps: 2,
+    favoriteText: "Guest Favourite",
     price: 2890,
     period: "day",
   },
@@ -58,12 +59,14 @@ const campers = [
 
 export default function TopRatedStays() {
   return (
-    <section className="py-12 px-4 max-w-7xl mx-auto">
+    <section className="py-12 md:px-4 mx-auto">
       <div className="flex justify-between items-center mb-8">
         <div>
-          <h2 className="text-3xl font-bold mb-2">Unique Stays</h2>
+          <h2 className="md:text-3xl text-[20px] font-bold mb-2">
+          Top Rated Stays 
+          </h2>
           <p className="text-gray-600">
-            From castles and villas to boats and igloos, we have it all
+          From castles and villas to boats and igloos, we have it all
           </p>
         </div>
         <button className="hidden md:block text-gray-900 font-medium hover:underline">
@@ -80,7 +83,7 @@ export default function TopRatedStays() {
 
       <button className="px-[20px] py-[12px] text-sm font-medium text-gray-700 border border-gray-300 rounded-[60px] text-center m-auto block md:hidden">
         Discover more
-      </button> 
+      </button>
     </section>
   );
 }
@@ -104,14 +107,14 @@ function CamperCard({
   sleeps,
   price,
   period,
+  favoriteText,
 }: CamperCardProps) {
   const [isFavorite, setIsFavorite] = useState(false);
-  const dotsCount = 5;
+  const dotsCount = 5; // Number of dots to display
 
   return (
     <div className="relative rounded-xl">
       <div className="relative aspect-[1] w-full">
-        <Link href="/product">
           <Image
             src={imageUrl}
             alt={title}
@@ -119,17 +122,25 @@ function CamperCard({
             className="rounded-[12px]"
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 60vw, 37vw"
           />
-        </Link>
         <button
           onClick={() => setIsFavorite(!isFavorite)}
           className="absolute top-3 right-3 z-10 p-2 rounded-full"
         >
           <Heart
             className={`w-5 h-5 ${
-              isFavorite ? "fill-red-500 stroke-red-500" : "stroke-white fill-gray-400"
+              isFavorite
+                ? "fill-red-500 stroke-red-500"
+                : "stroke-white fill-gray-400"
             }`}
           />
         </button>
+        <div
+          className={`absolute top-3 left-3 ${
+            favoriteText ? "bg-white/90" : ""
+          } px-3 py-1 rounded-[4px]`}
+        >
+          <span className="text-sm font-medium">{favoriteText}</span>
+        </div>
 
         {/* Carousel Dots */}
         <div className="absolute bottom-3 left-0 right-0 flex justify-center gap-1.5">
@@ -147,7 +158,9 @@ function CamperCard({
       <Link href="/product">
         <div className="py-4">
           <div className="flex justify-between items-start mb-2">
-            <h3 className={`${plusJakartaSans.className} text-[15px] text-[#222222] font-semibold`}>
+            <h3
+              className={`${plusJakartaSans.className} text-[15px] text-[#222222] font-semibold`}
+            >
               {title}
             </h3>
             <div className="flex text-[14px] items-center gap-1">
