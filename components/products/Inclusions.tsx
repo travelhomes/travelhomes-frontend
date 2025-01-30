@@ -15,7 +15,7 @@ export default function Inclusions() {
     ]
   
     return (
-      <div className="p-4 border-b w-[65%]">
+      <div className="p-4 border-b w-full md:w-[65%]">
         <div className="mb-8">
           <h2 className="text-xl font-bold mb-4">Inclusions</h2>
           <ul className="space-y-2">

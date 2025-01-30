@@ -39,7 +39,7 @@ export function Header() {
             <div className="bg-white p-1.5 rounded-full">
               <RocketIcon />
             </div>
-            <span className="text-sm font-medium pr-1">Rocket</span> {/* Corrected label */}
+            <span className="text-sm font-medium pr-1">Activity</span> {/* Corrected label */}
           </button>
         </div>
       </div>
