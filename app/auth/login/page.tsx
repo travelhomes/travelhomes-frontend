@@ -12,7 +12,8 @@ export default function Page() {
   const [isForgotPassword, setIsForgotPassword] = useState(false);
   const [email, setEmail] = useState("");
   const [emailError, setEmailError] = useState("");
-  const [isEmailValid, setIsEmailValid] = useState(false); // New state
+  const [isEmailValid, setIsEmailValid] = useState(false);
+  const [isVerified, setIsVerified] = useState(false);
 
   const handleForgotPasswordSubmit = () => {
     const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
@@ -21,8 +22,13 @@ export default function Page() {
       setIsEmailValid(false);
     } else {
       setEmailError("");
-      setIsEmailValid(true); // Show verification div when valid
+      setIsEmailValid(true);
     }
+  };
+
+  const handleVerifyCode = () => {
+    // Add verification logic here
+    setIsVerified(true);
   };
 
   return (
@@ -41,8 +47,41 @@ export default function Page() {
                 ← Back to login
               </Link>
 
-              {/* Show verification input if email is valid */}
-              {isEmailValid ? (
+              {isVerified ? (
+                // New Password Form
+                <div className="space-y-2">
+                  <h1 className="text-2xl font-semibold tracking-tight">Create New Password</h1>
+                  <p className="text-sm text-muted-foreground">
+                    Enter different password from your previous one
+                  </p>
+
+                  <div className="space-y-4">
+                    <div>
+                      <input
+                        type="password"
+                        placeholder="Create Password"
+                        className="px-[12px] py-[14px] w-full border border-[#B0B0B0] rounded-[8px]"
+                      />
+                    </div>
+
+                    <div>
+                      <input
+                        type="password"
+                        placeholder="Confirm Password"
+                        className="px-[12px] py-[14px] w-full border border-[#B0B0B0] rounded-[8px]"
+                      />
+                    </div>
+
+                    <Button
+                      className="w-full rounded-[60px] py-[12px] px-[32px]"
+                      size="lg"
+                    >
+                      Reset Password
+                    </Button>
+                  </div>
+                </div>
+              ) : isEmailValid ? (
+                // Verification Code Form
                 <div className="space-y-2">
                   <h1 className="text-2xl font-semibold tracking-tight">Verify code</h1>
                   <p className="text-sm text-muted-foreground">
@@ -69,13 +108,18 @@ export default function Page() {
                         </p>
                       </div>
 
-                      <Button className="w-full rounded-[60px] py-[12px] px-[32px] bg-black text-white" size="lg">
+                      <Button 
+                        className="w-full rounded-[60px] py-[12px] px-[32px] bg-black text-white" 
+                        size="lg"
+                        onClick={handleVerifyCode}
+                      >
                         Verify
                       </Button>
                     </div>
                   </div>
                 </div>
               ) : (
+                // Email Form
                 <div>
                   <div className="space-y-2 mb-[20px]">
                     <h1 className="text-2xl font-semibold tracking-tight mb-[10px]">Email</h1>
