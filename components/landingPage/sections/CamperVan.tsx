@@ -72,9 +72,11 @@ export default function CamperListing() {
             From castles and villas to boats and igloos, we have it all
           </p>
         </div>
+        <Link href="/discover"> 
         <button className="hidden md:block text-gray-900 font-medium hover:underline">
           Discover more
         </button>
+        </Link>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -83,10 +85,11 @@ export default function CamperListing() {
           <CamperCard key={index} {...camper} />
         ))}
       </div>
-
+<Link href="/discover"> 
       <button className="px-[20px] py-[12px] text-sm font-medium text-gray-700 border border-gray-300 rounded-[60px] text-center m-auto block md:hidden">
         Discover more
       </button>
+      </Link>
     </section>
   );
 }
