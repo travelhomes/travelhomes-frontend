@@ -3,8 +3,7 @@ import React, { useState } from "react"; // Import React
 import { CarIcon, HomeIcon, RocketIcon } from "@/public/assets/CustomIcon";
 
 export function Header() {
-  const [activeButton, setActiveButton] = useState<string | null>(null); // Move state declaration outside of return
-
+  const [activeButton, setActiveButton] = useState<string>("camperVan"); 
   const handleButtonClick = (buttonName: string) => {
     setActiveButton(buttonName);
   };
@@ -30,7 +29,7 @@ export function Header() {
             <div className="bg-white p-1.5 rounded-full">
               <HomeIcon />
             </div>
-            <span className="text-sm font-medium pr-1">Home</span>
+            <span className="text-sm font-medium pr-1">Unique Stays</span>
           </button>
 
           <button 

@@ -40,7 +40,7 @@ export default function FAQ() {
   return (
     <div className="py-8 md:py-12 px-4 sm:px-6 lg:px-8">
       <div className="flex flex-col lg:flex-row gap-8">
-        <div className="lg:mb-8 text-center lg:text-left w-full lg:w-[450px] lg:pr-[56px]">
+        <div className="lg:mb-8 text-center lg:text-center w-full lg:w-[450px] lg:pr-[56px]">
           <h2 className="text-2xl md:text-3xl font-bold mb-4">Frequently<br />Asked Questions</h2>
           <p className="text-gray-600 mb-6 text-sm md:text-base">
             Find answer go common inquiries about using lorem ipsum we&apos;re here to make your experience as smooth as possible and here answer am to provide you information
@@ -49,7 +49,7 @@ export default function FAQ() {
             {tags.map((tag, index) => (
               <span
                 key={index}
-                className={`px-3 py-1.5 sm:px-4 sm:py-2 text-xs sm:text-sm rounded-full ${index === 0 ? 'bg-black text-white' : 'bg-white text-black'}`}
+                className={`px-3 py-1.5 sm:px-4 sm:py-2 text-xs w-[125px] sm:text-sm rounded-full ${index === 0 ? 'bg-black text-white' : 'bg-white text-black'}`}
               >
                 {tag}
               </span>
@@ -57,11 +57,11 @@ export default function FAQ() {
           </div>
         </div>
 
-        <div className="w-full space-y-2 sm:space-y-4 border border-gray-200 rounded-lg sm:rounded-[8px]">
+        <div className="w-full space-y-2 sm:space-y-4  rounded-lg sm:rounded-[8px]">
           {faqs.map((faq) => (
             <div
               key={faq.id}
-              className="rounded-lg overflow-hidden"
+              className="rounded-lg overflow-hidden border border-gray-200"
             >
               <button
                 onClick={() => setOpenId(openId === faq.id ? null : faq.id)}

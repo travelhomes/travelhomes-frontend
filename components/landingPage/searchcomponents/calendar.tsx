@@ -7,10 +7,11 @@ import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 
 interface CalendarProps {
+  onDateSelect: (dates: Date[]) => void;
   className?: string
 }
 
-export function Calendar({ className }: CalendarProps) {
+export function Calendar({ onDateSelect, className }: CalendarProps) {
   const [currentDate, setCurrentDate] = useState(new Date())
   const [selectedDates, setSelectedDates] = useState<Date[]>([])
 
@@ -62,6 +63,12 @@ export function Calendar({ className }: CalendarProps) {
   }
 
   const nextMonthDate = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 1)
+
+  React.useEffect(() => {
+    if (selectedDates.length === 2) {
+      onDateSelect(selectedDates.sort((a, b) => a.getTime() - b.getTime()))
+    }
+  }, [selectedDates, onDateSelect])
 
   return (
     <div className={cn("p-4 rounded-xl bg-white", className)}>

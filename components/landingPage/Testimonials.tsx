@@ -120,7 +120,7 @@ export default function Testimonials() {
         {testimonials.map((testimonial) => (
           <div
             key={testimonial.id}
-            className="min-w-[calc(100%-2rem)] md:min-w-[calc(50%-1rem)] lg:min-w-[calc(33.333%-1rem)] snap-start"
+            className="min-w-[calc(100%-2rem)] md:min-w-[calc(50%-1rem)] lg:min-w-[calc(33.333%-1rem)] snap-start shadow-lg"
           >
             <div className="bg-white p-6 rounded-xl">
               <p className="text-gray-700 mb-6">{testimonial.content}</p>
