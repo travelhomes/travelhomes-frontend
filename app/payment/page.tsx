@@ -4,6 +4,7 @@ import { Star, X, Check, ArrowLeft } from "lucide-react";
 import Image from "next/image";
 import CamperImage from "@/public/Rectangle 8.png"
 import { ArrowRightIcon } from "@/public/assets/CustomIcon"
+import Appbar from "@/components/landingPage/appbar";
 
 
 
@@ -83,6 +84,8 @@ export default function Payment() {
 
   return (
     <main className="min-h-screen py-[1rem] px-[1rem] md:px-[2rem] lg:px-[5rem] relative">
+
+      <Appbar />  
       <div className="mx-auto p-4 flex flex-col gap-4">
         <div className="flex flex-col-reverse lg:flex-row gap-6">
           {/* Left Column */}
