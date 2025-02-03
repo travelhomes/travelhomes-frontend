@@ -2,6 +2,10 @@
 import React, { useState } from "react";
 import { Star, X, Check, ArrowLeft } from "lucide-react";
 import Image from "next/image";
+import CamperImage from "@/public/Rectangle 8.png"
+import { ArrowRightIcon } from "@/public/assets/CustomIcon"
+
+
 
 export default function Payment() {
   const [formData, setFormData] = useState({
@@ -88,10 +92,12 @@ export default function Payment() {
                 href="#"
                 className="inline-flex items-center text-sm text-semibold hover:text-primary mb-3"
               >
-                <ArrowLeft className="w-4 h-4" />{" "}
+                <ArrowRightIcon />
                 <span className="ml-2">Modify Booking</span>
               </a>
             </div>
+
+       
 
             {formError && (
               <div className="p-4 hidden md:block  border rounded-[6px] bg-[#DA190B1F] text-[#DA190B] border-[#DA190B] mb-[24px]">
@@ -197,7 +203,7 @@ export default function Payment() {
             <div className="bg-white rounded-xl shadow-sm p-6">
               <div className="flex gap-4 mb-6">
                 <Image
-                  src="https://images.unsplash.com/photo-1545161296-d9c2c241f2ad?ixlib=rb-4.0.3"
+                  src={CamperImage}
                   alt="Camper Van"
                   width={125}
                   height={110}
