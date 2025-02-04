@@ -1,12 +1,43 @@
-import { Check } from "lucide-react";
+"use client";
 import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
 import Image from "next/image";
 import Appbar from "@/components/landingPage/appbar";
 import user from "@/public/user.png";
-import { EditIcon } from "@/public/assets/CustomIcon";
+import { EditIcon  } from "@/public/assets/CustomIcon";
 import Footer from "@/components/landingPage/footer";
+import { useState } from "react";
+import {Check} from "lucide-react";
 
 export default function User() {
+  const [isEditing, setIsEditing] = useState(false);
+  const [userData, setUserData] = useState({
+    name: "David Singh",
+    phone: "+91 92929 *****",
+    email: "davidsingh555@gmail.com",
+    dob: "15th Dec 1995",
+    city: "Hyderabad",
+    state: "Telangana",
+    password: "********"
+  });
+
+  const handleEdit = () => {
+    setIsEditing(!isEditing);
+  };
+
+  const handleSave = () => {
+    setIsEditing(false);
+    // Here you would typically make an API call to save the updated data
+  };
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setUserData(prev => ({
+      ...prev,
+      [name]: value
+    }));
+  };
+
   return (
     <div className="min-h-screen bg-background">
       <div className="py-[1rem] px-[1rem] md:px-[5rem] border-b">
@@ -54,7 +85,7 @@ export default function User() {
                   <div className="flex items-center space-x-2 ">
                     <Check className="w-4 h-4 text-green-400" />
                     <span>Profile Confirmed</span>
-                        </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -66,48 +97,39 @@ export default function User() {
               <h1 className="text-[2rem] font-bold text-[#1C2939] ">
                 Profile
               </h1>
-              <button className="text-[#1C2939] text-[1rem] font-medium flex items-center gap-2">
-                <EditIcon />
-                Edit
+              <button 
+                className="text-[#1C2939] text-[1rem] font-medium flex items-center gap-2"
+                onClick={isEditing ? handleSave : handleEdit}
+              >
+                {isEditing ? "" : <EditIcon />}
+                {isEditing ? <button className="px-[20px] py-[12px] text-sm font-medium text-white bg-black rounded-[60px]">Save</button> : "Edit"}
               </button>
             </div>
             <div className="max-w-3xl">
-              {/* Profile Form Component */}
               <div className="space-y-6">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div className="space-y-2 ">
-                    <Label htmlFor="name" className="text-[#334054] font-semibold">Name</Label>
-                    <p id="name" className="text-[#717171] font-medium">David Singh</p>
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="phone" className="text-[#334054] font-semibold">Phone Number</Label>
-                    <p id="phone" className="text-[#717171] font-medium ">+91 92929 *****</p>
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="email" className="text-[#334054] font-semibold">Email</Label>
-                    <p id="email" className="text-[#717171] font-medium">davidsingh555@gmail.com</p>
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="dob" className="text-[#334054] font-semibold">Date of Birth</Label>
-                    <p id="dob" className="text-[#717171] font-medium">15th Dec 1995</p>
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="city" className="text-[#334054] font-semibold">City</Label>
-                    <p id="city" className="text-[#717171] font-medium">Hyderabad</p>
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="state" className="text-[#334054] font-semibold">State</Label>
-                    <p id="state" className="text-[#717171] font-medium">Telangana</p>
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="password" className="text-[#334054] font-semibold">Password</Label>
-                    <p id="password" className="text-[#717171] font-medium">********</p>
-                  </div>
+                  {Object.entries(userData).map(([key, value]) => (
+                    <div className="space-y-2" key={key}>
+                      <Label htmlFor={key} className="text-[#334054] font-semibold">
+                        {key.charAt(0).toUpperCase() + key.slice(1).replace(/([A-Z])/g, ' $1')}
+                      </Label>
+                      {isEditing ? (
+                        <Input
+                          id={key}
+                          name={key}
+                          value={value}
+                          onChange={handleChange}
+                          className="text-[#717171] font-medium"
+                          type={key === 'password' ? 'password' : 'text'}
+                        />
+                      ) : (
+                        <p id={key} className="text-[#717171] font-medium">{value}</p>
+                      )}
+                    </div>
+                  ))}
                 </div>
               </div>
             </div>
-
-            
           </div>
         </div>
       </div>
