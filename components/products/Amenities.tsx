@@ -22,9 +22,9 @@ export function Amenities() {
       <h2 className="text-[20px] md:text-[24px] text-[#0B0907] font-bold mb-[2rem]">
         Amenities
       </h2>
-      <div className="flex flex-wrap gap-2">
+      <div className="grid grid-cols-2 gap-2">
         {amenities.map((amenity, index) => (
-          <div key={index} className="flex items-center gap-2 w-full sm:w-[45%] md:w-[35%] mb-[12px]">
+          <div key={index} className="flex items-center gap-2 mb-[12px]">
             {amenity.icon}
             <span className="text-sm md:text-base">{amenity.label}</span>
           </div>

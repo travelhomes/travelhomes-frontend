@@ -20,8 +20,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-     < body className={`${geistFont.className} antialiased`}>
+    <html lang="en" suppressHydrationWarning>
+      <body className={`${geistFont.className} antialiased`} suppressHydrationWarning>
         <main className="pb-16 md:pb-0">
           {children}
         </main>

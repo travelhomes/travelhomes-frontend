@@ -64,10 +64,10 @@ const RatingBar: React.FC<{ score: number }> = ({ score }) => (
 
 export function Reviews() {
   return (
-    <div className="py-8 w-[65%] border-b">
+    <div className="py-8 w-full md:w-[65%] border-b">
       <h2 className="text-xl font-semibold mb-6">Reviews</h2>
       
-      <div className="flex items-baseline gap-4 mb-8">
+      <div className="flex flex-col md:flex-row items-baseline gap-4 mb-8">
         <div>
           <div className="text-4xl font-medium">4.5</div>
           <div className="flex items-center gap-1 text-sm">
@@ -83,7 +83,7 @@ export function Reviews() {
           </div>
         </div>
 
-        <div className="grid grid-cols-2 gap-x-12 gap-y-2">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-2">
           {ratings.map((rating) => (
             <div key={rating.category} className="flex items-center gap-4">
               <span className="text-sm text-gray-600 w-24">{rating.category}</span>
@@ -94,8 +94,8 @@ export function Reviews() {
         </div>
       </div>
 
-      <div className="grid grid-cols-2 gap-6 mb-8">
-        {reviews.map((review) => (
+      <div className="grid grid-cols-1 gap-6 mb-8">
+        {reviews.slice(0, 1).map((review) => (
           <div key={review.id} className="space-y-4">
             <div className="flex items-center gap-3">
               <Image

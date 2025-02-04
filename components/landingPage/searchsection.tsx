@@ -4,7 +4,6 @@ import { LocationIcon, CheckInIcon, CheckOutIcon, GuestIcon, SearchIcon } from "
 import { GuestCounter } from './searchcomponents/guest-counter';
 import { LocationSearch } from './searchcomponents/location-search';
 import { Calendar } from './searchcomponents/calendar';
-import TimePicker from './searchcomponents/time-picker';
 
 export default function SearchFilter() {
   const [isGuestCounterOpen, setGuestCounterOpen] = useState(false);
@@ -93,7 +92,7 @@ export default function SearchFilter() {
 
   return (
     <div className="hidden md:block relative">
-      <div className="flex items-center gap-2 bg-[#F6F6F6] px-[2rem] py-[18px] rounded-[20px]">
+      <div className="flex h-[100px] items-center gap-2 bg-[#F6F6F6] px-[2rem] py-[18px] rounded-[20px]">
         <div className="flex items-center gap-2 flex-1">
           <div className="flex flex-col flex-1 relative">
             <div className="text-sm text-gray-500 flex items-center gap-2">
