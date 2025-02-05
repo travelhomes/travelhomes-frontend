@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Send, Image as ImageIcon } from "lucide-react";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -71,6 +71,18 @@ export default function ChatPage() {
   const [messages, setMessages] = useState<Message[]>(initialMessages);
   const [newMessage, setNewMessage] = useState("");
   const [selectedChat, setSelectedChat] = useState<number | null>(null);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    setIsMobile(window.innerWidth < 768);
+    
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   const handleSendMessage = () => {
     if (!newMessage.trim()) return;
@@ -131,7 +143,7 @@ export default function ChatPage() {
         </div>
 
         {/* Main Chat Area - Visible on desktop, only visible on mobile when chat is selected */}
-        {(selectedChat || window.innerWidth >= 768) && (
+        {(selectedChat || !isMobile) && (
           <div className={`${selectedChat ? 'flex' : 'hidden md:flex'} flex-1 flex-col pt-[20px]`}>
             {selectedChat && (
               <div className="md:hidden  flex items-center">
