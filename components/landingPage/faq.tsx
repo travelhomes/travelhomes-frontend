@@ -35,7 +35,8 @@ const faqs: FAQItem[] = [
 const tags = ['Lorem ipsum', 'Lorem', 'Lorem ip']
 
 export default function FAQ() {
-  const [openId, setOpenId] = useState<number | null>(null) // First item open by default
+  const [openId, setOpenId] = useState<number | null>(null)
+  const [activeTagIndex, setActiveTagIndex] = useState(0)
 
   return (
     <div className="py-8 md:py-12 px-4 sm:px-6 lg:px-8">
@@ -45,19 +46,22 @@ export default function FAQ() {
           <p className="text-gray-600 mb-6 text-sm md:text-base">
             Find answer go common inquiries about using lorem ipsum we&apos;re here to make your experience as smooth as possible and here answer am to provide you information
           </p>
-          <div className="flex flex-row gap-2 justify-between">
+          <div className="flex flex-row gap-2 justify-between border border-[#F6F6F6] h-[50px] shadow-sm rounded-[60px]">
             {tags.map((tag, index) => (
-              <span
+              <button
                 key={index}
-                className={`px-3 py-1.5 sm:px-4 sm:py-2 text-xs w-[125px] sm:text-sm rounded-full ${index === 0 ? 'bg-black text-white' : 'bg-white text-black'}`}
+                onClick={() => setActiveTagIndex(index)}
+                className={`px-[20px] py-[13px] sm:px-4 sm:py-2 text-xs w-[125px] sm:text-sm rounded-full transition-colors ${
+                  activeTagIndex === index ? 'bg-black text-white' : 'bg-white text-black'
+                }`}
               >
                 {tag}
-              </span>
+              </button>
             ))}
           </div>
         </div>
 
-        <div className="w-full space-y-2 sm:space-y-4  rounded-lg sm:rounded-[8px]">
+        <div className="w-full space-y-2 sm:space-y-4 rounded-lg sm:rounded-[8px]">
           {faqs.map((faq) => (
             <div
               key={faq.id}
@@ -65,7 +69,9 @@ export default function FAQ() {
             >
               <button
                 onClick={() => setOpenId(openId === faq.id ? null : faq.id)}
-                className="flex justify-between items-center w-full p-3 sm:p-4 text-left hover:bg-gray-50"
+                className={`flex justify-between items-center w-full p-3 sm:p-4 text-left ${
+                  openId === faq.id ? 'bg-[#F6F6F6]' : 'hover:bg-gray-50'
+                }`}
                 aria-expanded={openId === faq.id}
                 aria-controls={`faq-${faq.id}`}
               >
@@ -85,6 +91,7 @@ export default function FAQ() {
                   transition-all duration-200 ease-in-out
                   ${openId === faq.id ? 'max-h-96' : 'max-h-0'}
                   overflow-hidden
+                  ${openId === faq.id ? 'bg-[#F6F6F6]' : ''}
                 `}
               >
                 <div className="p-3 sm:p-4 pt-0 text-gray-600 text-sm sm:text-base">
@@ -94,6 +101,8 @@ export default function FAQ() {
             </div>
           ))}
         </div>
+
+        
       </div>
     </div>
   )

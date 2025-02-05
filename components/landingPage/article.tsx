@@ -1,6 +1,6 @@
 import Image from 'next/image'
 import Link from 'next/link'
-import { ArrowRight } from 'lucide-react'
+import { ArrowRight, ArrowUpRight } from 'lucide-react'
 import Article1 from "@/public/assets/article/Rectangle 4407.png"
 import Article2 from "@/public/assets/article/image2.png"
 import Article3 from "@/public/assets/article/image3.png"
@@ -35,15 +35,13 @@ export default function LatestArticles() {
             <h2 className="text-2xl font-bold mb-2">Latest Articles</h2>
             <p className="text-gray-600">Find popular content for travelers worldwide</p>
           </div>
-          <div className="hidden md:block">
           <Link 
             href="/blog" 
-            className="flex items-center gap-2 text-sm transition-opacity hover:opacity-80"
+            className="hidden md:flex items-center gap-2 text-sm transition-opacity hover:opacity-80 px-[20px] py-[12px] border border-gray-300 rounded-[60px]"
           >
             <span>Read all blog</span>
             <ArrowRight className="w-4 h-4" />
           </Link>
-          </div>
         </div>
         
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -59,7 +57,12 @@ export default function LatestArticles() {
                 fill
                 className="object-cover transition-transform duration-300 group-hover:scale-105"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+              <div className="absolute top-4 right-4">
+                <div className="p-2 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 opacity-0 scale-75 transition-all duration-300 group-hover:opacity-100 group-hover:scale-100">
+                  <ArrowUpRight className="w-4 h-4 text-white" />
+                </div>
+              </div>
+              <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent transition-opacity duration-300 group-hover:opacity-90" />
               <div className="absolute bottom-0 left-0 right-0 p-6">
                 <h3 className="text-white text-lg font-medium leading-snug">
                   {article.title}
