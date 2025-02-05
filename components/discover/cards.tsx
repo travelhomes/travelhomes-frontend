@@ -1,9 +1,9 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 "use client";
-import Image1 from "@/public/assets/bestactivety/image1.png";
-import Image2 from "@/public/assets/bestactivety/image2.png";
-import Image3 from "@/public/assets/bestactivety/image3.png";
-import Image4 from "@/public/assets/bestactivety/image4.png";
+import Image1 from "@/public/assets/Camper Van/Image 1.png";
+import Image2 from "@/public/assets/Camper Van/image 2.png";
+import Image3 from "@/public/assets/Camper Van/image 3.png";
+import Image4 from "@/public/assets/Camper Van/image 4.png";
 import { Plus_Jakarta_Sans } from "next/font/google"; // Corrected import path
 import { Heart, ChevronLeft, ChevronRight } from "lucide-react";
 import Image from "next/image";
@@ -53,6 +53,7 @@ const campers = [
     rating: 4.91,
     seats: 4,
     sleeps: 2,
+    favoriteText: "Guest Favourite",
     price: 2890,
     period: "night",
     images: [Image1, Image4, Image3, Image2], // Specific images for this camper
@@ -74,6 +75,7 @@ const campers = [
     rating: 4.91,
     seats: 4,
     sleeps: 2,
+    favoriteText: "Guest Favourite",
     price: 2890,
     period: "night",
     images: [Image1, Image4, Image3, Image2], // Specific images for this camper
@@ -84,6 +86,7 @@ const campers = [
     rating: 4.91,
     seats: 4,
     sleeps: 2,
+    favoriteText: "Guest Favourite",
     price: 2890,
     period: "night",
     images: [Image1, Image4, Image3, Image2], // Specific images for this camper
@@ -94,6 +97,7 @@ const campers = [
     rating: 4.91,
     seats: 4,
     sleeps: 2,
+    favoriteText: "Guest Favourite",
     price: 2890,
     period: "night",
     images: [Image1, Image4, Image3, Image2], // Specific images for this camper
@@ -104,14 +108,16 @@ const campers = [
     rating: 4.91,
     seats: 4,
     sleeps: 2,
+    favoriteText: "Guest Favourite",
     price: 2890,
     period: "night",
     images: [Image1, Image4, Image3, Image2], // Specific images for this camper
   },
 ];
 
-export default function DiscoverImages() {
+export default function Card() {
   return (
+    <>
     <section className="py-12 md:px-4 mx-auto">
       <div className="flex justify-between items-center mb-8">
         <div>
@@ -122,6 +128,11 @@ export default function DiscoverImages() {
             From castles and villas to boats and igloos, we have it all
           </p>
         </div>
+        <Link href="/discover"> 
+        <button className="hidden md:block text-gray-900 font-medium hover:underline">
+          Discover more
+        </button>
+        </Link>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -130,11 +141,19 @@ export default function DiscoverImages() {
           <CamperCard key={index} {...camper} />
         ))}
       </div>
-
+<Link href="/discover"> 
       <button className="px-[20px] py-[12px] text-sm font-medium text-gray-700 border border-gray-300 rounded-[60px] text-center m-auto block md:hidden">
         Discover more
       </button>
+      </Link>
+
+      <p className={`${plusJakartaSans.className} text-center font-semibold my-[3rem]`}>View More</p>
+
     </section>
+
+
+
+</>
   );
 }
 

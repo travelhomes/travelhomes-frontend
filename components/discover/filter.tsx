@@ -74,7 +74,7 @@ export default function Filter() {
         <div className="mb-8">
           <h3 className="text-gray-900 mb-4">Type</h3>
           <div className="relative">
-            <select className="w-full p-3 bg-white border border-gray-200 rounded-lg appearance-none pr-10 focus:outline-none focus:border-gray-300">
+            <select className="w-full p-3 bg-[#F6F6F6] border border-gray-200 rounded-lg appearance-none pr-10 focus:outline-none focus:border-gray-300">
               <option>Luxe</option>
               <option>Standard</option>
               <option>Budget</option>
@@ -87,11 +87,11 @@ export default function Filter() {
         <div className="mb-8">
           <h3 className="text-gray-900 mb-4">Category</h3>
           <div className="relative">
-            <select className="w-full p-3 bg-white border border-gray-200 rounded-lg appearance-none pr-10 focus:outline-none focus:border-gray-300">
+            <select className="w-full p-3 bg-[#F6F6F6] border border-gray-200 rounded-lg appearance-none pr-10 focus:outline-none focus:border-gray-300">
               <option>Apartments</option>
               <option>Houses</option>
               <option>Hotels</option>
-              <option>Villas</option>
+              <option >Villas</option>
             </select>
             <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400 pointer-events-none" />
           </div>
@@ -101,7 +101,7 @@ export default function Filter() {
         <div className="mb-4">
           <h3 className="text-gray-900 mb-4">Facilities</h3>
           <div className="relative">
-            <select className="w-full p-3 bg-white border border-gray-200 rounded-lg appearance-none pr-10 focus:outline-none focus:border-gray-300">
+            <select className="w-full p-3 bg-[#F6F6F6] border border-gray-200 rounded-lg appearance-none pr-10 focus:outline-none focus:border-gray-300">
               <option>Select All</option>
               <option>WiFi</option>
               <option>Pool</option>
