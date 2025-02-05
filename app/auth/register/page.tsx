@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Image from "next/image";
-import register from "@/public/register.png";
+import registerImage from "@/public/register.png";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import {
@@ -13,23 +13,102 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { GoogleIcon } from "@/public/assets/CustomIcon";
+import { useAuth } from "@/context/AuthContext";
+import { useRouter } from "next/navigation";
+
+interface FormData {
+  email: string;
+  phone: string;
+  password: string;
+  confirmPassword: string;
+  firstName: string;
+  lastName: string;
+  dob: string;
+  state: string;
+  city: string;
+}
 
 export default function RegisterPage() {
-  const [step, setStep] = useState(1); // 1 = Email Step, 2 = Name Step
+  const [step, setStep] = useState(1);
+  const [formData, setFormData] = useState<FormData>({
+    email: "",
+    phone: "",
+    password: "",
+    confirmPassword: "",
+    firstName: "",
+    lastName: "",
+    dob: "",
+    state: "",
+    city: "",
+  });
+  const [error, setError] = useState("");
+  const { register } = useAuth();
+  const router = useRouter();
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({
+      ...prev,
+      [name]: value
+    }));
+  };
+
+  const handleSelectChange = (name: string) => (value: string) => {
+    setFormData(prev => ({
+      ...prev,
+      [name]: value
+    }));
+  };
+
+  const handleStep1Submit = () => {
+    if (!formData.email || !formData.phone || !formData.password || !formData.confirmPassword) {
+      setError("Please fill in all fields");
+      return;
+    }
+    if (formData.password !== formData.confirmPassword) {
+      setError("Passwords do not match");
+      return;
+    }
+    setError("");
+    setStep(2);
+  };
+
+  const handleStep2Submit = async () => {
+    if (!formData.firstName || !formData.lastName || !formData.dob || !formData.state || !formData.city) {
+      setError("Please fill in all fields");
+      return;
+    }
+
+    try {
+      await register(
+        formData.email,
+        formData.password,
+        `${formData.firstName} ${formData.lastName}`
+      );
+      router.push("/");
+    } catch (error) {
+      console.error("Registration error:", error);
+      setError("Email already exists");
+    }
+  };
 
   return (
     <div className="min-h-screen flex flex-col md:flex-row gap-6 lg:gap-8">
-      {/* Images Flex */}
       <div className="hidden md:flex flex-1 gap-4 p-6 bg-muted/5">
         <div className="space-y-4">
-          <Image src={register} alt={""} width={800} height={300} />
+          <Image src={registerImage} alt="Registration illustration" width={800} height={300} />
         </div>
       </div>
 
       <div className="flex items-center justify-center p-6 flex-1">
         <div className="w-full max-w-md space-y-6">
+          {error && (
+            <div className="p-3 text-sm text-red-500 bg-red-50 rounded-lg">
+              {error}
+            </div>
+          )}
+          
           {step === 1 ? (
-            // Step 1: Email & Password Registration
             <>
               <div className="space-y-2">
                 <h1 className="text-2xl font-semibold tracking-tight">
@@ -44,11 +123,14 @@ export default function RegisterPage() {
               <div className="space-y-4">
                 <input
                   type="email"
+                  name="email"
+                  value={formData.email}
+                  onChange={handleInputChange}
                   placeholder="Email ID"
                   className="px-[12px] py-[14px] w-full border border-[#B0B0B0] rounded-[8px]"
                 />
 
-                <div className="flex space-x-2 ">
+                <div className="flex space-x-2">
                   <Select defaultValue="+1">
                     <SelectTrigger className="w-[100px]">
                       <SelectValue placeholder="+1" />
@@ -61,6 +143,9 @@ export default function RegisterPage() {
                   </Select>
                   <input
                     type="tel"
+                    name="phone"
+                    value={formData.phone}
+                    onChange={handleInputChange}
                     placeholder="Mobile Number"
                     className="px-[12px] py-[14px] w-full border border-[#B0B0B0] rounded-[8px]"
                   />
@@ -68,12 +153,18 @@ export default function RegisterPage() {
 
                 <input
                   type="password"
+                  name="password"
+                  value={formData.password}
+                  onChange={handleInputChange}
                   placeholder="Create Password"
                   className="px-[12px] py-[14px] w-full border border-[#B0B0B0] rounded-[8px]"
                 />
 
                 <input
                   type="password"
+                  name="confirmPassword"
+                  value={formData.confirmPassword}
+                  onChange={handleInputChange}
                   placeholder="Confirm Password"
                   className="px-[12px] py-[14px] w-full border border-[#B0B0B0] rounded-[8px]"
                 />
@@ -81,15 +172,15 @@ export default function RegisterPage() {
                 <Button
                   className="w-full rounded-[60px] py-[12px] px-[32px]"
                   size="lg"
-                  onClick={() => setStep(2)} // Move to Step 2
+                  onClick={handleStep1Submit}
                 >
-                  Register
+                  Continue
                 </Button>
 
                 <div className="text-center">
                   <p className="text-sm text-muted-foreground">
                     Already have an account?{" "}
-                    <Link href="/login" className="text-primary hover:underline">
+                    <Link href="/auth/login" className="text-primary hover:underline">
                       Login
                     </Link>
                   </p>
@@ -117,22 +208,20 @@ export default function RegisterPage() {
               </div>
             </>
           ) : (
-            // Step 2: Name, DOB, State, City
             <>
-              <Link
-                href="#"
-                onClick={() => setStep(1)} // Go back to Step 1
+              <button
+                onClick={() => setStep(1)}
                 className="inline-flex items-center text-sm text-muted-foreground hover:text-primary"
               >
-                ← Back to login
-              </Link>
+                ← Back
+              </button>
 
               <div className="space-y-2">
                 <h1 className="text-2xl font-semibold tracking-tight">
-                  Register
+                  Personal Information
                 </h1>
                 <p className="text-sm text-muted-foreground">
-                  Let’s get you all set up so you can access your personal
+                  Let&apos;s get you all set up so you can access your personal
                   account.
                 </p>
               </div>
@@ -141,12 +230,18 @@ export default function RegisterPage() {
                 <div className="flex space-x-2">
                   <input
                     type="text"
+                    name="firstName"
+                    value={formData.firstName}
+                    onChange={handleInputChange}
                     placeholder="First Name"
                     className="px-[12px] py-[14px] w-full border border-[#B0B0B0] rounded-[8px]"
                   />
 
                   <input
                     type="text"
+                    name="lastName"
+                    value={formData.lastName}
+                    onChange={handleInputChange}
                     placeholder="Last Name"
                     className="px-[12px] py-[14px] w-full border border-[#B0B0B0] rounded-[8px]"
                   />
@@ -154,11 +249,14 @@ export default function RegisterPage() {
 
                 <input
                   type="date"
+                  name="dob"
+                  value={formData.dob}
+                  onChange={handleInputChange}
                   placeholder="Date of Birth"
                   className="px-[12px] py-[14px] w-full border border-[#B0B0B0] rounded-[8px]"
                 />
 
-                <Select>
+                <Select name="state" onValueChange={handleSelectChange('state')}>
                   <SelectTrigger className="w-full">
                     <SelectValue placeholder="State" />
                   </SelectTrigger>
@@ -169,7 +267,7 @@ export default function RegisterPage() {
                   </SelectContent>
                 </Select>
 
-                <Select>
+                <Select name="city" onValueChange={handleSelectChange('city')}>
                   <SelectTrigger className="w-full">
                     <SelectValue placeholder="City" />
                   </SelectTrigger>
@@ -183,6 +281,7 @@ export default function RegisterPage() {
                 <Button
                   className="w-full rounded-[60px] py-[12px] px-[32px]"
                   size="lg"
+                  onClick={handleStep2Submit}
                 >
                   Register
                 </Button>
