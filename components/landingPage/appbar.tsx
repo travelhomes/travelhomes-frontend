@@ -1,8 +1,8 @@
 "use client";
 
-import Logo from "@/public/mainlogo.png"
-import { ListIcon } from "@/public/assets/CustomIcon"
-import Image from "next/image"
+import Logo from "@/public/mainlogo.png";
+import { ListIcon } from "@/public/assets/CustomIcon";
+import Image from "next/image";
 import { useAuth } from "@/context/AuthContext";
 import Link from "next/link";
 import {
@@ -17,7 +17,7 @@ export default function Appbar() {
   const { user, logout, isAuthenticated } = useAuth();
 
   // Get first name from full name
-  const firstName = user?.name ? user.name.split(' ')[0] : '';
+  const firstName = user?.name ? user.name.split(" ")[0] : "";
 
   return (
     <nav className="w-full border-gray-200 hidden md:block">
@@ -38,7 +38,7 @@ export default function Appbar() {
                 <span className="ml-2 text-[#131313]">List your offering</span>
               </span>
             </button>
-            
+
             {isAuthenticated && user ? (
               <DropdownMenu>
                 <DropdownMenuTrigger className="flex items-center space-x-2 focus:outline-none">
@@ -53,19 +53,29 @@ export default function Appbar() {
                     <span>Hi {firstName}</span>
                   </div>
                 </DropdownMenuTrigger>
-                <DropdownMenuContent align="end" className="w-48">
+                <DropdownMenuContent align="end" className="w-[300px]">
                   <Link href="/user">
                     <DropdownMenuItem>Profile</DropdownMenuItem>
                   </Link>
                   <Link href="/user/trips">
-                    <DropdownMenuItem>My Trips</DropdownMenuItem>
+                    <DropdownMenuItem>Trips</DropdownMenuItem>
                   </Link>
                   <Link href="/wishlist">
                     <DropdownMenuItem>Wishlist</DropdownMenuItem>
                   </Link>
-                  <DropdownMenuItem onClick={logout}>
-                    Logout
-                  </DropdownMenuItem>
+
+                  <Link href="/user/settings">
+                    <DropdownMenuItem>Account Settings</DropdownMenuItem>
+                  </Link>
+
+                  <Link href="/chat">
+                    <DropdownMenuItem>Chat</DropdownMenuItem>
+                  </Link>
+                  <Link href="/help">
+                    <DropdownMenuItem>Help</DropdownMenuItem>
+                  </Link>
+
+                  <DropdownMenuItem onClick={logout}>Logout</DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
             ) : (
@@ -79,6 +89,5 @@ export default function Appbar() {
         </div>
       </div>
     </nav>
-  )
+  );
 }
-
