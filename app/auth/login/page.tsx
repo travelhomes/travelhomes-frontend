@@ -6,12 +6,10 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { GoogleIcon } from "@/public/assets/CustomIcon";
 import { useState } from "react";
-import { Input } from "@/components/ui/input";
 import { useAuth } from "@/context/AuthContext";
 import { useRouter } from "next/navigation";
 
 export default function LoginPage() {
-  const [isForgotPassword, setIsForgotPassword] = useState(false);
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -28,16 +26,17 @@ export default function LoginPage() {
     }));
   };
 
-  const handleLogin = () => {
+  const handleLogin = async () => {
     if (!formData.email || !formData.password) {
       setError("Please fill in all fields");
       return;
     }
 
-    const success = login(formData.email, formData.password);
-    if (success) {
+    try {
+      await login(formData.email, formData.password);
       router.push("/"); // Redirect to home page after successful login
-    } else {
+    } catch (err) {
+      console.error(err);
       setError("Invalid email or password");
     }
   };
@@ -103,13 +102,10 @@ export default function LoginPage() {
                     Remember me
                   </label>
                 </div>
-                <button
-                  onClick={() => setIsForgotPassword(true)}
-                  className="text-sm text-[#DA190B]"
-                >
-                    Forgot Password?
-                  </button>
-                </div>
+                <Link href="/auth/forgot-password" className="text-sm text-[#DA190B]">
+                  Forgot Password?
+                </Link>
+              </div>
 
               <Button
                 className="w-full rounded-[60px] py-[12px] px-[32px]"
