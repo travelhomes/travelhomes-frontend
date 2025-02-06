@@ -1,15 +1,15 @@
 'use client';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { HomeIcon, SearchIcon, WishlistIcon, ChatIcon, ProfileIcon } from '@/public/assets/CustomIcon';
+import { HomeIcon, BlackSearchIcon, WishlistIcon, ChatIcon, ProfileIcon } from '@/public/assets/CustomIcon';
 import React from 'react';
 
 const navItems = [
   { label: 'Home', href: '/', Icon: HomeIcon },
-  { label: 'Search', href: '/search', Icon: SearchIcon },
+  { label: 'Search', href: '/search', Icon: BlackSearchIcon },
   { label: 'Wishlist', href: '/wishlist', Icon: WishlistIcon },
   { label: 'Chat', href: '/chat', Icon: ChatIcon },
-  { label: 'Profile', href: '/profile', Icon: ProfileIcon },
+  { label: 'Profile', href: '/user', Icon: ProfileIcon },
 ];
 
 export default function MobileNav() {
