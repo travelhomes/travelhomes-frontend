@@ -62,9 +62,10 @@ export default function LatestArticles() {
                   <ArrowUpRight className="w-4 h-4 text-white" />
                 </div>
               </div>
-              <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent transition-opacity duration-300 group-hover:opacity-90" />
+           
               <div className="absolute bottom-0 left-0 right-0 p-6">
                 <h3 className="text-white text-lg font-medium leading-snug">
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent transition-opacity duration-300 group-hover:opacity-90" />
                   {article.title}
                 </h3>
               </div>

@@ -3,7 +3,7 @@ import HeroImage from "@/public/heroSection.png";
 
 export default function Hero() {
   return (
-    <div className="flex text-center md:text-left flex-col lg:flex-row items-center justify-between pt-[4rem]">
+    <div className="flex text-center md:text-left flex-col lg:flex-row items-center justify-between pt-[1rem] md:pt-[4rem]">
       {/* Image on top for mobile, right for larger screens */}
       <div className="order-1 lg:order-2 w-full lg:w-auto">
         <Image src={HeroImage} alt={"Hero Image"} />
