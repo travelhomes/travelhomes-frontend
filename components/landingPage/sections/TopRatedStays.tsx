@@ -134,7 +134,7 @@ function CamperCard({
 
   return (
     <Link href="/product">
-    <div className="relative rounded-xl">
+<div className="relative rounded-xl hover:shadow-lg transition-all duration-300 hover:p-2">
       <div
         className="relative aspect-[1] w-full"
         onMouseEnter={() => setIsHovered(true)}

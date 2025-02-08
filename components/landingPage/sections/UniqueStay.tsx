@@ -135,7 +135,7 @@ function CamperCard({
 
   return (
     <Link href="/product">
-    <div className="relative rounded-xl">
+<div className="relative rounded-xl hover:shadow-lg transition-all duration-300 hover:p-2">
       <div
         className="relative aspect-[1] w-full"
         onMouseEnter={() => setIsHovered(true)}
@@ -210,7 +210,7 @@ function CamperCard({
       </div>
 
         <div className="py-4">
-          <div className="flex justify-between items-start mb-2">
+          <div className="flex justify-between items-start">
             <h3
               className={`${plusJakartaSans.className} text-[15px] text-[#222222] font-semibold`}
             >
@@ -222,7 +222,7 @@ function CamperCard({
             </div>
           </div>
 
-          <p className="text-[#5E5E5E] text-[14px] mb-2">
+          <p className="text-[#5E5E5E] text-[14px] mb-1">
             {seats} Seats / {sleeps} Sleeps
           </p>
 
