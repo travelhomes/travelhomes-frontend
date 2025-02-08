@@ -62,10 +62,11 @@ const campers = [
 
 export default function BestActively() {
   return (
+
     <section className="py-12 md:px-4 mx-auto">
       <div className="flex justify-between items-center mb-8">
         <div>
-          <h2 className="md:text-3xl text-[20px] font-bold mb-2">
+          <h2 className="md:text-2xl text-[20px] font-bold mb-2">
             Stay at our top Camper Van
           </h2>
           <p className="text-gray-600">
@@ -132,6 +133,7 @@ function CamperCard({
   };
 
   return (
+    <Link href="/product">
     <div className="relative rounded-xl">
       <div
         className="relative aspect-[1] w-full"
@@ -173,10 +175,10 @@ function CamperCard({
         {/* Favorite Button */}
         <button
           onClick={() => setIsFavorite(!isFavorite)}
-          className="absolute top-3 right-3 z-10 p-2 rounded-full"
+          className="absolute top-3 right-3 p-2 rounded-full z-50"
         >
           <Heart
-            className={`w-5 h-5 ${
+            className={`w-5 h-5  ${
               isFavorite
                 ? "fill-red-500 stroke-red-500"
                 : "stroke-white fill-gray-400"
@@ -206,7 +208,6 @@ function CamperCard({
         </div>
       </div>
 
-      <Link href="/product">
         <div className="py-4">
           <div className="flex justify-between items-start mb-2">
             <h3
@@ -234,7 +235,7 @@ function CamperCard({
             </div>
           </div>
         </div>
-      </Link>
     </div>
+      </Link>
   );
 }
