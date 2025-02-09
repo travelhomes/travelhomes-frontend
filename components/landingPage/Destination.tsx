@@ -72,7 +72,7 @@ export default function TrendingDestinations() {
           <h2 className="text-2xl md:text-2xl font-bold mb-6">
             Trending destinations
           </h2>
-          <div className="w-full h-[290px] relative">
+          <div className="w-full h-[330px] relative">
             <Image
               src={Delhi}
               alt="Delhi"

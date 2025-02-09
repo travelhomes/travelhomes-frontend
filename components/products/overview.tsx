@@ -1,4 +1,14 @@
+"use client"
+
+import { useRouter } from 'next/navigation';
+
 export default function Overview() {
+  const router = useRouter();
+
+  const handleClick = (item: string) => {
+    router.push(`#${item.toLowerCase().replace(/\s+/g, '')}`);
+  };
+
   return (
     <div className="pt-[20px]">
       <nav className="overflow-x-auto">
@@ -14,6 +24,7 @@ export default function Overview() {
           ].map((item) => (
             <button
               key={item}
+              onClick={() => handleClick(item)}
               className={`py-4 ${
                 item === "Overview"
                   ? "border-b-2 border-black text-black"

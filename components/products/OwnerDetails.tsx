@@ -16,7 +16,7 @@ const ownerStats: OwnerStats = {
 
 export function OwnerDetails() {
   return (
-    <div className="py-8 w-full max-w-3xl border-b">
+    <div className="py-8 w-full max-w-3xl border-b" id="ownerdetails">
       <h2 className="text-xl font-semibold mb-6">Owner Details</h2>
 
       <div className="flex items-start gap-8">

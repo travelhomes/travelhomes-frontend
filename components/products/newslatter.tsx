@@ -1,6 +1,6 @@
 export default function Newslatter() {
   return (
-    <div className="py-8 px-4 sm:px-6 md:py-[60px] md:px-[94px] bg-[url('/bg.png')] bg-cover flex flex-col md:flex-row items-center md:justify-between gap-6">
+    <div className="py-8 px-4 sm:px-6 md:py-[60px] rounded-2xl md:px-[94px] bg-[url('/bg.png')] bg-cover flex flex-col md:flex-row items-center md:justify-between gap-6">
       <div className="w-full md:max-w-[500px] text-center md:text-left">
         <h3 className="text-white text-xl sm:text-2xl md:text-[2rem] mb-3 md:mb-[12px]">
           Subscribe Newsletter

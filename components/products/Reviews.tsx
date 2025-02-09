@@ -64,7 +64,7 @@ const RatingBar: React.FC<{ score: number }> = ({ score }) => (
 
 export function Reviews() {
   return (
-    <div className="py-8 w-full md:w-[65%] border-b">
+    <div className="py-8 w-full md:w-[65%] border-b" id="reviews">
       <h2 className="text-xl font-semibold mb-6">Reviews</h2>
       
       <div className="flex flex-col md:flex-row items-baseline gap-4 mb-8">
