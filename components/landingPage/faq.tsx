@@ -51,7 +51,7 @@ export default function FAQ() {
               <button
                 key={index}
                 onClick={() => setActiveTagIndex(index)}
-                className={`px-[20px] py-[13px] sm:px-4 sm:py-2 text-xs w-[125px] sm:text-sm rounded-full transition-colors ${
+                className={`px-[20px] py-[13px] sm:px-4 sm:py-2 text-xs  md:w-[125px] sm:text-sm rounded-full transition-colors ${
                   activeTagIndex === index ? 'bg-black text-white' : 'bg-white text-black'
                 }`}
               >

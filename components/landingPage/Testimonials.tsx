@@ -85,6 +85,31 @@ export default function Testimonials() {
     }
   }
 
+  const handleTouchStart = (e: React.TouchEvent) => {
+    if (scrollRef.current) {
+      const touch = e.touches[0]
+      scrollRef.current.dataset.touchStartX = touch.clientX.toString()
+    }
+  }
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    if (scrollRef.current && scrollRef.current.dataset.touchStartX) {
+      const touch = e.touches[0]
+      const startX = parseInt(scrollRef.current.dataset.touchStartX)
+      const currentX = touch.clientX
+      const diff = startX - currentX
+
+      if (Math.abs(diff) > 50) { // Minimum swipe distance
+        if (diff > 0 && currentIndex < testimonials.length - 1) {
+          scroll('right')
+        } else if (diff < 0 && currentIndex > 0) {
+          scroll('left')
+        }
+        scrollRef.current.dataset.touchStartX = ''
+      }
+    }
+  }
+
   return (
     <div className="py-8 md:mt-20">
       <div className="flex justify-between items-center mb-6">
@@ -114,13 +139,15 @@ export default function Testimonials() {
 
       <div 
         ref={scrollRef}
-        className="flex gap-6 overflow-x-auto snap-x snap-mandatory"
+        className="flex gap-6 overflow-x-auto snap-x snap-mandatory touch-pan-x"
         style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+        onTouchStart={handleTouchStart}
+        onTouchMove={handleTouchMove}
       >
         {testimonials.map((testimonial) => (
           <div
             key={testimonial.id}
-            className="min-w-[calc(100%-2rem)] md:min-w-[calc(50%-1rem)] lg:min-w-[calc(33.333%-1rem)] snap-start shadow-lg"
+            className="min-w-[calc(100%-2rem)] md:min-w-[calc(50%-1rem)] lg:min-w-[calc(33.333%-1rem)] snap-start md:shadow-lg"
           >
             <div className="bg-white p-6 rounded-xl">
               <p className="text-gray-700 mb-6">{testimonial.content}</p>
@@ -164,4 +191,3 @@ export default function Testimonials() {
     </div>
   )
 }
-

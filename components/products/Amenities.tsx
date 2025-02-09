@@ -18,7 +18,7 @@ export function Amenities() {
   ];
 
   return (
-    <div className="p-4">
+    <div className="p-4" id="amenities">
       <h2 className="text-[20px] md:text-[24px] text-[#0B0907] font-bold mb-[2rem]">
         Amenities
       </h2>

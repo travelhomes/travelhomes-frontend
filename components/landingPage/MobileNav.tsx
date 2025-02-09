@@ -14,9 +14,14 @@ const navItems = [
 
 export default function MobileNav() {
   const pathname = usePathname();
+  
+  // Hide on product page
+  if (pathname.startsWith('/product')) {
+    return null;
+  }
 
   return (
-    <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 z-50">
+    <div className="fixed bottom-0 left-0 right-0 bg-white border-t lg:hidden z-50">
       <div className="flex items-center justify-around h-16">
         {navItems.map((item) => {
           const isActive = pathname === item.href;
@@ -41,6 +46,6 @@ export default function MobileNav() {
           );
         })}
       </div>
-    </nav>
+    </div>
   );
 }

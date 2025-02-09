@@ -133,7 +133,8 @@ function CamperCard({
   };
 
   return (
-    <div className="relative rounded-xl">
+    <Link href="/product">
+<div className="relative rounded-xl hover:shadow-lg transition-all duration-300 hover:p-2">
       <div
         className="relative aspect-[1] w-full"
         onMouseEnter={() => setIsHovered(true)}
@@ -174,10 +175,10 @@ function CamperCard({
         {/* Favorite Button */}
         <button
           onClick={() => setIsFavorite(!isFavorite)}
-          className="absolute top-3 right-3 z-10 p-2 rounded-full"
+          className="absolute top-3 right-3 z-50 p-2 rounded-full"
         >
           <Heart
-            className={`w-5 h-5 ${
+            className={`w-5 h-5 z-50 ${
               isFavorite
                 ? "fill-red-500 stroke-red-500"
                 : "stroke-white fill-gray-400"
@@ -207,7 +208,6 @@ function CamperCard({
         </div>
       </div>
 
-      <Link href="/product">
         <div className="py-4">
           <div className="flex justify-between items-start mb-2">
             <h3
@@ -235,7 +235,7 @@ function CamperCard({
             </div>
           </div>
         </div>
-      </Link>
     </div>
+      </Link>
   );
 }

@@ -118,15 +118,12 @@ const campers = [
 export default function Card() {
   return (
     <>
-    <section className="py-12 md:px-4 mx-auto">
+    <section className="py-12 mx-[1rem] w-full">
       <div className="flex justify-between items-center mb-8">
         <div>
-          <h2 className="md:text-3xl text-[20px] font-bold mb-2">
-            Stay at our top Camper Van
+          <h2 className="md:text-2xl text-[20px] font-bold mb-2">
+          Results (234)
           </h2>
-          <p className="text-gray-600">
-            From castles and villas to boats and igloos, we have it all
-          </p>
         </div>
         <Link href="/discover"> 
         <button className="hidden md:block text-gray-900 font-medium hover:underline">
@@ -135,7 +132,7 @@ export default function Card() {
         </Link>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 w-full">
         {campers.map((camper, index) => (
           //@ts-expect-error
           <CamperCard key={index} {...camper} />
@@ -194,7 +191,7 @@ function CamperCard({
   };
 
   return (
-    <div className="relative rounded-xl">
+    <div className="relative rounded-xl w-full">
       <div
         className="relative aspect-[1] w-full"
         onMouseEnter={() => setIsHovered(true)}
@@ -268,8 +265,8 @@ function CamperCard({
         </div>
       </div>
 
-      <Link href="/product">
-        <div className="py-4">
+      <Link href="/product" className="w-full">
+        <div className="py-4 w-full">
           <div className="flex justify-between items-start mb-2">
             <h3
               className={`${plusJakartaSans.className} text-[15px] text-[#222222] font-semibold`}

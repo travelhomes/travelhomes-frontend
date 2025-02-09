@@ -16,7 +16,7 @@ export default function Inclusions() {
   
     return (
       <div className="p-4 border-b w-full md:w-[65%]">
-        <div className="mb-8">
+        <div className="mb-8" id="inclusions">
           <h2 className="text-xl font-bold mb-4">Inclusions</h2>
           <ul className="space-y-2">
             {inclusions.map((item, index) => (
@@ -28,7 +28,7 @@ export default function Inclusions() {
           </ul>
         </div>
   
-        <div>
+        <div id="policy&rules">
           <h2 className="text-xl font-bold mb-4">Policy & Rules</h2>
           <ul className="space-y-2">
             {policies.map((item, index) => (
