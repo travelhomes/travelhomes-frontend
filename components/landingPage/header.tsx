@@ -2,10 +2,22 @@
 import React, { useState } from "react"; // Import React
 import { CarIcon, HomeIcon, RocketIcon } from "@/public/assets/CustomIcon";
 
-export function Header() {
+interface HeaderProps {
+  onTabChange?: (tab: string) => void;
+}
+
+export function Header({ onTabChange }: HeaderProps) {
   const [activeButton, setActiveButton] = useState<string>("camperVan"); 
+  
   const handleButtonClick = (buttonName: string) => {
     setActiveButton(buttonName);
+    // Map button names to tab names expected by SearchFilter
+    const tabMap: Record<string, string> = {
+      'camperVan': 'campervan',
+      'home': 'uniquestay',
+      'rocket': 'activity'
+    };
+    onTabChange?.(tabMap[buttonName]);
   };
 
   return ( // Add return statement

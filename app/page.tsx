@@ -1,3 +1,4 @@
+"use client";
 import Appbar from "@/components/landingPage/appbar";
 import LatestArticles from "@/components/landingPage/article";
 import TrendingDestinations from "@/components/landingPage/Destination";
@@ -12,28 +13,31 @@ import TopRatedStays from "@/components/landingPage/sections/TopRatedStays";
 import UniqueStay from "@/components/landingPage/sections/UniqueStay";
 import ServiceListing from "@/components/landingPage/ServiceListing ";
 import Testimonials from "@/components/landingPage/Testimonials";
+import { useState } from "react";
 
 export default function Home() {
+  const [activeTab, setActiveTab] = useState('campervan');
+
   return (
     <>
-    <div className="py-[1rem] px-[1rem] md:px-[5rem]">
-  <Appbar />
-  <Header />
-  <SearchFilter />
-  <Hero />
-  {/* Sections */}
-  <CamperListing />
-  <UniqueStay />
-  <BestActivity />
-  {/* Destinations  */}
-  <TrendingDestinations />
-  <ServiceListing />
-  <Testimonials />
-  <TopRatedStays />
-<LatestArticles />
-  <FAQ />
-  </div>
-  <Footer />
+      <div className="py-[1rem] px-[1rem] md:px-[5rem]">
+        <Appbar />
+        <Header onTabChange={setActiveTab} />
+        <SearchFilter activeTab={activeTab} />
+        <Hero />
+        {/* Sections */}
+        <CamperListing />
+        <UniqueStay />
+        <BestActivity />
+        {/* Destinations  */}
+        <TrendingDestinations />
+        <ServiceListing />
+        <Testimonials />
+        <TopRatedStays />
+        <LatestArticles />
+        <FAQ />
+      </div>
+      <Footer />
     </>
   );
 }
