@@ -1,4 +1,3 @@
-/* eslint-disable import/no-anonymous-default-export */
 const ListIcon = () => {
   return (
     <svg

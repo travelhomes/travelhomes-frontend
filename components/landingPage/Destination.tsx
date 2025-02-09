@@ -23,8 +23,9 @@ export default function TrendingDestinations() {
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         {/* Mobile heading and description */}
         <div className="lg:hidden col-span-full mb-6">
-          <h2 className="text-2xl md:text-2xl font-bold mb-4">
-            Trending destinations
+          <h2 className="text-2xl md:text-2xl font-bold mb-4 ">
+           <span> Trending </span> 
+            <span> Destinations </span>
           </h2>
           <p className="text-gray-600 text-base md:text-lg md:text-left">
             When it comes to planning a dream destination, some destinations
@@ -72,7 +73,7 @@ export default function TrendingDestinations() {
           <h2 className="text-2xl md:text-2xl font-bold mb-6">
             Trending destinations
           </h2>
-          <div className="w-full h-[330px] relative">
+          <div className="w-full h-[350px] relative">
             <Image
               src={Delhi}
               alt="Delhi"
@@ -94,7 +95,7 @@ export default function TrendingDestinations() {
         </div>
 
         <div className="hidden lg:block relative rounded-2xl overflow-hidden group">
-          <div className="w-full h-[380px] relative">
+          <div className="w-full h-[410px] relative">
             <Image
               src={Kolkata}
               alt="Kolkata"
@@ -116,7 +117,7 @@ export default function TrendingDestinations() {
         </div>
 
         <div className="hidden lg:block relative rounded-2xl overflow-hidden group">
-          <div className="w-full h-[380px] relative">
+          <div className="w-full h-[410px] relative">
             <Image
               src={Bombay}
               alt="Bombay"
