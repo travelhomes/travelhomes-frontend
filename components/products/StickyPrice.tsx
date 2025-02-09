@@ -1,20 +1,6 @@
 "use client"
-import { useState, useEffect } from 'react';
 
 export function StickyPrice() {
-  const [isVisible, setIsVisible] = useState(false);
-
-  useEffect(() => {
-    const handleScroll = () => {
-      const scrollPosition = window.scrollY;
-      // Show sticky price after scrolling past the main price section
-      setIsVisible(scrollPosition > 600);
-    };
-
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
-
   return (
     <div className="fixed bottom-0 left-0 right-0 bg-white border-t shadow-lg p-4 lg:hidden">
       <div className="container mx-auto flex items-center justify-between">
