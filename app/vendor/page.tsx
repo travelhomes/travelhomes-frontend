@@ -2,6 +2,7 @@
 
 import { useState } from "react"
 import Link from "next/link"
+import { useRouter } from "next/navigation"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { Button } from "@/components/ui/button"
 import { Label } from "@/components/ui/label"
@@ -10,6 +11,13 @@ import { ArrowRightIcon, BusIcon, StayIcon, ActiveIcon } from "@/public/assets/C
 
 export default function ServiceSelection() {    
   const [selectedService, setSelectedService] = useState<string>("")
+  const router = useRouter()
+
+  const handleNext = () => {
+    if (selectedService) {
+      router.push(`/vendor/${selectedService}`)
+    }
+  }
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -37,8 +45,8 @@ export default function ServiceSelection() {
                 className={cn(
                   "flex flex-col gap-4 rounded-lg border-2 p-6 cursor-pointer relative transition-all h-[180px]",
                   selectedService === id 
-                    ? "border-black bg-white" 
-                    : "border-[#E7E8E9] bg-white hover:border-gray-300"
+                    ? "border-black bg-[#FDFDFD]" 
+                    : "border-[#E7E8E9] bg-[#FDFDFD] hover:border-gray-300"
                 )}
               >
                 <div
@@ -49,7 +57,6 @@ export default function ServiceSelection() {
                       : "border-[#717171]"
                   )}
                 />
-                
                 <Icon />
                 <div>
                   <div className="font-medium text-[20px] mt-[10px] text-[#112211] mb-2">{label}</div>
@@ -62,7 +69,11 @@ export default function ServiceSelection() {
       </div>
 
       <div className="border-t border-[#E7E8E9] p-6 flex justify-end">
-        <Button className="bg-black text-white hover:bg-black/90 px-8 rounded">
+        <Button 
+          onClick={handleNext}
+          disabled={!selectedService}
+          className="bg-black text-white hover:bg-black/90 px-8 rounded disabled:opacity-50 disabled:cursor-not-allowed"
+        >
           Next
         </Button>
       </div>
