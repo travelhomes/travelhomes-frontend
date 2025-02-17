@@ -10,6 +10,7 @@ import { useAuth } from "@/context/AuthContext";
 import { useRouter } from "next/navigation";
 
 export default function LoginPage() {
+
   const [formData, setFormData] = useState({
     email: "",
     password: "",

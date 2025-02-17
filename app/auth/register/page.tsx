@@ -15,6 +15,7 @@ import {
 import { GoogleIcon } from "@/public/assets/CustomIcon";
 import { useAuth } from "@/context/AuthContext";
 import { useRouter } from "next/navigation";
+import { BASE_URL } from "@/config/config";
 
 interface FormData {
   email: string;
@@ -94,12 +95,31 @@ export default function RegisterPage() {
     }
 
     try {
-      // Register with just the required fields
-      await register({
+      // First register the user
+      const userId = await register({
         email: formData.email,
         password: formData.password,
         phone: formData.phone
       });
+
+      // Then update personal details
+      const response = await fetch(`${BASE_URL}/api/auth/updatePersonalDetails`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          firstname: formData.firstName,
+          lastname: formData.lastName,
+          city: formData.city,
+          state: formData.state,
+          userId: userId.toString()
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to update personal details');
+      }
       
       router.push("/");
     } catch (error) {

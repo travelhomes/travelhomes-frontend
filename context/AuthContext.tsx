@@ -19,8 +19,8 @@ interface RegisterData {
 
 interface AuthContextType {
   user: User | null;
-  login: (email: string, password: string) => void;
-  register: (data: RegisterData) => void;
+  login: (email: string, password: string) => Promise<boolean>;
+  register: (data: RegisterData) => Promise<number>;
   logout: () => void;
   isAuthenticated: boolean;
 }
@@ -96,9 +96,12 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         throw new Error('Registration failed');
       }
 
-      // Registration successful, now login to get the token
-      return await login(data.email, data.password);
+      const { userId } = await response.json();
       
+      // Registration successful, now login to get the token
+      await login(data.email, data.password);
+      
+      return userId;
     } catch (error) {
       console.error('Registration error:', error);
       throw error;
