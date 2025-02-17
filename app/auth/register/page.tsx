@@ -45,23 +45,30 @@ export default function RegisterPage() {
   const { register } = useAuth();
   const router = useRouter();
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+  const handleInputChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
     const { name, value } = e.target;
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
-      [name]: value
+      [name]: value,
     }));
   };
 
   const handleSelectChange = (name: string) => (value: string) => {
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
-      [name]: value
+      [name]: value,
     }));
   };
 
-  const handleStep1Submit = () => {
-    if (!formData.email || !formData.phone || !formData.password || !formData.confirmPassword) {
+  const handleStep1Submit = async () => {
+    if (
+      !formData.email ||
+      !formData.phone ||
+      !formData.password ||
+      !formData.confirmPassword
+    ) {
       setError("Please fill in all fields");
       return;
     }
@@ -69,26 +76,35 @@ export default function RegisterPage() {
       setError("Passwords do not match");
       return;
     }
+    
     setError("");
     setStep(2);
   };
 
   const handleStep2Submit = async () => {
-    if (!formData.firstName || !formData.lastName || !formData.dob || !formData.state || !formData.city) {
+    if (
+      !formData.firstName ||
+      !formData.lastName ||
+      !formData.dob ||
+      !formData.state ||
+      !formData.city
+    ) {
       setError("Please fill in all fields");
       return;
     }
 
     try {
-      await register(
-        formData.email,
-        formData.password,
-        `${formData.firstName} ${formData.lastName}`
-      );
+      // Register with just the required fields
+      await register({
+        email: formData.email,
+        password: formData.password,
+        phone: formData.phone
+      });
+      
       router.push("/");
     } catch (error) {
       console.error("Registration error:", error);
-      setError("Email already exists");
+      setError("Registration failed. Please try again.");
     }
   };
 
@@ -96,7 +112,12 @@ export default function RegisterPage() {
     <div className="min-h-screen flex flex-col md:flex-row gap-6 lg:gap-8">
       <div className="hidden md:flex flex-1 gap-4 p-6 bg-muted/5">
         <div className="space-y-4">
-          <Image src={registerImage} alt="Registration illustration" width={800} height={300} />
+          <Image
+            src={registerImage}
+            alt="Registration illustration"
+            width={800}
+            height={300}
+          />
         </div>
       </div>
 
@@ -107,7 +128,7 @@ export default function RegisterPage() {
               {error}
             </div>
           )}
-          
+
           {step === 1 ? (
             <>
               <div className="space-y-2">
@@ -131,14 +152,14 @@ export default function RegisterPage() {
                 />
 
                 <div className="flex space-x-2">
-                  <Select defaultValue="+1">
+                  <Select defaultValue="+91">
                     <SelectTrigger className="w-[100px]">
-                      <SelectValue placeholder="+1" />
+                      <SelectValue placeholder="+91" />
                     </SelectTrigger>
                     <SelectContent>
+                      <SelectItem value="+91">+91</SelectItem>
                       <SelectItem value="+1">+1</SelectItem>
                       <SelectItem value="+44">+44</SelectItem>
-                      <SelectItem value="+91">+91</SelectItem>
                     </SelectContent>
                   </Select>
                   <input
@@ -180,7 +201,10 @@ export default function RegisterPage() {
                 <div className="text-center">
                   <p className="text-sm text-muted-foreground">
                     Already have an account?{" "}
-                    <Link href="/auth/login" className="text-primary hover:underline">
+                    <Link
+                      href="/auth/login"
+                      className="text-primary hover:underline"
+                    >
                       Login
                     </Link>
                   </p>
@@ -256,7 +280,10 @@ export default function RegisterPage() {
                   className="px-[12px] py-[14px] w-full border border-[#B0B0B0] rounded-[8px]"
                 />
 
-                <Select name="state" onValueChange={handleSelectChange('state')}>
+                <Select
+                  name="state"
+                  onValueChange={handleSelectChange("state")}
+                >
                   <SelectTrigger className="w-full">
                     <SelectValue placeholder="State" />
                   </SelectTrigger>
@@ -267,7 +294,7 @@ export default function RegisterPage() {
                   </SelectContent>
                 </Select>
 
-                <Select name="city" onValueChange={handleSelectChange('city')}>
+                <Select name="city" onValueChange={handleSelectChange("city")}>
                   <SelectTrigger className="w-full">
                     <SelectValue placeholder="City" />
                   </SelectTrigger>
