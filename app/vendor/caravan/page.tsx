@@ -3,6 +3,7 @@
 import { useState } from "react"
 import Step1 from "@/components/vendor/caravan/step1"
 import Step2 from "@/components/vendor/caravan/step2"
+import Step3 from "@/components/vendor/caravan/step3"
 import VendorBar from "@/components/vendor/caravan/vendorbar"
 
 export default function CaravanRegistration() {
@@ -30,6 +31,14 @@ export default function CaravanRegistration() {
       )}
       {currentStep === 2 && (
         <Step2 
+          onNext={handleNext} 
+          onBack={handleBack}
+          currentStep={currentStep}
+          totalSteps={totalSteps}
+        />
+      )}
+      {currentStep === 3 && (
+        <Step3 
           onNext={handleNext} 
           onBack={handleBack}
           currentStep={currentStep}
