@@ -42,20 +42,6 @@ export default function Step1({ onNext, onBack, currentStep, totalSteps }: Step1
     }));
   };
 
-  // Check if the current step is complete
-  const isStepComplete = () => {
-    const { name, description, rules } = formData;
-    const requiredImages = 5;
-    const uploadedImages = Object.values(images).filter(img => img).length;
-
-    return (
-      name.trim() !== "" &&
-      description.trim() !== "" &&
-      rules.trim() !== "" &&
-      uploadedImages >= requiredImages
-    );
-  };
-
   const handleImageClick = (position: string) => {
     setActiveUpload(position);
     fileInputRef.current?.click();
@@ -267,14 +253,14 @@ export default function Step1({ onNext, onBack, currentStep, totalSteps }: Step1
         {/* Navigation */}
         <div className="mt-8 flex justify-between items-center border-t border-[#E7E8E9] pt-6">
           <StepProgress 
-            currentStep={isStepComplete() ? currentStep + 1 : currentStep} 
+            currentStep={currentStep} 
             totalSteps={totalSteps} 
           />
           <StepNavigation 
             onNext={onNext}
             onBack={onBack}
             isFirstStep={currentStep === 1}
-            isNextDisabled={!isStepComplete()}
+            isNextDisabled={false} // Disabled validation check for testing
           />
         </div>
       </div>
