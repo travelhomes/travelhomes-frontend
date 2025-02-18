@@ -72,7 +72,7 @@ export default function ServiceSelection() {
         <Button 
           onClick={handleNext}
           disabled={!selectedService}
-          className="bg-black text-white hover:bg-black/90 px-8 rounded disabled:opacity-50 disabled:cursor-not-allowed"
+          className="bg-black text-white hover:bg-black/90 rounded-[60px] py-[14px] px-[32px]  disabled:opacity-50 disabled:cursor-not-allowed "
         >
           Next
         </Button>
