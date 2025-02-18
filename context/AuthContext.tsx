@@ -1,17 +1,26 @@
 "use client";
 
 import { createContext, useContext, useEffect, useState } from "react";
+import Cookies from 'js-cookie';
+import { BASE_URL } from "@/config/config";
 
 interface User {
   email: string;
   name: string;
   avatar?: string;
+  token?: string;
+}
+
+interface RegisterData {
+  email: string;
+  password: string;
+  phone: string;
 }
 
 interface AuthContextType {
   user: User | null;
-  login: (email: string, password: string) => void;
-  register: (email: string, password: string, name: string) => void;
+  login: (email: string, password: string) => Promise<boolean>;
+  register: (data: RegisterData) => Promise<number>;
   logout: () => void;
   isAuthenticated: boolean;
 }
@@ -23,64 +32,88 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   useEffect(() => {
-    // Check local storage for user data on mount
-    const storedUser = localStorage.getItem("user");
-    if (storedUser) {
-      setUser(JSON.parse(storedUser));
+    // Check cookies for token and user data on mount
+    const token = Cookies.get('auth_token');
+    const storedUser = Cookies.get('user');
+    if (token && storedUser) {
+      const userData = JSON.parse(storedUser);
+      setUser({ ...userData, token });
       setIsAuthenticated(true);
     }
   }, []);
 
-  const login = (email: string, password: string) => {
-    // For testing, we'll just check if the email exists in localStorage
-    const users = JSON.parse(localStorage.getItem("users") || "{}");
-    const user = users[email];
-    
-    if (user && user.password === password) {
+  const login = async (email: string, password: string) => {
+    try {
+      const response = await fetch(`${BASE_URL}/api/auth/login`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ 
+          username: email,
+          password: password 
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Login failed');
+      }
+
+      const data = await response.json();
+      
+      // Store token in cookie
+      Cookies.set('auth_token', data.token, { expires: 7 }); // Token expires in 7 days
+      
       const userData = {
         email,
-        name: user.name,
-        avatar: user.avatar || `https://api.dicebear.com/7.x/initials/svg?seed=${user.name}`,
+        name: email,
+        token: data.token,
       };
+
+      // Store user data in cookie
+      Cookies.set('user', JSON.stringify(userData), { expires: 7 });
+
       setUser(userData);
       setIsAuthenticated(true);
-      localStorage.setItem("user", JSON.stringify(userData));
       return true;
+    } catch (error) {
+      console.error('Login error:', error);
+      return false;
     }
-    return false;
   };
 
-  const register = (email: string, password: string, name: string) => {
-    const users = JSON.parse(localStorage.getItem("users") || "{}");
-    
-    if (users[email]) {
-      return false; // User already exists
+  const register = async (data: RegisterData) => {
+    try {
+      const response = await fetch(`${BASE_URL}/api/auth/register`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      });
+
+      if (!response.ok) {
+        throw new Error('Registration failed');
+      }
+
+      const { userId } = await response.json();
+      
+      // Registration successful, now login to get the token
+      await login(data.email, data.password);
+      
+      return userId;
+    } catch (error) {
+      console.error('Registration error:', error);
+      throw error;
     }
-
-    // Store user data
-    users[email] = {
-      name,
-      password,
-      avatar: `https://api.dicebear.com/7.x/initials/svg?seed=${name}`,
-    };
-    localStorage.setItem("users", JSON.stringify(users));
-
-    // Auto login after registration
-    const userData = {
-      email,
-      name,
-      avatar: users[email].avatar,
-    };
-    setUser(userData);
-    setIsAuthenticated(true);
-    localStorage.setItem("user", JSON.stringify(userData));
-    return true;
   };
 
   const logout = () => {
     setUser(null);
     setIsAuthenticated(false);
-    localStorage.removeItem("user");
+    // Remove cookies on logout
+    Cookies.remove('auth_token');
+    Cookies.remove('user');
   };
 
   return (
