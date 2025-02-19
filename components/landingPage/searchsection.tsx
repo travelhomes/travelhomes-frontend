@@ -157,21 +157,31 @@ export default function SearchFilter({ activeTab = 'campervan' }) {
     setActivitySearchOpen(true);
   };
 
-  const toggleFromLocationSearch = () => {
-    closeAllPopups();
-    setFromLocationSearchOpen(true);
-  };
-
-  const toggleToLocationSearch = () => {
-    closeAllPopups();
-    setToLocationSearchOpen(true);
+  const handleCheckInOutClick = (type: 'checkIn' | 'checkOut') => {
+    // If there's no date selected, open calendar first
+    if (!dateTimeRange[type]?.date) {
+      setTimePickerType(type);
+      setCalendarOpen(true);
+      return;
+    }
+    
+    // If date is selected but no time, open time picker
+    if (dateTimeRange[type]?.date && !dateTimeRange[type]?.time) {
+      setTimePickerType(type);
+      setTimePickerOpen(true);
+      return;
+    }
+    
+    // If both date and time are selected, open calendar for editing
+    setTimePickerType(type);
+    setCalendarOpen(true);
   };
 
   const formatDateTime = (dateTime?: { date: Date; time?: string; period?: 'AM' | 'PM' }) => {
     if (!dateTime?.date) return "Add date";
     const formattedDate = dateTime.date.toLocaleDateString();
     if (dateTime.time && dateTime.period) {
-      return `${formattedDate}, ${dateTime.time}${dateTime.period}`;
+      return `${formattedDate}, ${dateTime.time} ${dateTime.period}`;
     }
     return formattedDate;
   };
@@ -186,12 +196,6 @@ export default function SearchFilter({ activeTab = 'campervan' }) {
       }
     }));
     setTimePickerOpen(false);
-  };
-
-  const showTimePicker = (type: 'checkIn' | 'checkOut') => {
-    if (activeTab !== 'campervan') return;
-    setTimePickerType(type);
-    setTimePickerOpen(true);
   };
 
   const formatGuestCount = () => {
@@ -401,13 +405,7 @@ export default function SearchFilter({ activeTab = 'campervan' }) {
                 </div>
                 <button 
                   ref={checkInButtonRef}
-                  onClick={() => {
-                    if (dateTimeRange.checkIn?.date && activeTab === 'campervan') {
-                      showTimePicker('checkIn');
-                    } else {
-                      toggleCalendar();
-                    }
-                  }}
+                  onClick={() => handleCheckInOutClick('checkIn')}
                   className="bg-transparent text-gray-900 text-base font-medium focus:outline-none ml-1 text-left"
                 >
                   {formatDateTime(dateTimeRange.checkIn)}
@@ -423,13 +421,7 @@ export default function SearchFilter({ activeTab = 'campervan' }) {
                 </label>
                 <button 
                   ref={checkOutButtonRef}
-                  onClick={() => {
-                    if (dateTimeRange.checkOut?.date && activeTab === 'campervan') {
-                      showTimePicker('checkOut');
-                    } else {
-                      toggleCalendar();
-                    }
-                  }}
+                  onClick={() => handleCheckInOutClick('checkOut')}
                   className="bg-transparent text-gray-900 text-base font-medium focus:outline-none ml-1 text-left"
                 >
                   {formatDateTime(dateTimeRange.checkOut)}

@@ -15,12 +15,20 @@ export function Calendar({ onDateSelect, className }: CalendarProps) {
   const [currentDate, setCurrentDate] = useState(new Date())
   const [selectedDates, setSelectedDates] = useState<Date[]>([])
 
+  // Get today's date with time set to midnight for comparison
+  const today = new Date()
+  today.setHours(0, 0, 0, 0)
+
   const nextMonth = () => {
     setCurrentDate(new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 1))
   }
 
   const prevMonth = () => {
-    setCurrentDate(new Date(currentDate.getFullYear(), currentDate.getMonth() - 1, 1))
+    const newDate = new Date(currentDate.getFullYear(), currentDate.getMonth() - 1, 1)
+    // Only allow going to past month if it contains today's date
+    if (newDate.getMonth() === today.getMonth() && newDate.getFullYear() === today.getFullYear()) {
+      setCurrentDate(newDate)
+    }
   }
 
   const getDaysInMonth = (date: Date) => {
@@ -58,6 +66,16 @@ export function Calendar({ onDateSelect, className }: CalendarProps) {
     return date.toDateString() === today.toDateString()
   }
 
+  const isDateDisabled = (date: Date) => {
+    return date.getTime() < today.getTime()
+  }
+
+  const isInRange = (date: Date) => {
+    if (selectedDates.length !== 2) return false
+    const [start, end] = selectedDates.sort((a, b) => a.getTime() - b.getTime())
+    return date.getTime() > start.getTime() && date.getTime() < end.getTime()
+  }
+
   const isSelected = (date: Date) => {
     return selectedDates.some((selectedDate) => selectedDate.toDateString() === date.toDateString())
   }
@@ -76,11 +94,16 @@ export function Calendar({ onDateSelect, className }: CalendarProps) {
         {/* Current Month */}
         <div>
           <div className="flex items-center justify-between mb-4">
-            <Button variant="ghost" className="p-0 hover:bg-transparent" onClick={prevMonth}>
+            <Button 
+              variant="ghost" 
+              className="p-0 hover:bg-transparent" 
+              onClick={prevMonth}
+              disabled={currentDate.getMonth() === today.getMonth() && currentDate.getFullYear() === today.getFullYear()}
+            >
               <ChevronLeft className="h-4 w-4" />
             </Button>
             <h2 className="text-sm font-medium">{formatMonth(currentDate)}</h2>
-            <div className="w-4" /> {/* Spacer for alignment */}
+            <div className="w-4" />
           </div>
           <div className="grid grid-cols-7 gap-1 text-center mb-2">
             {["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"].map((day) => (
@@ -95,6 +118,7 @@ export function Calendar({ onDateSelect, className }: CalendarProps) {
                 {date && (
                   <button
                     onClick={() => {
+                      if (isDateDisabled(date)) return;
                       setSelectedDates((prev) => {
                         const dateString = date.toDateString()
                         const isDateSelected = prev.some((selectedDate) => selectedDate.toDateString() === dateString)
@@ -102,15 +126,19 @@ export function Calendar({ onDateSelect, className }: CalendarProps) {
                         if (isDateSelected) {
                           return prev.filter((selectedDate) => selectedDate.toDateString() !== dateString)
                         } else {
+                          if (prev.length === 2) return [date]
                           return [...prev, date]
                         }
                       })
                     }}
+                    disabled={isDateDisabled(date)}
                     className={cn(
                       "w-8 h-8 rounded-full flex items-center justify-center text-sm transition-colors",
                       isToday(date) && "bg-primary text-primary-foreground",
                       isSelected(date) && "bg-black text-white",
-                      !isToday(date) && !isSelected(date) && "hover:bg-muted",
+                      isInRange(date) && "bg-gray-100",
+                      isDateDisabled(date) && "text-gray-300 cursor-not-allowed",
+                      !isToday(date) && !isSelected(date) && !isDateDisabled(date) && "hover:bg-muted",
                     )}
                   >
                     {date.getDate()}
@@ -124,7 +152,7 @@ export function Calendar({ onDateSelect, className }: CalendarProps) {
         {/* Next Month */}
         <div>
           <div className="flex items-center justify-between mb-4">
-            <div className="w-4" /> {/* Spacer for alignment */}
+            <div className="w-4" />
             <h2 className="text-sm font-medium">{formatMonth(nextMonthDate)}</h2>
             <Button variant="ghost" className="p-0 hover:bg-transparent" onClick={nextMonth}>
               <ChevronRight className="h-4 w-4" />
@@ -143,6 +171,7 @@ export function Calendar({ onDateSelect, className }: CalendarProps) {
                 {date && (
                   <button
                     onClick={() => {
+                      if (isDateDisabled(date)) return;
                       setSelectedDates((prev) => {
                         const dateString = date.toDateString()
                         const isDateSelected = prev.some((selectedDate) => selectedDate.toDateString() === dateString)
@@ -150,15 +179,19 @@ export function Calendar({ onDateSelect, className }: CalendarProps) {
                         if (isDateSelected) {
                           return prev.filter((selectedDate) => selectedDate.toDateString() !== dateString)
                         } else {
+                          if (prev.length === 2) return [date]
                           return [...prev, date]
                         }
                       })
                     }}
+                    disabled={isDateDisabled(date)}
                     className={cn(
                       "w-8 h-8 rounded-full flex items-center justify-center text-sm transition-colors",
                       isToday(date) && "bg-primary text-primary-foreground",
                       isSelected(date) && "bg-black text-white",
-                      !isToday(date) && !isSelected(date) && "hover:bg-muted",
+                      isInRange(date) && "bg-gray-100",
+                      isDateDisabled(date) && "text-gray-300 cursor-not-allowed",
+                      !isToday(date) && !isSelected(date) && !isDateDisabled(date) && "hover:bg-muted",
                     )}
                   >
                     {date.getDate()}
