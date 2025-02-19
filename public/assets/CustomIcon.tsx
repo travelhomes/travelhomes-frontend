@@ -356,9 +356,9 @@ const MobileSearchIcon = () => {
     return (
       <svg width="52" height="44" viewBox="0 0 52 44" fill="none" xmlns="http://www.w3.org/2000/svg">
 <rect x="51.5" y="43.5" width="51" height="43" rx="21.5" transform="rotate(-180 51.5 43.5)" stroke="#131313"/>
-<g clip-path="url(#clip0_132_2619)">
-<path d="M23.9751 16.9419L18.9167 22.0002L23.9751 27.0586" stroke="#0B0907" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
-<path d="M33.0834 22L19.0583 22" stroke="#0B0907" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+<g clipPath="url(#clip0_132_2619)">
+<path d="M23.9751 16.9419L18.9167 22.0002L23.9751 27.0586" stroke="#0B0907" strokeWidth="1.5" strokeMiterlimit="10" strokeLinecap="round" strokeLinejoin="round"/>
+<path d="M33.0834 22L19.0583 22" stroke="#0B0907" strokeWidth="1.5" strokeMiterlimit="10" strokeLinecap="round" strokeLinejoin="round"/>
 </g>
 <defs>
 <clipPath id="clip0_132_2619">
@@ -374,9 +374,9 @@ const MobileSearchIcon = () => {
     return (
       <svg width="52" height="44" viewBox="0 0 52 44" fill="none" xmlns="http://www.w3.org/2000/svg">
       <rect width="52" height="44" rx="22" fill="#131313"/>
-      <g clip-path="url(#clip0_132_2621)">
-      <path d="M28.0252 27.0581L33.0835 21.9998L28.0252 16.9414" stroke="white" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
-      <path d="M18.9169 22H32.9419" stroke="white" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+      <g clipPath="url(#clip0_132_2621)">
+      <path d="M28.0252 27.0581L33.0835 21.9998L28.0252 16.9414" stroke="white" strokeWidth="1.5" strokeMiterlimit="10" strokeLinecap="round" strokeLinejoin="round"/>
+      <path d="M18.9169 22H32.9419" stroke="white" strokeWidth="1.5" strokeMiterlimit="10" strokeLinecap="round" strokeLinejoin="round"/>
       </g>
       <defs>
       <clipPath id="clip0_132_2621">
