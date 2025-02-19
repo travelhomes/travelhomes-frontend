@@ -32,13 +32,30 @@ const dummyLocations = [
   "Kolkata"
 ];
 
+const dummyActivities = [
+  "Trekking",
+  "Hiking",
+  "Mountain Climbing",
+  "Rock Climbing",
+  "Trail Running",
+  "Mountain Biking",
+  "Camping",
+  "Fishing",
+  "Kayaking",
+  "Canoeing",
+  "Bird Watching",
+  "Photography",
+  "Wildlife Safari",
+  "River Rafting",
+  "Zip Lining"
+];
+
 export default function SearchFilter({ activeTab = 'campervan' }) {
   const [isGuestCounterOpen, setGuestCounterOpen] = useState(false);
   const [isLocationSearchOpen, setLocationSearchOpen] = useState(false);
   const [isCalendarOpen, setCalendarOpen] = useState(false);
   const [isActivitySearchOpen, setActivitySearchOpen] = useState(false);
   const [isTimePickerOpen, setTimePickerOpen] = useState(false);
-  const [selectedActivity, setSelectedActivity] = useState("Tracking");
   const [timePickerType, setTimePickerType] = useState<'checkIn' | 'checkOut'>('checkIn');
   
   // Refs for the buttons and popups
@@ -70,6 +87,9 @@ export default function SearchFilter({ activeTab = 'campervan' }) {
     children: 0,
     infants: 0
   });
+
+  const [activityInput, setActivityInput] = useState("Trekking");
+  const [activitySuggestions, setActivitySuggestions] = useState<string[]>([]);
 
   // Close all popups
   const closeAllPopups = () => {
@@ -152,11 +172,6 @@ export default function SearchFilter({ activeTab = 'campervan' }) {
     setCalendarOpen(true);
   };
 
-  const toggleActivitySearch = () => {
-    closeAllPopups();
-    setActivitySearchOpen(true);
-  };
-
   const handleCheckInOutClick = (type: 'checkIn' | 'checkOut') => {
     // If there's no date selected, open calendar first
     if (!dateTimeRange[type]?.date) {
@@ -204,14 +219,20 @@ export default function SearchFilter({ activeTab = 'campervan' }) {
     return `${total} guest${total > 1 ? 's' : ''}`;
   };
 
-  const activities = [
-    "Tracking",
-    "Hiking",
-    "Camping",
-    "Fishing",
-    "Kayaking",
-    "Rock Climbing"
-  ];
+  const handleActivitySearch = (input: string) => {
+    const value = input.toLowerCase();
+    const filtered = dummyActivities.filter(activity => 
+      activity.toLowerCase().includes(value)
+    );
+    setActivityInput(input);
+    setActivitySuggestions(filtered);
+  };
+
+  const selectActivity = (activity: string) => {
+    setActivityInput(activity);
+    setActivitySuggestions([]);
+    setActivitySearchOpen(false);
+  };
 
   const handleLocationSearch = (input: string, type: 'from' | 'to') => {
     const value = input.toLowerCase();
@@ -368,26 +389,24 @@ export default function SearchFilter({ activeTab = 'campervan' }) {
                   <ActivelyIcon />
                   Activity
                 </div>
-                <button 
-                  ref={activityButtonRef}
-                  onClick={toggleActivitySearch}
-                  className="bg-transparent text-gray-900 text-base font-medium focus:outline-none ml-1 text-left"
-                >
-                  {selectedActivity}
-                </button>
-                {isActivitySearchOpen && (
+                <input
+                  type="text"
+                  value={activityInput}
+                  onChange={(e) => handleActivitySearch(e.target.value)}
+                  onFocus={() => setActivitySearchOpen(true)}
+                  placeholder="Enter activity"
+                  className="bg-transparent text-gray-900 text-base font-medium focus:outline-none ml-1 w-full"
+                />
+                {isActivitySearchOpen && activitySuggestions.length > 0 && (
                   <div 
                     ref={activityPopupRef}
-                    className="absolute top-full left-0 mt-2 z-50 shadow-lg bg-white rounded-lg p-4 w-[200px]"
+                    className="absolute top-full left-0 mt-2 z-50 bg-white rounded-lg shadow-lg w-full"
                   >
-                    {activities.map((activity) => (
+                    {activitySuggestions.map((activity) => (
                       <button
                         key={activity}
-                        onClick={() => {
-                          setSelectedActivity(activity);
-                          setActivitySearchOpen(false);
-                        }}
-                        className="w-full text-left px-2 py-2 hover:bg-gray-100 rounded-lg"
+                        onClick={() => selectActivity(activity)}
+                        className="w-full text-left px-4 py-2 hover:bg-gray-100"
                       >
                         {activity}
                       </button>
