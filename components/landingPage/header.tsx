@@ -22,7 +22,7 @@ export function Header({ onTabChange }: HeaderProps) {
 
   return ( // Add return statement
     <div className="hidden md:block">
-      <div className="flex items-center justify-start my-[2.5rem] ">
+      <div className="flex items-center justify-start mt-[2.5rem] mb-[1rem] ">
         <div className="flex items-center space-x-4"> 
           <button 
             className={`flex items-center space-x-2 bg-[#F6F6F6] text-[#131313]  ${activeButton === 'camperVan' ? 'bg-black text-white ' : ''} px-4 py-2 rounded-full`} 
