@@ -14,6 +14,7 @@ import { ProductHero } from "@/components/products/ProductHero";
 import { Reviews } from "@/components/products/Reviews";
 import { StickyNav } from "@/components/products/StickyNav";
 import { StickyPrice } from "@/components/products/StickyPrice";
+import Link from "next/link";
 
 export default function Product() {
   useEffect(() => {
@@ -69,7 +70,8 @@ export default function Product() {
 
           {/* Sticky Price Section */}
           <div className="hidden lg:block">
-            <div className="sticky top-[100px] transition-all duration-300 lg:col-span-1" id="sticky-price">
+            <div className="sticky top-[100px] transi
+            tion-all duration-300 lg:col-span-1" id="sticky-price">
               <div className="bg-white rounded-3xl shadow-lg p-6">
                 <div className="space-y-3 mb-4">
                   <div className="flex items-baseline gap-2">
@@ -89,22 +91,37 @@ export default function Product() {
                   <div className="grid grid-cols-2 divide-x">
                     <div className="p-3">
                       <div className="text-xs font-medium">CHECKIN</div>
-                      <div className="text-sm">2/11/2023</div>
+                      <input 
+                        type="date" 
+                        className="text-sm w-full outline-none" 
+                        placeholder="Select check-in date"
+                      />
                     </div>
                     <div className="p-3">
                       <div className="text-xs font-medium">CHECKOUT</div>
-                      <div className="text-sm">2/11/2023</div>
+                      <input 
+                        type="date" 
+                        className="text-sm w-full outline-none"
+                        placeholder="Select check-out date"
+                      />
                     </div>
                   </div>
                   <div className="border-t p-3">
                     <div className="text-xs font-medium">Guest</div>
-                    <div className="text-sm">2 guest</div>
+                    <input 
+                      type="number" 
+                      className="text-sm w-full outline-none"
+                      placeholder="Number of guests"
+                      min="1"
+                    />
                   </div>
                 </div>
 
-                <button className="w-full bg-black text-white rounded-full py-4 text-base font-medium">
-                  Reserve
-                </button>
+                <Link href="/payment">
+                  <button className="w-full bg-black text-white rounded-full py-4 text-base font-medium">
+                    Reserve
+                  </button>
+                </Link>
               </div>
             </div>
           </div>
