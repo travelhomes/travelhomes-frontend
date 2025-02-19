@@ -13,7 +13,7 @@ export function TimeSelector({ onTimeSelect, onClose }: TimeSelectorProps) {
 
   const handleTimeSelect = (hour: number) => {
     setSelectedHour(hour);
-    onTimeSelect(`${hour}:00`, selectedPeriod);
+    onTimeSelect(`${hour}`, selectedPeriod);
     onClose();
   };
 
@@ -40,7 +40,7 @@ export function TimeSelector({ onTimeSelect, onClose }: TimeSelectorProps) {
           onClick={() => {
             setSelectedPeriod('AM');
             if (selectedHour) {
-              onTimeSelect(`${selectedHour}:00`, 'AM');
+              onTimeSelect(`${selectedHour}`, 'AM');
               onClose();
             }
           }}
@@ -54,7 +54,7 @@ export function TimeSelector({ onTimeSelect, onClose }: TimeSelectorProps) {
           onClick={() => {
             setSelectedPeriod('PM');
             if (selectedHour) {
-              onTimeSelect(`${selectedHour}:00`, 'PM');
+              onTimeSelect(`${selectedHour}`, 'PM');
               onClose();
             }
           }}

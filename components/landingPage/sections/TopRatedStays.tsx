@@ -65,10 +65,10 @@ export default function TopRatedStays() {
     <section className="py-12 md:px-4 mx-auto">
       <div className="flex justify-between items-center mb-8">
         <div>
-          <h2 className="md:text-3xl text-[20px] font-bold mb-2">
+          <h2 className="md:text-2xl text-[20px] font-bold mb-2">
             Stay at our top Camper Van
           </h2>
-          <p className="text-gray-600">
+          <p className="text-[#989892]">
             From castles and villas to boats and igloos, we have it all
           </p>
         </div>
@@ -134,7 +134,7 @@ function CamperCard({
 
   return (
     <Link href="/product">
-<div className="relative rounded-xl hover:shadow-lg transition-all duration-300 hover:p-2">
+<div className="relative rounded-xl">
       <div
         className="relative aspect-[1] w-full"
         onMouseEnter={() => setIsHovered(true)}

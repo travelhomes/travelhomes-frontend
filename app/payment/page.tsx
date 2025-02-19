@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { Star, X, Check, ArrowLeft } from "lucide-react";
 import Image from "next/image";
 import CamperImage from "@/public/Rectangle 8.png"
-import { ArrowRightIcon } from "@/public/assets/CustomIcon"
+import { ArrowRightIcon, EditIcon } from "@/public/assets/CustomIcon"
 import Appbar from "@/components/landingPage/appbar";
 
 
@@ -112,6 +112,11 @@ export default function Payment() {
                 <h1 className="text-2xl font-semibold text-[#1C2939]">
                   Booking Details
                 </h1>
+
+
+                <button>
+                  <EditIcon />
+                </button>
               </div>
 
               <div className="space-y-6">

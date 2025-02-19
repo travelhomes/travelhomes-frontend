@@ -69,11 +69,11 @@ export default function TrendingDestinations() {
         </div>
 
         {/* Desktop Layout */}
-        <div className="hidden lg:block relative rounded-2xl overflow-hidden group">
-          <h2 className="text-2xl md:text-2xl font-bold mb-6">
+        <div className="hidden lg:block relative rounded-b-2xl overflow-hidden group">
+          <h2 className="text-xl md:text-4xl font-bold mb-6">
             Trending destinations
           </h2>
-          <div className="w-full h-[350px] relative">
+          <div className="w-full h-[300px] relative">
             <Image
               src={Delhi}
               alt="Delhi"

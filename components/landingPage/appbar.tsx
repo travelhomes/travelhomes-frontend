@@ -32,12 +32,14 @@ export default function Appbar() {
 
           {/* Right side buttons */}
           <div className="flex items-center space-x-4">
-            <button className="px-[20px] py-[12px] text-sm font-medium text-gray-700 border border-gray-300 rounded-[60px]">
-              <span className="flex items-center">
-                <ListIcon />
-                <span className="ml-2 text-[#131313]">List your offering</span>
-              </span>
-            </button>
+            <Link href="/vendor">
+              <button className="px-[20px] py-[12px] text-sm font-medium text-gray-700 border border-gray-300 rounded-[60px]">
+                <span className="flex items-center">
+                  <ListIcon />
+                  <span className="ml-2 text-[#131313]">List your offering</span>
+                </span>
+              </button>
+            </Link>
 
             {isAuthenticated && user ? (
               <DropdownMenu>

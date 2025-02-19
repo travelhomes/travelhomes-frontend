@@ -19,13 +19,43 @@ interface DateTimeRange {
   };
 }
 
+const dummyLocations = [
+  "Bangkok",
+  "Phuket",
+  "Manali",
+  "Shimla",
+  "Goa",
+  "Mumbai",
+  "Delhi",
+  "Bangalore",
+  "Chennai",
+  "Kolkata"
+];
+
+const dummyActivities = [
+  "Trekking",
+  "Hiking",
+  "Mountain Climbing",
+  "Rock Climbing",
+  "Trail Running",
+  "Mountain Biking",
+  "Camping",
+  "Fishing",
+  "Kayaking",
+  "Canoeing",
+  "Bird Watching",
+  "Photography",
+  "Wildlife Safari",
+  "River Rafting",
+  "Zip Lining"
+];
+
 export default function SearchFilter({ activeTab = 'campervan' }) {
   const [isGuestCounterOpen, setGuestCounterOpen] = useState(false);
   const [isLocationSearchOpen, setLocationSearchOpen] = useState(false);
   const [isCalendarOpen, setCalendarOpen] = useState(false);
   const [isActivitySearchOpen, setActivitySearchOpen] = useState(false);
   const [isTimePickerOpen, setTimePickerOpen] = useState(false);
-  const [selectedActivity, setSelectedActivity] = useState("Tracking");
   const [timePickerType, setTimePickerType] = useState<'checkIn' | 'checkOut'>('checkIn');
   
   // Refs for the buttons and popups
@@ -40,6 +70,16 @@ export default function SearchFilter({ activeTab = 'campervan' }) {
   const calendarPopupRef = useRef<HTMLDivElement>(null);
   const activityPopupRef = useRef<HTMLDivElement>(null);
 
+  const [fromLocationInput, setFromLocationInput] = useState("Delhi");
+  const [toLocationInput, setToLocationInput] = useState("Mumbai");
+  const [fromSuggestions, setFromSuggestions] = useState<string[]>([]);
+  const [toSuggestions, setToSuggestions] = useState<string[]>([]);
+  const [isFromLocationSearchOpen, setFromLocationSearchOpen] = useState(false);
+  const [isToLocationSearchOpen, setToLocationSearchOpen] = useState(false);
+
+  const fromLocationPopupRef = useRef<HTMLDivElement>(null);
+  const toLocationPopupRef = useRef<HTMLDivElement>(null);
+
   const [selectedLocation, setSelectedLocation] = useState("Thailand");
   const [dateTimeRange, setDateTimeRange] = useState<DateTimeRange>({});
   const [guestCount, setGuestCount] = useState({
@@ -48,9 +88,14 @@ export default function SearchFilter({ activeTab = 'campervan' }) {
     infants: 0
   });
 
+  const [activityInput, setActivityInput] = useState("Trekking");
+  const [activitySuggestions, setActivitySuggestions] = useState<string[]>([]);
+
   // Close all popups
   const closeAllPopups = () => {
     setGuestCounterOpen(false);
+    setFromLocationSearchOpen(false);
+    setToLocationSearchOpen(false);
     setLocationSearchOpen(false);
     setCalendarOpen(false);
     setActivitySearchOpen(false);
@@ -94,11 +139,23 @@ export default function SearchFilter({ activeTab = 'campervan' }) {
           !timePickerRef.current?.contains(event.target as Node)) {
         setTimePickerOpen(false);
       }
+
+      // From Location Search popup
+      if (isFromLocationSearchOpen && 
+          !fromLocationPopupRef.current?.contains(event.target as Node)) {
+        setFromLocationSearchOpen(false);
+      }
+      
+      // To Location Search popup
+      if (isToLocationSearchOpen && 
+          !toLocationPopupRef.current?.contains(event.target as Node)) {
+        setToLocationSearchOpen(false);
+      }
     };
 
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, [isGuestCounterOpen, isLocationSearchOpen, isCalendarOpen, isActivitySearchOpen, isTimePickerOpen]);
+  }, [isFromLocationSearchOpen, isToLocationSearchOpen, isGuestCounterOpen, isCalendarOpen, isActivitySearchOpen, isTimePickerOpen, isLocationSearchOpen]);
 
   const toggleGuestCounter = () => {
     closeAllPopups();
@@ -115,16 +172,31 @@ export default function SearchFilter({ activeTab = 'campervan' }) {
     setCalendarOpen(true);
   };
 
-  const toggleActivitySearch = () => {
-    closeAllPopups();
-    setActivitySearchOpen(true);
+  const handleCheckInOutClick = (type: 'checkIn' | 'checkOut') => {
+    // If there's no date selected, open calendar first
+    if (!dateTimeRange[type]?.date) {
+      setTimePickerType(type);
+      setCalendarOpen(true);
+      return;
+    }
+    
+    // If date is selected but no time, open time picker
+    if (dateTimeRange[type]?.date && !dateTimeRange[type]?.time) {
+      setTimePickerType(type);
+      setTimePickerOpen(true);
+      return;
+    }
+    
+    // If both date and time are selected, open calendar for editing
+    setTimePickerType(type);
+    setCalendarOpen(true);
   };
 
   const formatDateTime = (dateTime?: { date: Date; time?: string; period?: 'AM' | 'PM' }) => {
     if (!dateTime?.date) return "Add date";
     const formattedDate = dateTime.date.toLocaleDateString();
     if (dateTime.time && dateTime.period) {
-      return `${formattedDate}, ${dateTime.time}${dateTime.period}`;
+      return `${formattedDate}, ${dateTime.time} ${dateTime.period}`;
     }
     return formattedDate;
   };
@@ -141,57 +213,156 @@ export default function SearchFilter({ activeTab = 'campervan' }) {
     setTimePickerOpen(false);
   };
 
-  const showTimePicker = (type: 'checkIn' | 'checkOut') => {
-    if (activeTab !== 'campervan') return;
-    setTimePickerType(type);
-    setTimePickerOpen(true);
-  };
-
   const formatGuestCount = () => {
     const total = guestCount.adults + guestCount.children + guestCount.infants;
     if (total === 0) return "Add guests";
     return `${total} guest${total > 1 ? 's' : ''}`;
   };
 
-  const activities = [
-    "Tracking",
-    "Hiking",
-    "Camping",
-    "Fishing",
-    "Kayaking",
-    "Rock Climbing"
-  ];
+  const handleActivitySearch = (input: string) => {
+    const value = input.toLowerCase();
+    const filtered = dummyActivities.filter(activity => 
+      activity.toLowerCase().includes(value)
+    );
+    setActivityInput(input);
+    setActivitySuggestions(filtered);
+  };
+
+  const selectActivity = (activity: string) => {
+    setActivityInput(activity);
+    setActivitySuggestions([]);
+    setActivitySearchOpen(false);
+  };
+
+  const handleLocationSearch = (input: string, type: 'from' | 'to') => {
+    const value = input.toLowerCase();
+    const filtered = dummyLocations.filter(location => 
+      location.toLowerCase().includes(value)
+    );
+    
+    if (type === 'from') {
+      setFromLocationInput(input);
+      setFromSuggestions(filtered);
+    } else {
+      setToLocationInput(input);
+      setToSuggestions(filtered);
+    }
+  };
+
+  const selectLocation = (location: string, type: 'from' | 'to') => {
+    if (type === 'from') {
+      setFromLocationInput(location);
+      setFromSuggestions([]);
+      setFromLocationSearchOpen(false);
+    } else {
+      setToLocationInput(location);
+      setToSuggestions([]);
+      setToLocationSearchOpen(false);
+    }
+  };
 
   return (
     <div className="hidden md:block relative">
       <div className="flex h-[100px] items-center gap-2 bg-[#F6F6F6] px-[2rem] py-[18px] rounded-[20px]">
         <div className="flex items-center gap-2 flex-1">
-          <div className="flex flex-col flex-1 relative">
-            <div className="text-sm text-gray-500 flex items-center gap-2">
-              <span className="inline-block w-4 h-4 mb-[12px]">
-                <LocationIcon />
-              </span>
-              Location
-            </div>
-            <button 
-              ref={locationButtonRef}
-              onClick={toggleLocationSearch} 
-              className="bg-transparent text-gray-900 text-base font-medium focus:outline-none ml-2 text-left"
-            >
-              {selectedLocation}
-            </button>
-            {isLocationSearchOpen && (
-              <div 
-                ref={locationPopupRef}
-                className="absolute top-full left-0 mt-2 z-50 shadow-lg"
-              >
-                <LocationSearch onLocationSelect={(location) => {
-                  setSelectedLocation(location);
-                  toggleLocationSearch();
-                }} />
+          {activeTab === 'campervan' ? (
+            <>
+              <div className="flex flex-col flex-1 relative">
+                <div className="text-sm text-gray-500 flex items-center gap-2">
+                  <span className="inline-block w-4 h-4 mb-[12px]">
+                    <LocationIcon />
+                  </span>
+                  Location From
+                </div>
+                <input
+                  type="text"
+                  value={fromLocationInput}
+                  onChange={(e) => handleLocationSearch(e.target.value, 'from')}
+                  onFocus={() => setFromLocationSearchOpen(true)}
+                  placeholder="Enter location"
+                  className="bg-transparent text-gray-900 text-base font-medium focus:outline-none ml-2 w-full"
+                />
+                {isFromLocationSearchOpen && fromSuggestions.length > 0 && (
+                  <div 
+                    ref={fromLocationPopupRef}
+                    className="absolute top-full left-0 mt-2 z-50 bg-white rounded-lg shadow-lg w-full"
+                  >
+                    {fromSuggestions.map((location) => (
+                      <button
+                        key={location}
+                        onClick={() => selectLocation(location, 'from')}
+                        className="w-full text-left px-4 py-2 hover:bg-gray-100"
+                      >
+                        {location}
+                      </button>
+                    ))}
+                  </div>
+                )}
               </div>
-            )}
-          </div>
+
+              <div className="w-px h-12 bg-[#D6D6D6]" />
+
+              <div className="flex flex-col flex-1 relative">
+                <div className="text-sm text-gray-500 flex items-center gap-2">
+                  <span className="inline-block w-4 h-4 mb-[12px]">
+                    <LocationIcon />
+                  </span>
+                  Location To
+                </div>
+                <input
+                  type="text"
+                  value={toLocationInput}
+                  onChange={(e) => handleLocationSearch(e.target.value, 'to')}
+                  onFocus={() => setToLocationSearchOpen(true)}
+                  placeholder="Enter location"
+                  className="bg-transparent text-gray-900 text-base font-medium focus:outline-none ml-2 w-full"
+                />
+                {isToLocationSearchOpen && toSuggestions.length > 0 && (
+                  <div 
+                    ref={toLocationPopupRef}
+                    className="absolute top-full left-0 mt-2 z-50 bg-white rounded-lg shadow-lg w-full"
+                  >
+                    {toSuggestions.map((location) => (
+                      <button
+                        key={location}
+                        onClick={() => selectLocation(location, 'to')}
+                        className="w-full text-left px-4 py-2 hover:bg-gray-100"
+                      >
+                        {location}
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </div>
+            </>
+          ) : (
+            <div className="flex flex-col flex-1 relative">
+              <div className="text-sm text-gray-500 flex items-center gap-2">
+                <span className="inline-block w-4 h-4 mb-[12px]">
+                  <LocationIcon />
+                </span>
+                Location
+              </div>
+              <button 
+                ref={locationButtonRef}
+                onClick={toggleLocationSearch} 
+                className="bg-transparent text-gray-900 text-base font-medium focus:outline-none ml-2 text-left"
+              >
+                {selectedLocation}
+              </button>
+              {isLocationSearchOpen && (
+                <div 
+                  ref={locationPopupRef}
+                  className="absolute top-full left-0 mt-2 z-50 shadow-lg"
+                >
+                  <LocationSearch onLocationSelect={(location) => {
+                    setSelectedLocation(location);
+                    setLocationSearchOpen(false);
+                  }} />
+                </div>
+              )}
+            </div>
+          )}
 
           <div className="w-px h-12 bg-[#D6D6D6]" />
 
@@ -218,26 +389,24 @@ export default function SearchFilter({ activeTab = 'campervan' }) {
                   <ActivelyIcon />
                   Activity
                 </div>
-                <button 
-                  ref={activityButtonRef}
-                  onClick={toggleActivitySearch}
-                  className="bg-transparent text-gray-900 text-base font-medium focus:outline-none ml-1 text-left"
-                >
-                  {selectedActivity}
-                </button>
-                {isActivitySearchOpen && (
+                <input
+                  type="text"
+                  value={activityInput}
+                  onChange={(e) => handleActivitySearch(e.target.value)}
+                  onFocus={() => setActivitySearchOpen(true)}
+                  placeholder="Enter activity"
+                  className="bg-transparent text-gray-900 text-base font-medium focus:outline-none ml-1 w-full"
+                />
+                {isActivitySearchOpen && activitySuggestions.length > 0 && (
                   <div 
                     ref={activityPopupRef}
-                    className="absolute top-full left-0 mt-2 z-50 shadow-lg bg-white rounded-lg p-4 w-[200px]"
+                    className="absolute top-full left-0 mt-2 z-50 bg-white rounded-lg shadow-lg w-full"
                   >
-                    {activities.map((activity) => (
+                    {activitySuggestions.map((activity) => (
                       <button
                         key={activity}
-                        onClick={() => {
-                          setSelectedActivity(activity);
-                          setActivitySearchOpen(false);
-                        }}
-                        className="w-full text-left px-2 py-2 hover:bg-gray-100 rounded-lg"
+                        onClick={() => selectActivity(activity)}
+                        className="w-full text-left px-4 py-2 hover:bg-gray-100"
                       >
                         {activity}
                       </button>
@@ -255,13 +424,7 @@ export default function SearchFilter({ activeTab = 'campervan' }) {
                 </div>
                 <button 
                   ref={checkInButtonRef}
-                  onClick={() => {
-                    if (dateTimeRange.checkIn?.date && activeTab === 'campervan') {
-                      showTimePicker('checkIn');
-                    } else {
-                      toggleCalendar();
-                    }
-                  }}
+                  onClick={() => handleCheckInOutClick('checkIn')}
                   className="bg-transparent text-gray-900 text-base font-medium focus:outline-none ml-1 text-left"
                 >
                   {formatDateTime(dateTimeRange.checkIn)}
@@ -277,13 +440,7 @@ export default function SearchFilter({ activeTab = 'campervan' }) {
                 </label>
                 <button 
                   ref={checkOutButtonRef}
-                  onClick={() => {
-                    if (dateTimeRange.checkOut?.date && activeTab === 'campervan') {
-                      showTimePicker('checkOut');
-                    } else {
-                      toggleCalendar();
-                    }
-                  }}
+                  onClick={() => handleCheckInOutClick('checkOut')}
                   className="bg-transparent text-gray-900 text-base font-medium focus:outline-none ml-1 text-left"
                 >
                   {formatDateTime(dateTimeRange.checkOut)}

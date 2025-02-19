@@ -2,7 +2,7 @@
 
 import { useState, useRef } from 'react'
 import Image from 'next/image'
-import { ArrowLeft, ArrowRight } from 'lucide-react'
+import { Testimoleft, Testmoright } from '@/public/assets/CustomIcon'
 
 interface Testimonial {
   id: number
@@ -121,18 +121,18 @@ export default function Testimonials() {
           <button
             onClick={() => scroll('left')}
             disabled={currentIndex === 0}
-            className="p-2 rounded-full border border-gray-200 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+            className=" disabled:cursor-not-allowed"
             aria-label="Previous testimonial"
           >
-            <ArrowLeft className="w-5 h-5" />
+            <Testimoleft />
           </button>
           <button
             onClick={() => scroll('right')}
             disabled={currentIndex === testimonials.length - 1}
-            className="p-2 rounded-full border border-gray-200 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+            className="disabled:cursor-not-allowed"
             aria-label="Next testimonial"
           >
-            <ArrowRight className="w-5 h-5" />
+            <Testmoright />
           </button>
         </div>
       </div>
@@ -177,15 +177,15 @@ export default function Testimonials() {
           className="p-2 rounded-full border border-gray-200 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
           aria-label="Previous testimonial"
         >
-          <ArrowLeft className="w-5 h-5" />
+          <Testimoleft />
         </button>
         <button
           onClick={() => scroll('right')}
           disabled={currentIndex === testimonials.length - 1}
-          className="p-2 rounded-full border border-gray-200 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+          className="  hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
           aria-label="Next testimonial"
         >
-          <ArrowRight className="w-5 h-5" />
+          <Testmoright />
         </button>
       </div>
     </div>
