@@ -75,24 +75,15 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const register = async (data: RegisterData) => {
     try {
-      const response = await fetch(`${BASE_URL}/api/auth/register`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(data),
+      const response = await axios.post(`${BASE_URL}/api/auth/register`, {
+        email: data.email,
+        phone: data.phone,
+        password: data.password
       });
 
-      if (!response.ok) {
-        throw new Error('Registration failed');
-      }
-
-      const { userId } = await response.json();
-      
-      // Registration successful, now login to get the token
-      await login(data.email, data.password);
-      
+      const { userId } = response.data;
       return userId;
+      
     } catch (error) {
       console.error('Registration error:', error);
       throw error;
