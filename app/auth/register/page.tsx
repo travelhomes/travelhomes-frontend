@@ -187,8 +187,8 @@ export default function RegisterPage() {
         </div>
       </div>
 
-      <div className="flex items-center justify-center p-6 flex-1">
-        <div className="w-full max-w-md space-y-6">
+      <div className="flex mt-[2rem] p-6 flex-1">
+        <div className=" w-[570px] space-y-6">
           {error && <div className="p-3 text-sm text-red-500 bg-red-50 rounded-lg">{error}</div>}
 
           {step === 1 ? (

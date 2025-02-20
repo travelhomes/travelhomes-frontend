@@ -119,8 +119,8 @@ export default function VerifyCode() {
         </div>
       </div>
 
-      <div className="flex mt-[60px] justify-center p-6 flex-1">
-        <div className="w-full max-w-md space-y-6">
+      <div className="flex mt-[60px] p-6 flex-1">
+        <div className=" w-[570px] space-y-6">
           <Link
             href="/auth/register"
             className="inline-flex items-center text-sm text-muted-foreground hover:text-primary"
