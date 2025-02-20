@@ -8,6 +8,7 @@ import { GoogleIcon } from "@/public/assets/CustomIcon";
 import { useState } from "react";
 import { useAuth } from "@/context/AuthContext";
 import { useRouter } from "next/navigation";
+import axios, { AxiosError } from "axios";
 
 export default function LoginPage() {
 
@@ -16,6 +17,7 @@ export default function LoginPage() {
     password: "",
   });
   const [error, setError] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
   const { login } = useAuth();
   const router = useRouter();
 
@@ -25,6 +27,8 @@ export default function LoginPage() {
       ...prev,
       [name]: value
     }));
+    // Clear error when user starts typing
+    if (error) setError("");
   };
 
   const handleLogin = async () => {
@@ -33,12 +37,31 @@ export default function LoginPage() {
       return;
     }
 
+    setIsLoading(true);
+    setError("");
+
     try {
-      await login(formData.email, formData.password);
-      router.push("/"); // Redirect to home page after successful login
+      const success = await login(formData.email, formData.password);
+      if (success) {
+        router.push("/"); // Redirect to home page after successful login
+      } else {
+        setError("Invalid credentials. Please try again.");
+      }
     } catch (err) {
-      console.error(err);
-      setError("Invalid email or password");
+      if (axios.isAxiosError(err)) {
+        const error = err as AxiosError;
+        if (error.response?.status === 401) {
+          setError("Invalid email or password");
+        } else if (error.response?.status === 404) {
+          setError("User not found");
+        } else {
+          setError("An error occurred. Please try again later.");
+        }
+      } else {
+        setError("An unexpected error occurred");
+      }
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -112,8 +135,9 @@ export default function LoginPage() {
                 className="w-full rounded-[60px] py-[12px] px-[32px]"
                 size="lg"
                 onClick={handleLogin}
+                disabled={isLoading}
               >
-                Login
+                {isLoading ? "Logging in..." : "Login"}
               </Button>
 
                 <div className="text-center">

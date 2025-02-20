@@ -3,6 +3,7 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import Cookies from 'js-cookie';
 import { BASE_URL } from "@/config/config";
+import axios from 'axios';
 
 interface User {
   email: string;
@@ -44,22 +45,12 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const login = async (email: string, password: string) => {
     try {
-      const response = await fetch(`${BASE_URL}/api/auth/login`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ 
-          username: email,
-          password: password 
-        }),
+      const response = await axios.post(`${BASE_URL}/api/auth/login`, {
+        username: email,
+        password: password
       });
 
-      if (!response.ok) {
-        throw new Error('Login failed');
-      }
-
-      const data = await response.json();
+      const data = response.data;
       
       // Store token in cookie
       Cookies.set('auth_token', data.token, { expires: 7 }); // Token expires in 7 days
