@@ -122,53 +122,76 @@ function CamperCard({
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [isHovered, setIsHovered] = useState(false);
 
+  const isFirstImage = currentImageIndex === 0;
+  const isLastImage = currentImageIndex === images.length - 1;
+
   const handlePrevImage = (e: React.MouseEvent) => {
     e.preventDefault();
-    setCurrentImageIndex((prev) => (prev === 0 ? images.length - 1 : prev - 1));
+    if (!isFirstImage) {
+      setCurrentImageIndex(prev => prev - 1);
+    }
   };
 
   const handleNextImage = (e: React.MouseEvent) => {
     e.preventDefault();
-    setCurrentImageIndex((prev) => (prev === images.length - 1 ? 0 : prev + 1));
+    if (!isLastImage) {
+      setCurrentImageIndex(prev => prev + 1);
+    }
   };
 
   return (
     <Link href="/product">
     <div className="relative rounded-xl">
       <div
-        className="relative aspect-[1] w-full"
+        className="relative w-full overflow-hidden rounded-[12px]"
+        style={{ paddingBottom: '100%' }}
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
       >
-        <Image
-          src={images[currentImageIndex]}
-          alt={title}
-          fill
-          className="rounded-[12px] transition-all duration-300 hover:brightness-75"
-          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 60vw, 37vw"
-        />
-        
+        <div className="absolute inset-0">
+          {images.map((image, index) => (
+            <div
+              key={index}
+              className="absolute inset-0 transition-transform duration-300 ease-in-out"
+              style={{
+                transform: `translateX(${(index - currentImageIndex) * 100}%)`,
+              }}
+            >
+              <Image
+                src={image}
+                alt={`${title} - Image ${index + 1}`}
+                fill
+                className="object-cover"
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 60vw, 37vw"
+                priority={index === 0}
+              />
+            </div>
+          ))}
+        </div>
+
         {/* Carousel Navigation Arrows */}
         {isHovered && (
           <>
-            {currentImageIndex > 0 && (
-              <button
-                onClick={handlePrevImage}
-                className="absolute left-3 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-white/90 flex items-center justify-center shadow-md transition-opacity hover:bg-white"
-                aria-label="Previous image"
-              >
-                <ChevronLeft className="w-4 h-4" />
-              </button>
-            )}
-            {currentImageIndex < images.length - 1 && (
-              <button
-                onClick={handleNextImage}
-                className="absolute right-3 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-white/90 flex items-center justify-center shadow-md transition-opacity hover:bg-white"
-                aria-label="Next image"
-              >
-                <ChevronRight className="w-4 h-4" />
-              </button>
-            )}
+            <button
+              onClick={handlePrevImage}
+              className={`absolute left-3 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-white/90 flex items-center justify-center shadow-md transition-all hover:bg-white z-20 ${
+                isFirstImage ? 'opacity-50 cursor-not-allowed' : 'hover:scale-105'
+              }`}
+              aria-label="Previous image"
+              disabled={isFirstImage}
+            >
+              <ChevronLeft className="w-4 h-4" />
+            </button>
+            <button
+              onClick={handleNextImage}
+              className={`absolute right-3 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-white/90 flex items-center justify-center shadow-md transition-all hover:bg-white z-20 ${
+                isLastImage ? 'opacity-50 cursor-not-allowed' : 'hover:scale-105'
+              }`}
+              aria-label="Next image"
+              disabled={isLastImage}
+            >
+              <ChevronRight className="w-4 h-4" />
+            </button>
           </>
         )}
 
