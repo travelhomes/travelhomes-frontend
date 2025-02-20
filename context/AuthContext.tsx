@@ -21,7 +21,7 @@ interface RegisterData {
 interface AuthContextType {
   user: User | null;
   login: (email: string, password: string) => Promise<boolean>;
-  register: (data: RegisterData) => Promise<number>;
+  register: (data: RegisterData) => Promise<{ userId: number; token: string; message: string }>;
   logout: () => void;
   isAuthenticated: boolean;
 }
@@ -81,9 +81,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         password: data.password
       });
 
-      const { userId } = response.data;
-      return userId;
-      
+      return response.data;
     } catch (error) {
       console.error('Registration error:', error);
       throw error;

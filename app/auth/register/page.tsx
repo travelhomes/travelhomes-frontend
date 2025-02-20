@@ -2,14 +2,14 @@
 
 import type React from "react"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import Image from "next/image"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { GoogleIcon } from "@/public/assets/CustomIcon"
 import { useAuth } from "@/context/AuthContext"
-import { useRouter } from "next/navigation"
+import { useRouter, useSearchParams } from "next/navigation"
 import { BASE_URL } from "@/config/config"
 import axios, { type AxiosError } from "axios"
 
@@ -28,6 +28,12 @@ interface FormData {
   city: string
 }
 
+interface RegisterResponse {
+  userId: number
+  token: string
+  message: string
+}
+
 export default function RegisterPage() {
   const [step, setStep] = useState(1)
   const [formData, setFormData] = useState<FormData>({
@@ -44,8 +50,23 @@ export default function RegisterPage() {
   const [error, setError] = useState("")
   const [isLoading, setIsLoading] = useState(false)
   const [userId, setUserId] = useState<number | null>(null)
+  const [token, setToken] = useState<string | null>(null)
   const { register } = useAuth()
   const router = useRouter()
+  const searchParams = useSearchParams()
+
+  useEffect(() => {
+    // Check if returning from verification
+    const stepParam = searchParams.get('step')
+    const userIdParam = searchParams.get('userId')
+    const tokenParam = searchParams.get('token')
+    
+    if (stepParam === '2' && userIdParam && tokenParam) {
+      setStep(2)
+      setUserId(Number(userIdParam))
+      setToken(tokenParam)
+    }
+  }, [searchParams])
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target
@@ -79,14 +100,14 @@ export default function RegisterPage() {
     setError("")
 
     try {
-      const registeredUserId = await register({
+      const response = await register({
         email: formData.email,
         password: formData.password,
         phone: formData.phone,
-      })
+      }) as RegisterResponse
 
-      setUserId(registeredUserId)
-      setStep(2)
+      // Redirect to verify page with both userId and token
+      router.push(`/auth/verify?email=${encodeURIComponent(formData.email)}&userId=${response.userId}&token=${encodeURIComponent(response.token)}`)
     } catch (err) {
       if (axios.isAxiosError(err)) {
         const error = err as AxiosError<{ message: string }>
@@ -111,16 +132,25 @@ export default function RegisterPage() {
       return
     }
 
+    if (!userId || !token) {
+      setError("Missing authentication details. Please try again.")
+      return
+    }
+
     setIsLoading(true)
     setError("")
 
     try {
-      const response = await axios.put(`${BASE_URL}/api/auth/updatePersonalDetails`, {
+      const response = await axios.put(`${BASE_URL}/api/auth/updatePersonalDetails/${userId}`, {
         firstname: formData.firstName,
         lastname: formData.lastName,
         city: formData.city,
         state: formData.state,
-        userId: userId?.toString(),
+      },
+      {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
       })
 
       if (response.status === 200) {
