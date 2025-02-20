@@ -139,7 +139,7 @@ export default function Testimonials() {
 
       <div 
         ref={scrollRef}
-        className="flex gap-6 overflow-x-auto snap-x snap-mandatory touch-pan-x"
+        className="flex gap-6 overflow-x-auto snap-x snap-mandatory touch-pan-x p-6"
         style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
         onTouchStart={handleTouchStart}
         onTouchMove={handleTouchMove}
@@ -147,9 +147,9 @@ export default function Testimonials() {
         {testimonials.map((testimonial) => (
           <div
             key={testimonial.id}
-            className="min-w-[calc(100%-2rem)] md:min-w-[calc(50%-1rem)] lg:min-w-[calc(33.333%-1rem)] snap-start md:shadow-lg"
+            className="min-w-[calc(100%-2rem)] md:min-w-[calc(50%-1rem)] lg:min-w-[calc(33.333%-1rem)] snap-start "
           >
-            <div className="bg-white p-6 rounded-xl">
+            <div className=" p-6 rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300">
               <p className="text-gray-700 mb-6">{testimonial.content}</p>
               <div className="flex items-center gap-3">
                 <div className="relative w-12 h-12 rounded-full overflow-hidden">
