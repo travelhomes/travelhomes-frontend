@@ -1,36 +1,40 @@
-"use client";
+"use client"
 
-import { useState } from "react";
-import Image from "next/image";
-import registerImage from "@/public/register.png";
-import Link from "next/link";
-import { Button } from "@/components/ui/button";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { GoogleIcon } from "@/public/assets/CustomIcon";
-import { useAuth } from "@/context/AuthContext";
-import { useRouter } from "next/navigation";
-import { BASE_URL } from "@/config/config";
+import type React from "react"
+import { useState, useEffect, Suspense } from "react"
+import Image from "next/image"
+import Link from "next/link"
+import { Button } from "@/components/ui/button"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { GoogleIcon } from "@/public/assets/CustomIcon"
+import { useAuth } from "@/context/AuthContext"
+import { useRouter, useSearchParams } from "next/navigation"
+import { BASE_URL } from "@/config/config"
+import axios, { type AxiosError } from "axios"
+
+import registerImage from "@/public/register.png"
+;
 
 interface FormData {
-  email: string;
-  phone: string;
-  password: string;
-  confirmPassword: string;
-  firstName: string;
-  lastName: string;
-  dob: string;
-  state: string;
-  city: string;
+  email: string
+  phone: string
+  password: string
+  confirmPassword: string
+  firstName: string
+  lastName: string
+  dob: string
+  state: string
+  city: string
 }
 
-export default function RegisterPage() {
-  const [step, setStep] = useState(1);
+interface RegisterResponse {
+  userId: number
+  token: string
+  message: string
+}
+
+function RegisterContent() {
+  const [step, setStep] = useState(1)
   const [formData, setFormData] = useState<FormData>({
     email: "",
     phone: "",
@@ -41,123 +45,157 @@ export default function RegisterPage() {
     dob: "",
     state: "",
     city: "",
-  });
-  const [error, setError] = useState("");
-  const { register } = useAuth();
-  const router = useRouter();
+  })
+  const [error, setError] = useState("")
+  const [isLoading, setIsLoading] = useState(false)
+  const [userId, setUserId] = useState<number | null>(null)
+  const [token, setToken] = useState<string | null>(null)
+  const { register } = useAuth()
+  const router = useRouter()
+  const searchParams = useSearchParams()
 
-  const handleInputChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
-  ) => {
-    const { name, value } = e.target;
+  useEffect(() => {
+    // Check if returning from verification
+    const stepParam = searchParams.get('step')
+    const userIdParam = searchParams.get('userId')
+    const tokenParam = searchParams.get('token')
+    
+    if (stepParam === '2' && userIdParam && tokenParam) {
+      setStep(2)
+      setUserId(Number(userIdParam))
+      setToken(tokenParam)
+    }
+  }, [searchParams])
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+    const { name, value } = e.target
     setFormData((prev) => ({
       ...prev,
       [name]: value,
-    }));
-  };
+    }))
+    // Clear error when user starts typing
+    if (error) setError("")
+  }
 
   const handleSelectChange = (name: string) => (value: string) => {
     setFormData((prev) => ({
       ...prev,
       [name]: value,
-    }));
-  };
+    }))
+    if (error) setError("")
+  }
 
   const handleStep1Submit = async () => {
-    if (
-      !formData.email ||
-      !formData.phone ||
-      !formData.password ||
-      !formData.confirmPassword
-    ) {
-      setError("Please fill in all fields");
-      return;
+    if (!formData.email || !formData.phone || !formData.password || !formData.confirmPassword) {
+      setError("Please fill in all fields")
+      return
     }
     if (formData.password !== formData.confirmPassword) {
-      setError("Passwords do not match");
-      return;
+      setError("Passwords do not match")
+      return
     }
-    
-    setError("");
-    setStep(2);
-  };
 
-  const handleStep2Submit = async () => {
-    if (
-      !formData.firstName ||
-      !formData.lastName ||
-      !formData.dob ||
-      !formData.state ||
-      !formData.city
-    ) {
-      setError("Please fill in all fields");
-      return;
-    }
+    setIsLoading(true)
+    setError("")
 
     try {
-      // First register the user
-      const userId = await register({
+      const response = await register({
         email: formData.email,
         password: formData.password,
-        phone: formData.phone
-      });
+        phone: formData.phone,
+      }) as RegisterResponse
 
-      // Then update personal details
-      const response = await fetch(`${BASE_URL}/api/auth/updatePersonalDetails`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          firstname: formData.firstName,
-          lastname: formData.lastName,
-          city: formData.city,
-          state: formData.state,
-          userId: userId.toString()
-        }),
-      });
-
-      if (!response.ok) {
-        throw new Error('Failed to update personal details');
+      // Redirect to verify page with both userId and token
+      router.push(`/auth/verify?email=${encodeURIComponent(formData.email)}&userId=${response.userId}&token=${encodeURIComponent(response.token)}`)
+    } catch (err) {
+      if (axios.isAxiosError(err)) {
+        const error = err as AxiosError<{ message: string }>
+        if (error.response?.status === 409) {
+          setError("Email already exists")
+        } else if (error.response?.data?.message) {
+          setError(error.response.data.message)
+        } else {
+          setError("Registration failed. Please try again.")
+        }
+      } else {
+        setError("An unexpected error occurred")
       }
-      
-      router.push("/");
-    } catch (error) {
-      console.error("Registration error:", error);
-      setError("Registration failed. Please try again.");
+    } finally {
+      setIsLoading(false)
     }
-  };
+  }
+
+  const handleStep2Submit = async () => {
+    if (!formData.firstName || !formData.lastName || !formData.dob || !formData.state || !formData.city) {
+      setError("Please fill in all fields")
+      return
+    }
+
+    if (!userId || !token) {
+      setError("Missing authentication details. Please try again.")
+      return
+    }
+
+    setIsLoading(true)
+    setError("")
+
+    try {
+      const response = await axios.put(`${BASE_URL}/api/auth/updatePersonalDetails/${userId}`, {
+        firstname: formData.firstName,
+        lastname: formData.lastName,
+        city: formData.city,
+        state: formData.state,
+      },
+      {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      })
+
+      if (response.status === 200) {
+        // Now we can redirect to login page
+        router.push("/auth/login")
+      }
+    } catch (err) {
+      if (axios.isAxiosError(err)) {
+        const error = err as AxiosError<{ message: string }>
+        if (error.response?.data?.message) {
+          setError(error.response.data.message)
+        } else {
+          setError("Failed to update personal details. Please try again.")
+        }
+      } else {
+        setError("An unexpected error occurred")
+      }
+    } finally {
+      setIsLoading(false)
+    }
+  }
 
   return (
-    <div className="min-h-screen flex flex-col md:flex-row gap-6 lg:gap-8">
-      <div className="hidden md:flex flex-1 gap-4 p-6 bg-muted/5">
-        <div className="space-y-4">
+    <div className="h-screen flex flex-col md:flex-row">
+      <div className="hidden md:flex flex-1 items-center justify-center p-6 bg-muted/5">
+        <div className="h-full w-full relative">
           <Image
             src={registerImage}
             alt="Registration illustration"
-            width={800}
-            height={300}
+            fill
+            className="object-contain"
+            sizes="(max-width: 768px) 100vw, 50vw"
           />
         </div>
       </div>
 
-      <div className="flex items-center justify-center p-6 flex-1">
-        <div className="w-full max-w-md space-y-6">
-          {error && (
-            <div className="p-3 text-sm text-red-500 bg-red-50 rounded-lg">
-              {error}
-            </div>
-          )}
+      <div className="flex mt-[2rem] p-6 flex-1">
+        <div className=" w-[570px] space-y-6">
+          {error && <div className="p-3 text-sm text-red-500 bg-red-50 rounded-lg">{error}</div>}
 
           {step === 1 ? (
             <>
               <div className="space-y-2">
-                <h1 className="text-2xl font-semibold tracking-tight">
-                  Register
-                </h1>
+                <h1 className="text-2xl font-semibold tracking-tight">Register</h1>
                 <p className="text-sm text-muted-foreground">
-                  Let us get you all set up so you can access your personal
-                  account.
+                  Let us get you all set up so you can access your personal account.
                 </p>
               </div>
 
@@ -214,17 +252,15 @@ export default function RegisterPage() {
                   className="w-full rounded-[60px] py-[12px] px-[32px]"
                   size="lg"
                   onClick={handleStep1Submit}
+                  disabled={isLoading}
                 >
-                  Continue
+                  {isLoading ? "Processing..." : "Continue"}
                 </Button>
 
                 <div className="text-center">
                   <p className="text-sm text-muted-foreground">
                     Already have an account?{" "}
-                    <Link
-                      href="/auth/login"
-                      className="text-primary hover:underline"
-                    >
+                    <Link href="/auth/login" className="text-primary hover:underline">
                       Login
                     </Link>
                   </p>
@@ -235,9 +271,7 @@ export default function RegisterPage() {
                     <span className="w-full border-t" />
                   </div>
                   <div className="relative flex justify-center text-xs uppercase">
-                    <span className="bg-background px-2 text-muted-foreground">
-                      Or sign up with
-                    </span>
+                    <span className="bg-background px-2 text-muted-foreground">Or sign up with</span>
                   </div>
                 </div>
 
@@ -261,12 +295,9 @@ export default function RegisterPage() {
               </button>
 
               <div className="space-y-2">
-                <h1 className="text-2xl font-semibold tracking-tight">
-                  Personal Information
-                </h1>
+                <h1 className="text-2xl font-semibold tracking-tight">Personal Information</h1>
                 <p className="text-sm text-muted-foreground">
-                  Let&apos;s get you all set up so you can access your personal
-                  account.
+                  Let&apos;s get you all set up so you can access your personal account.
                 </p>
               </div>
 
@@ -300,10 +331,7 @@ export default function RegisterPage() {
                   className="px-[12px] py-[14px] w-full border border-[#B0B0B0] rounded-[8px]"
                 />
 
-                <Select
-                  name="state"
-                  onValueChange={handleSelectChange("state")}
-                >
+                <Select name="state" onValueChange={handleSelectChange("state")}>
                   <SelectTrigger className="w-full">
                     <SelectValue placeholder="State" />
                   </SelectTrigger>
@@ -329,8 +357,9 @@ export default function RegisterPage() {
                   className="w-full rounded-[60px] py-[12px] px-[32px]"
                   size="lg"
                   onClick={handleStep2Submit}
+                  disabled={isLoading}
                 >
-                  Register
+                  {isLoading ? "Processing..." : "Register"}
                 </Button>
               </div>
             </>
@@ -338,5 +367,14 @@ export default function RegisterPage() {
         </div>
       </div>
     </div>
-  );
+  )
 }
+
+export default function RegisterPage() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <RegisterContent />
+    </Suspense>
+  )
+}
+

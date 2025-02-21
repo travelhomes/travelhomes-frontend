@@ -15,7 +15,7 @@ import { Reviews } from "@/components/products/Reviews";
 import { StickyNav } from "@/components/products/StickyNav";
 import { StickyPrice } from "@/components/products/StickyPrice";
 import Link from "next/link";
-
+import Exclusions from "@/components/products/exclusions";
 export default function Product() {
   useEffect(() => {
     const handleScroll = () => {
@@ -63,6 +63,7 @@ export default function Product() {
             <Overview hidePrice />
             <Amenities />
             <Inclusions />
+            <Exclusions />
             <Reviews />
             <OwnerDetails />
             <div id="top-rated-section"></div>
