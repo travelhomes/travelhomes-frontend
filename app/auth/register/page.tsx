@@ -1,8 +1,7 @@
 "use client"
 
 import type React from "react"
-
-import { useState, useEffect } from "react"
+import { useState, useEffect, Suspense } from "react"
 import Image from "next/image"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
@@ -34,7 +33,7 @@ interface RegisterResponse {
   message: string
 }
 
-export default function RegisterPage() {
+function RegisterContent() {
   const [step, setStep] = useState(1)
   const [formData, setFormData] = useState<FormData>({
     email: "",
@@ -368,6 +367,14 @@ export default function RegisterPage() {
         </div>
       </div>
     </div>
+  )
+}
+
+export default function RegisterPage() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <RegisterContent />
+    </Suspense>
   )
 }
 

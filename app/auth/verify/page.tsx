@@ -1,8 +1,7 @@
 "use client"
 
 import type React from "react"
-
-import { useState, useRef, type ChangeEvent, useEffect } from "react"
+import { useState, useRef, type ChangeEvent, useEffect, Suspense } from "react"
 import Image from "next/image"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
@@ -12,7 +11,7 @@ import { useRouter, useSearchParams } from "next/navigation"
 import axios, { AxiosError } from "axios"
 import { BASE_URL } from "@/config/config"
 
-export default function VerifyCode() {
+function VerifyCodeContent() {
   const [otp, setOtp] = useState<string[]>(Array(6).fill(""))
   const inputRefs = useRef<Array<HTMLInputElement | null>>([])
   const [isLoading, setIsLoading] = useState(false)
@@ -175,6 +174,14 @@ export default function VerifyCode() {
         </div>
       </div>
     </div>
+  )
+}
+
+export default function VerifyCode() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <VerifyCodeContent />
+    </Suspense>
   )
 }
 
