@@ -7,6 +7,7 @@ import Step3 from "@/components/vendor/caravan/step3"
 import Step4 from "@/components/vendor/caravan/step4"
 import Step5 from "@/components/vendor/caravan/step5"
 import Step6 from "@/components/vendor/caravan/step6"
+import Step7 from "@/components/vendor/caravan/step7"
 import VendorBar from "@/components/vendor/caravan/vendorbar"
 
 export default function CaravanRegistration() {
@@ -66,6 +67,14 @@ export default function CaravanRegistration() {
       )}
       {currentStep === 6 && (
         <Step6 
+          onNext={handleNext} 
+          onBack={handleBack}
+          currentStep={currentStep}
+          totalSteps={totalSteps}
+        />
+      )}
+      {currentStep === 7 && (
+        <Step7 
           onNext={handleNext} 
           onBack={handleBack}
           currentStep={currentStep}
