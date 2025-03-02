@@ -4,6 +4,8 @@ import { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
+import StepProgress from "../StepProgress";
+import StepNavigation from "../StepNavigation";
 
 interface Step4Props {
   onNext: () => void;
@@ -12,7 +14,7 @@ interface Step4Props {
   totalSteps: number;
 }
 
-export default function Step4({ onNext, onBack }: Step4Props) {
+export default function Step4({ onNext, onBack, currentStep, totalSteps }: Step4Props) {
   const [formData, setFormData] = useState({
     seatingCapacity: 1,
     sleepingCapacity: 1,
@@ -57,7 +59,7 @@ export default function Step4({ onNext, onBack }: Step4Props) {
             </h2>
           </div>
 
-          <div className="space-y-6">
+          <div className="space-y-6 px-[10rem]" >
             {/* Capacity Inputs Row */}
             <div className="flex flex-col gap-6">
               {/* Seating Capacity */}
@@ -187,34 +189,15 @@ export default function Step4({ onNext, onBack }: Step4Props) {
       </div>
 
       {/* Navigation */}
-      <div className="border-t border-[#E7E8E9] pt-4 pb-4 px-4 mt-auto">
+      <div className="border-t border-[#E7E8E9] pt-3 pb-3 px-4">
         <div className="flex justify-between items-center">
-          <div className="flex items-center">
-            <span className="text-sm font-medium text-[#112211]">3/6 Completed</span>
-            <div className="flex ml-4 space-x-1">
-              <div className="w-8 h-1 bg-black rounded-full"></div>
-              <div className="w-8 h-1 bg-black rounded-full"></div>
-              <div className="w-8 h-1 bg-black rounded-full"></div>
-              <div className="w-8 h-1 bg-gray-200 rounded-full"></div>
-              <div className="w-8 h-1 bg-gray-200 rounded-full"></div>
-              <div className="w-8 h-1 bg-gray-200 rounded-full"></div>
-            </div>
-          </div>
-          <div className="flex gap-4">
-            <Button
-              onClick={onBack}
-              variant="outline"
-              className="rounded-full px-6 border-[#E7E8E9] hover:bg-transparent hover:border-gray-300"
-            >
-              Back
-            </Button>
-            <Button
-              onClick={onNext}
-              className="bg-black text-white hover:bg-black/90 rounded-full px-6"
-            >
-              Next
-            </Button>
-          </div>
+          <StepProgress currentStep={currentStep} totalSteps={totalSteps} />
+          <StepNavigation
+            onNext={onNext}
+            onBack={onBack}
+            isFirstStep={false}
+            isNextDisabled={false}
+          />
         </div>
       </div>
     </div>
