@@ -67,16 +67,16 @@ export default function Step1({ onNext, onBack, currentStep, totalSteps }: Step1
 
   return (
     <>
-      <div className="py-8 px-[8em]">
-        <div className=" py-8 px-[7rem]">
-          <div className="space-y-8">
+      <div className="py-4 px-4 sm:px-6 md:px-8 lg:px-[8em]">
+        <div className="py-4 sm:py-6 md:py-8 px-0 sm:px-4 md:px-6 lg:px-[7rem]">
+          <div className="space-y-6 md:space-y-8">
             <div>
-              <h2 className="text-[32px] text-center font-semibold text-[#112211]">
+              <h2 className="text-2xl md:text-[32px] text-center font-semibold text-[#112211]">
                 Caravan Descriptions
               </h2>
             </div>
 
-            <div className="space-y-6">
+            <div className="space-y-4 md:space-y-6">
               {/* Name Input */}
               <div>
                 <label className="text-sm font-medium text-[#334054] block mb-2">
@@ -87,7 +87,7 @@ export default function Step1({ onNext, onBack, currentStep, totalSteps }: Step1
                   value={formData.name}
                   onChange={handleInputChange}
                   placeholder="Name"
-                  className="border-[#EAECF0] h-11 bg-white focus:ring-0 focus:border-[#B0B0B0]"
+                  className="border-[#EAECF0] h-11 outline-none focus:ring-0 focus:border-[#B0B0B0]"
                 />
                 <div className="text-right text-xs text-[#334054] mt-1">
                   {formData.name.length}/50
@@ -146,14 +146,14 @@ export default function Step1({ onNext, onBack, currentStep, totalSteps }: Step1
                   onChange={handleImageUpload}
                 />
 
-                <div className="flex gap-3">
-                  {/* Cover Photo - Full Height */}
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-3">
+                  {/* Cover Photo */}
                   <div
                     onClick={() => handleImageClick("cover")}
-                    className="cursor-pointer w-[50%]"
+                    className="cursor-pointer"
                   >
                     <div
-                      className={`border border-dashed border-[#EAECF0] rounded-lg h-[420px] flex flex-col items-center justify-center text-center bg-[#F9FAFB] hover:bg-[#F0F1F3] transition-colors relative overflow-hidden ${
+                      className={`border border-dashed border-[#EAECF0] rounded-lg aspect-square flex flex-col items-center justify-center text-center bg-[#F9FAFB] hover:bg-[#F0F1F3] transition-colors relative overflow-hidden ${
                         images.cover ? "p-0" : "p-4"
                       }`}
                     >
@@ -171,7 +171,7 @@ export default function Step1({ onNext, onBack, currentStep, totalSteps }: Step1
                           </span>
                           <svg
                             width="20"
-                            height="30"
+                            height="20"
                             viewBox="0 0 20 20"
                             fill="none"
                             xmlns="http://www.w3.org/2000/svg"
@@ -189,8 +189,8 @@ export default function Step1({ onNext, onBack, currentStep, totalSteps }: Step1
                     </div>
                   </div>
 
-                  {/* Right Side 2x2 Grid */}
-                  <div className="w-[50%] grid grid-rows-2 grid-cols-2 gap-3">
+                  {/* 2x2 Grid for other photos */}
+                  <div className="grid grid-cols-2 gap-3">
                     {["photo1", "photo2", "photo3", "photo4"].map(
                       (position, index) => (
                         <div
@@ -212,28 +212,24 @@ export default function Step1({ onNext, onBack, currentStep, totalSteps }: Step1
                               />
                             ) : (
                               <div className="flex flex-col items-center gap-1">
-                                {index < 3 && (
-                                  <>
-                                    <span className="text-sm text-[#667085]">
-                                      Photos
-                                    </span>
-                                    <svg
-                                      width="20"
-                                      height="20"
-                                      viewBox="0 0 20 20"
-                                      fill="none"
-                                      xmlns="http://www.w3.org/2000/svg"
-                                    >
-                                      <path
-                                        d="M10 4.16666V15.8333M4.16667 10H15.8333"
-                                        stroke="#667085"
-                                        strokeWidth="1.67"
-                                        strokeLinecap="round"
-                                        strokeLinejoin="round"
-                                      />
-                                    </svg>
-                                  </>
-                                )}
+                                <span className="text-sm text-[#667085]">
+                                  Photos
+                                </span>
+                                <svg
+                                  width="20"
+                                  height="20"
+                                  viewBox="0 0 20 20"
+                                  fill="none"
+                                  xmlns="http://www.w3.org/2000/svg"
+                                >
+                                  <path
+                                    d="M10 4.16666V15.8333M4.16667 10H15.8333"
+                                    stroke="#667085"
+                                    strokeWidth="1.67"
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                  />
+                                </svg>
                               </div>
                             )}
                           </div>
