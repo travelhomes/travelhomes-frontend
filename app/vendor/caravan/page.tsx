@@ -6,11 +6,12 @@ import Step2 from "@/components/vendor/caravan/step2"
 import Step3 from "@/components/vendor/caravan/step3"
 import Step4 from "@/components/vendor/caravan/step4"
 import Step5 from "@/components/vendor/caravan/step5"
+import Step6 from "@/components/vendor/caravan/step6"
 import VendorBar from "@/components/vendor/caravan/vendorbar"
 
 export default function CaravanRegistration() {
   const [currentStep, setCurrentStep] = useState(1)
-  const totalSteps = 6
+  const totalSteps = 8
 
   const handleNext = () => {
     setCurrentStep((prev) => Math.min(prev + 1, totalSteps))
@@ -57,6 +58,14 @@ export default function CaravanRegistration() {
       )}
       {currentStep === 5 && (
         <Step5 
+          onNext={handleNext} 
+          onBack={handleBack}
+          currentStep={currentStep}
+          totalSteps={totalSteps}
+        />
+      )}
+      {currentStep === 6 && (
+        <Step6 
           onNext={handleNext} 
           onBack={handleBack}
           currentStep={currentStep}
