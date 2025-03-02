@@ -7,12 +7,9 @@ import VendorBar from "./vendorbar"
 
 interface Step10Props {
   onNext: () => void;
-  onBack: () => void;
-  currentStep: number;
-  totalSteps: number;
 }
 
-export default function Step10({ onNext, onBack, currentStep, totalSteps }: Step10Props) {
+export default function Step10({ onNext }: Step10Props) {
   const [isCameraReady, setIsCameraReady] = useState(false)
   const [capturedImage, setCapturedImage] = useState<string | null>(null)
   const [cameraError, setCameraError] = useState<string | null>(null)
