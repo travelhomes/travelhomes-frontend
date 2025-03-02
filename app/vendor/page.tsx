@@ -41,46 +41,101 @@ export default function ServiceSelection() {
 
             <div className="flex-1 overflow-auto pr-2">
               <RadioGroup value={selectedService} onValueChange={setSelectedService} className="space-y-4">
-                {[
-                  { id: "caravan", label: "Caravan Rental", description: "Lorem ipsum text for better user experience" },
-                  { id: "stays", label: "Stays", description: "Lorem ipsum text for better user experience" },
-                  { id: "activity", label: "Activity", description: "Lorem ipsum text for better user experience" },
-                ].map(({ id, label, description }) => (
-                  <div key={id} className="relative">
-                    <RadioGroupItem value={id} id={id} className="peer sr-only" />
-                    <Label
-                      htmlFor={id}
+                <div className="relative">
+                  <RadioGroupItem value="caravan" id="caravan" className="peer sr-only" />
+                  <Label
+                    htmlFor="caravan"
+                    className={cn(
+                      "flex items-center gap-4 rounded-lg border p-4 cursor-pointer relative transition-all",
+                      selectedService === "caravan" 
+                        ? "border-black bg-[#FDFDFD]" 
+                        : "border-[#E7E8E9] bg-[#FDFDFD] hover:border-gray-300"
+                    )}
+                  >
+                    <div className="flex items-center gap-3 flex-1">
+                      <div className="flex-shrink-0">
+                        <BusIcon />
+                      </div>
+                      <div className="font-medium text-base text-[#112211]">Outdoor Games</div>
+                    </div>
+                    <div
                       className={cn(
-                        "flex items-start gap-4 rounded-lg border p-4 cursor-pointer relative transition-all",
-                        selectedService === id 
-                          ? "border-black bg-[#FDFDFD]" 
-                          : "border-[#E7E8E9] bg-[#FDFDFD] hover:border-gray-300"
+                        "flex-shrink-0 h-5 w-5 rounded-full border",
+                        selectedService === "caravan" 
+                          ? "border-black flex items-center justify-center"
+                          : "border-[#717171]"
                       )}
                     >
-                      <div className="flex-shrink-0 mt-1">
-                        {id === "caravan" && <BusIcon />}
-                        {id === "stays" && <StayIcon />}
-                        {id === "activity" && <ActiveIcon />}
+                      {selectedService === "caravan" && (
+                        <div className="h-3 w-3 rounded-full bg-black"></div>
+                      )}
+                    </div>
+                  </Label>
+                </div>
+
+                <div className="relative">
+                  <RadioGroupItem value="stays" id="stays" className="peer sr-only" />
+                  <Label
+                    htmlFor="stays"
+                    className={cn(
+                      "flex items-center gap-4 rounded-lg border p-4 cursor-pointer relative transition-all",
+                      selectedService === "stays" 
+                        ? "border-black bg-[#FDFDFD]" 
+                        : "border-[#E7E8E9] bg-[#FDFDFD] hover:border-gray-300"
+                    )}
+                  >
+                    <div className="flex items-center gap-3 flex-1">
+                      <div className="flex-shrink-0">
+                        <StayIcon />
                       </div>
-                      <div className="flex-1">
-                        <div className="font-medium text-base text-[#112211] mb-1">{label}</div>
-                        <p className="text-sm text-[#112211] opacity-75">{description}</p>
+                      <div className="font-medium text-base text-[#112211]">Stays</div>
+                    </div>
+                    <div
+                      className={cn(
+                        "flex-shrink-0 h-5 w-5 rounded-full border",
+                        selectedService === "stays" 
+                          ? "border-black flex items-center justify-center"
+                          : "border-[#717171]"
+                      )}
+                    >
+                      {selectedService === "stays" && (
+                        <div className="h-3 w-3 rounded-full bg-black"></div>
+                      )}
+                    </div>
+                  </Label>
+                </div>
+
+                <div className="relative">
+                  <RadioGroupItem value="activity" id="activity" className="peer sr-only" />
+                  <Label
+                    htmlFor="activity"
+                    className={cn(
+                      "flex items-center gap-4 rounded-lg border p-4 cursor-pointer relative transition-all",
+                      selectedService === "activity" 
+                        ? "border-black bg-[#FDFDFD]" 
+                        : "border-[#E7E8E9] bg-[#FDFDFD] hover:border-gray-300"
+                    )}
+                  >
+                    <div className="flex items-center gap-3 flex-1">
+                      <div className="flex-shrink-0">
+                        <ActiveIcon />
                       </div>
-                      <div
-                        className={cn(
-                          "flex-shrink-0 h-5 w-5 rounded-full border",
-                          selectedService === id 
-                            ? "border-black flex items-center justify-center"
-                            : "border-[#717171]"
-                        )}
-                      >
-                        {selectedService === id && (
-                          <div className="h-3 w-3 rounded-full bg-black"></div>
-                        )}
-                      </div>
-                    </Label>
-                  </div>
-                ))}
+                      <div className="font-medium text-base text-[#112211]">Activity</div>
+                    </div>
+                    <div
+                      className={cn(
+                        "flex-shrink-0 h-5 w-5 rounded-full border",
+                        selectedService === "activity" 
+                          ? "border-black flex items-center justify-center"
+                          : "border-[#717171]"
+                      )}
+                    >
+                      {selectedService === "activity" && (
+                        <div className="h-3 w-3 rounded-full bg-black"></div>
+                      )}
+                    </div>
+                  </Label>
+                </div>
               </RadioGroup>
             </div>
 
