@@ -60,9 +60,10 @@ const campers = [
   },
 ];
 
-export default function BestActively() {
-  return (
 
+export default function BestActively() {
+
+  return (
     <section className="md:px-4 mx-auto">
       <div className="flex justify-between items-center mb-8">
         <div>
@@ -74,12 +75,13 @@ export default function BestActively() {
           </p>
         </div>
         <Link href="/discover"> 
-        <button className="hidden md:block text-gray-900 font-medium hover:underline">
-          Discover more
-        </button>
+          <button className="hidden md:block text-gray-900 font-medium hover:underline">
+            Discover more
+          </button>
         </Link>
       </div>
 
+    
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         {campers.map((camper, index) => (
           //@ts-expect-error
@@ -87,10 +89,10 @@ export default function BestActively() {
         ))}
       </div>
 
-<Link href="/discover"> 
-      <button className="px-[20px] py-[12px] text-sm font-medium text-gray-700 border border-gray-300 rounded-[60px] text-center m-auto block md:hidden">
-        Discover more
-      </button>
+      <Link href="/discover"> 
+        <button className="px-[20px] py-[12px] text-sm font-medium text-gray-700 border border-gray-300 rounded-[60px] text-center m-auto block md:hidden">
+          Discover more
+        </button>
       </Link>
     </section>
   );

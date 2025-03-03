@@ -60,7 +60,9 @@ const campers = [
   },
 ];
 
+
 export default function UniqueStay() {
+
   return (
     <section className="py-12 md:px-4 mx-auto">
       <div className="flex justify-between items-center mb-8">
@@ -80,6 +82,7 @@ export default function UniqueStay() {
         </button>
         </Link>
       </div>
+
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         {campers.map((camper, index) => (
