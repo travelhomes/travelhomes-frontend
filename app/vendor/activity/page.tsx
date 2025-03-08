@@ -5,6 +5,12 @@ import Step1 from "@/components/vendor/activity/step1"
 import Step2 from "@/components/vendor/activity/step2"
 import Step3 from "@/components/vendor/activity/step3"
 import Step4 from "@/components/vendor/activity/step4"
+import Step6 from "@/components/vendor/caravan/step6"
+import Step7 from "@/components/vendor/caravan/step7"
+import Step8 from "@/components/vendor/caravan/step8"
+import Step9 from "@/components/vendor/caravan/step9"
+import Step10 from "@/components/vendor/caravan/step10"
+import Step11 from "@/components/vendor/caravan/step11"
 import VendorBar from "@/components/vendor/caravan/vendorbar"
 
 export default function ActivityRegistration() {
@@ -21,7 +27,7 @@ export default function ActivityRegistration() {
 
   return (
     <div>
-      {currentStep !== 9 && currentStep !== 10 && <VendorBar />}
+      {currentStep !== 10 && <VendorBar />}
       
       {currentStep === 1 && (
         <Step1 
@@ -48,7 +54,7 @@ export default function ActivityRegistration() {
           currentStep={currentStep}
           totalSteps={totalSteps}
         />
-        )}
+      )}
 
       {currentStep === 4 && (
         <Step4 
@@ -59,7 +65,50 @@ export default function ActivityRegistration() {
         />
       )}
 
+      {currentStep === 5 && (
+        <Step6 
+          onNext={handleNext} 
+          onBack={handleBack}
+          currentStep={currentStep}
+          totalSteps={totalSteps}
+        />
+      )}
 
+      {currentStep === 6 && (
+        <Step7 
+          onNext={handleNext} 
+          onBack={handleBack}
+          currentStep={currentStep}
+          totalSteps={totalSteps}
+        />
+      )}
+
+      {currentStep === 7 && (
+        <Step8 
+          onNext={handleNext}
+          onBack={handleBack}
+          currentStep={currentStep}
+          totalSteps={totalSteps}
+        />
+      )}
+
+      {currentStep === 8 && (
+        <Step9 
+          onNext={handleNext}
+        />
+      )}
+
+      {currentStep === 9 && (
+        <Step10 
+          onNext={handleNext}
+        />
+      )}
+
+      {currentStep === 10 && (
+        <Step11 
+          onBack={handleBack}
+        />
+      )}
     </div>
   )
 } 

@@ -51,7 +51,7 @@ export default function ServiceSelection() {
           <div className="w-full md:w-1/2 flex flex-col h-full">
             <div className="mb-4">
               <h2 className="text-2xl font-semibold text-[#112211]">Which service you are offering</h2>
-              <p className="text-sm text-[#112211] opacity-75">Let's get you all set up so you can start listing your services</p>
+              <p className="text-sm text-[#112211] opacity-75">Let&apos;s get you all set up so you can start listing your services</p>
             </div>
 
             <div className="flex-1">
