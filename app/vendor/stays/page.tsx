@@ -4,10 +4,12 @@ import { useState } from "react"
 import Step1 from "@/components/vendor/stays/step1"
 import Step2 from "@/components/vendor/stays/step2"
 import Step3 from "@/components/vendor/stays/step3"
+import Step4 from "@/components/vendor/stays/step4"
 import VendorBar from "@/components/vendor/caravan/vendorbar"
 
 export default function StaysRegistration() {
   const [currentStep, setCurrentStep] = useState(1)
+  const [stayType, setStayType] = useState<"entire" | "individual">("entire")
   const totalSteps = 11
 
   const handleNext = () => {
@@ -16,6 +18,10 @@ export default function StaysRegistration() {
 
   const handleBack = () => {
     setCurrentStep((prev) => Math.max(prev - 1, 1))
+  }
+
+  const handleStayTypeChange = (type: "entire" | "individual") => {
+    setStayType(type)
   }
 
   return (
@@ -46,6 +52,17 @@ export default function StaysRegistration() {
           onBack={handleBack}
           currentStep={currentStep}
           totalSteps={totalSteps}
+        />
+      )}
+
+      {currentStep === 4 && (
+        <Step4 
+          onNext={handleNext} 
+          onBack={handleBack}
+          currentStep={currentStep}
+          totalSteps={totalSteps}
+          stayType={stayType}
+          onStayTypeChange={handleStayTypeChange}
         />
       )}
     </div>
