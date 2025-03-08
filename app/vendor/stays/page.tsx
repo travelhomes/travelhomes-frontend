@@ -2,6 +2,8 @@
 
 import { useState } from "react"
 import Step1 from "@/components/vendor/stays/step1"
+import Step2 from "@/components/vendor/stays/step2"
+import VendorBar from "@/components/vendor/caravan/vendorbar"
 
 export default function StaysRegistration() {
   const [currentStep, setCurrentStep] = useState(1)
@@ -17,8 +19,19 @@ export default function StaysRegistration() {
 
   return (
     <div>
+      {currentStep !== 10 && currentStep !== 11 && <VendorBar />}
+      
       {currentStep === 1 && (
         <Step1 
+          onNext={handleNext} 
+          onBack={handleBack}
+          currentStep={currentStep}
+          totalSteps={totalSteps}
+        />
+      )}
+
+      {currentStep === 2 && (
+        <Step2 
           onNext={handleNext} 
           onBack={handleBack}
           currentStep={currentStep}
