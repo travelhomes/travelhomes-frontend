@@ -4,6 +4,7 @@ import { useState } from "react"
 import Step1 from "@/components/vendor/activity/step1"
 import Step2 from "@/components/vendor/activity/step2"
 import Step3 from "@/components/vendor/activity/step3"
+import Step4 from "@/components/vendor/activity/step4"
 import VendorBar from "@/components/vendor/caravan/vendorbar"
 
 export default function ActivityRegistration() {
@@ -47,7 +48,18 @@ export default function ActivityRegistration() {
           currentStep={currentStep}
           totalSteps={totalSteps}
         />
+        )}
+
+      {currentStep === 4 && (
+        <Step4 
+          onNext={handleNext} 
+          onBack={handleBack}
+          currentStep={currentStep}
+          totalSteps={totalSteps}
+        />
       )}
+
+
     </div>
   )
 } 
