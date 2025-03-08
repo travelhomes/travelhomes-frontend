@@ -5,6 +5,7 @@ import Step1 from "@/components/vendor/stays/step1"
 import Step2 from "@/components/vendor/stays/step2"
 import Step3 from "@/components/vendor/stays/step3"
 import Step4 from "@/components/vendor/stays/step4"
+import Step5 from "@/components/vendor/stays/step5"
 import VendorBar from "@/components/vendor/caravan/vendorbar"
 
 export default function StaysRegistration() {
@@ -63,6 +64,15 @@ export default function StaysRegistration() {
           totalSteps={totalSteps}
           stayType={stayType}
           onStayTypeChange={handleStayTypeChange}
+        />
+      )}
+
+      {currentStep === 5 && (
+        <Step5 
+          onNext={handleNext} 
+          onBack={handleBack}
+          currentStep={currentStep}
+          totalSteps={totalSteps}
         />
       )}
     </div>

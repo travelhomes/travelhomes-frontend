@@ -622,7 +622,7 @@ export default function Step4({
               onNext={onNext}
               onBack={onBack}
               isFirstStep={false}
-              isNextDisabled={!formData.name || !formData.basePrice || (stayType === "individual" && !formData.description)}
+              isNextDisabled={false}
             />
           </div>
         </div>
