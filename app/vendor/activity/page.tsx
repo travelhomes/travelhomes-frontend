@@ -1,114 +1,24 @@
 "use client"
 
-import { useState } from "react"
-import Step1 from "@/components/vendor/activity/step1"
-import Step2 from "@/components/vendor/activity/step2"
-import Step3 from "@/components/vendor/activity/step3"
-import Step4 from "@/components/vendor/activity/step4"
-import Step6 from "@/components/vendor/caravan/step6"
-import Step7 from "@/components/vendor/caravan/step7"
-import Step8 from "@/components/vendor/caravan/step8"
-import Step9 from "@/components/vendor/caravan/step9"
-import Step10 from "@/components/vendor/caravan/step10"
-import Step11 from "@/components/vendor/caravan/step11"
-import VendorBar from "@/components/vendor/caravan/vendorbar"
+import Link from "next/link"
+import { ArrowRightIcon } from "@/public/assets/CustomIcon"
 
 export default function ActivityRegistration() {
-  const [currentStep, setCurrentStep] = useState(1)
-  const totalSteps = 10
-
-  const handleNext = () => {
-    setCurrentStep((prev) => Math.min(prev + 1, totalSteps))
-  }
-
-  const handleBack = () => {
-    setCurrentStep((prev) => Math.max(prev - 1, 1))
-  }
-
   return (
-    <div>
-      {currentStep !== 10 && <VendorBar />}
-      
-      {currentStep === 1 && (
-        <Step1 
-          onNext={handleNext} 
-          onBack={handleBack}
-          currentStep={currentStep}
-          totalSteps={totalSteps}
-        />
-      )}
+    <div className="min-h-screen flex flex-col">
+      <div className="px-[80px] py-8 flex-1">
+        <Link href="/vendor" className="inline-flex items-center text-sm text-muted-foreground hover:text-primary mb-8">
+          <ArrowRightIcon />
+          <span className="ml-2">Back to service selection</span>
+        </Link>
 
-      {currentStep === 2 && (
-        <Step2 
-          onNext={handleNext} 
-          onBack={handleBack}
-          currentStep={currentStep}
-          totalSteps={totalSteps}
-        />
-      )}
+        <div className="space-y-2 mb-8">
+          <h1 className="text-2xl font-semibold text-[#112211]">Register your Activity</h1>
+          <p className="text-sm text-[#112211] opacity-75">Let&apos;s get your activity listed on our platform</p>
+        </div>
 
-      {currentStep === 3 && (
-        <Step3 
-          onNext={handleNext} 
-          onBack={handleBack}
-          currentStep={currentStep}
-          totalSteps={totalSteps}
-        />
-      )}
-
-      {currentStep === 4 && (
-        <Step4 
-          onNext={handleNext} 
-          onBack={handleBack}
-          currentStep={currentStep}
-          totalSteps={totalSteps}
-        />
-      )}
-
-      {currentStep === 5 && (
-        <Step6 
-          onNext={handleNext} 
-          onBack={handleBack}
-          currentStep={currentStep}
-          totalSteps={totalSteps}
-        />
-      )}
-
-      {currentStep === 6 && (
-        <Step7 
-          onNext={handleNext} 
-          onBack={handleBack}
-          currentStep={currentStep}
-          totalSteps={totalSteps}
-        />
-      )}
-
-      {currentStep === 7 && (
-        <Step8 
-          onNext={handleNext}
-          onBack={handleBack}
-          currentStep={currentStep}
-          totalSteps={totalSteps}
-        />
-      )}
-
-      {currentStep === 8 && (
-        <Step9 
-          onNext={handleNext}
-        />
-      )}
-
-      {currentStep === 9 && (
-        <Step10 
-          onNext={handleNext}
-        />
-      )}
-
-      {currentStep === 10 && (
-        <Step11 
-          onBack={handleBack}
-        />
-      )}
+        {/* Add activity registration form here */}
+      </div>
     </div>
   )
 } 

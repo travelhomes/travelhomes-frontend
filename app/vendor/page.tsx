@@ -10,8 +10,6 @@ import { cn } from "@/lib/utils"
 import { ArrowRightIcon, BusIcon, StayIcon, ActiveIcon } from "@/public/assets/CustomIcon"
 import Image from "next/image"
 import VendorServiceIllustration from "@/public/Vendor.png"
-import Treehouse from "@/public/Tree_House.png"
-import Activity from "@/public/activity.png"
 
 
 export default function ServiceSelection() {    
@@ -21,19 +19,6 @@ export default function ServiceSelection() {
   const handleNext = () => {
     if (selectedService) {
       router.push(`/vendor/${selectedService}`)
-    }
-  }
-
-  const getServiceImage = () => {
-    switch (selectedService) {
-      case 'caravan':
-        return VendorServiceIllustration
-      case 'stays':
-        return Treehouse
-      case 'activity':
-        return Activity
-      default:
-        return VendorServiceIllustration
     }
   }
 
@@ -47,21 +32,21 @@ export default function ServiceSelection() {
           <span>Back</span>
         </Link>
 
-        <div className="flex flex-col md:flex-row h-[calc(100%-40px)] gap-8 md:gap-16">
-          <div className="w-full md:w-1/2 flex flex-col h-full">
-            <div className="mb-4">
+        <div className="flex flex-col md:flex-row h-[calc(100%-40px)] gap-8 md:gap-16 overflow-hidden">
+          <div className="w-full md:w-1/2 flex flex-col">
+            <div className="mb-6">
               <h2 className="text-2xl font-semibold text-[#112211]">Which service you are offering</h2>
-              <p className="text-sm text-[#112211] opacity-75">Let&apos;s get you all set up so you can start listing your services</p>
+              <p className="text-sm text-[#112211] opacity-75">Let&apos;s get you all set up so you can access your personal account</p>
             </div>
 
-            <div className="flex-1">
-              <RadioGroup value={selectedService} onValueChange={setSelectedService} className="space-y-3">
+            <div className="flex-1 overflow-auto pr-2">
+              <RadioGroup value={selectedService} onValueChange={setSelectedService} className="space-y-4">
                 <div className="relative">
                   <RadioGroupItem value="caravan" id="caravan" className="peer sr-only" />
                   <Label
                     htmlFor="caravan"
                     className={cn(
-                      "flex items-center gap-4 rounded-lg border p-3 cursor-pointer relative transition-all",
+                      "flex items-center gap-4 rounded-lg border p-4 cursor-pointer relative transition-all",
                       selectedService === "caravan" 
                         ? "border-black bg-[#FDFDFD]" 
                         : "border-[#E7E8E9] bg-[#FDFDFD] hover:border-gray-300"
@@ -71,12 +56,8 @@ export default function ServiceSelection() {
                       <div className="flex-shrink-0">
                         <BusIcon />
                       </div>
-                      <div>
-                        <div className="font-medium text-base text-[#112211]">Caravan Rental</div>
-                        <p className="text-sm text-[#112211] opacity-75 mt-1">Rent out your caravan to travelers looking for unique mobile accommodation experiences</p>
-                      </div>
+                      <div className="font-medium text-base text-[#112211]">Outdoor Games</div>
                     </div>
-                  
                     <div
                       className={cn(
                         "flex-shrink-0 h-5 w-5 rounded-full border",
@@ -97,7 +78,7 @@ export default function ServiceSelection() {
                   <Label
                     htmlFor="stays"
                     className={cn(
-                      "flex items-center gap-4 rounded-lg border p-3 cursor-pointer relative transition-all",
+                      "flex items-center gap-4 rounded-lg border p-4 cursor-pointer relative transition-all",
                       selectedService === "stays" 
                         ? "border-black bg-[#FDFDFD]" 
                         : "border-[#E7E8E9] bg-[#FDFDFD] hover:border-gray-300"
@@ -107,10 +88,7 @@ export default function ServiceSelection() {
                       <div className="flex-shrink-0">
                         <StayIcon />
                       </div>
-                      <div>
-                        <div className="font-medium text-base text-[#112211]">Stays</div>
-                        <p className="text-sm text-[#112211] opacity-75 mt-1">List your unique stays and accommodations for guests seeking memorable experiences</p>
-                      </div>
+                      <div className="font-medium text-base text-[#112211]">Stays</div>
                     </div>
                     <div
                       className={cn(
@@ -132,7 +110,7 @@ export default function ServiceSelection() {
                   <Label
                     htmlFor="activity"
                     className={cn(
-                      "flex items-center gap-4 rounded-lg border p-3 cursor-pointer relative transition-all",
+                      "flex items-center gap-4 rounded-lg border p-4 cursor-pointer relative transition-all",
                       selectedService === "activity" 
                         ? "border-black bg-[#FDFDFD]" 
                         : "border-[#E7E8E9] bg-[#FDFDFD] hover:border-gray-300"
@@ -142,10 +120,7 @@ export default function ServiceSelection() {
                       <div className="flex-shrink-0">
                         <ActiveIcon />
                       </div>
-                      <div>
-                        <div className="font-medium text-base text-[#112211]">Activity</div>
-                        <p className="text-sm text-[#112211] opacity-75 mt-1">Share your exciting activities and adventures with travelers wanting to explore</p>
-                      </div>
+                      <div className="font-medium text-base text-[#112211]">Activity</div>
                     </div>
                     <div
                       className={cn(
@@ -164,7 +139,7 @@ export default function ServiceSelection() {
               </RadioGroup>
             </div>
 
-            <div className="mt-4">
+            <div className="mt-6">
               <Button 
                 onClick={handleNext}
                 disabled={!selectedService}
@@ -176,9 +151,9 @@ export default function ServiceSelection() {
           </div>
 
           <div className="hidden md:flex md:w-1/2 items-center justify-center">
-            <div className="relative w-full h-[500px]">
+            <div className="relative w-full aspect-square">
               <Image 
-                src={getServiceImage()} 
+                src={VendorServiceIllustration} 
                 alt="Service illustration" 
                 fill 
                 className="object-contain"
