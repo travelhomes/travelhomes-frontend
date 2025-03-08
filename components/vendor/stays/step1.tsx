@@ -45,7 +45,6 @@ export default function Step1({ onNext, onBack, currentStep, totalSteps }: Step1
 
   return (
     <div className="fixed inset-0 flex flex-col">
-      <div className="h-16"></div>
 
       <div className="flex-1 px-4 overflow-hidden">
         <div className="h-full flex flex-col">

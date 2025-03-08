@@ -57,7 +57,6 @@ export default function Step2({ onNext, onBack, currentStep, totalSteps }: Step2
 
   return (
     <div className="fixed inset-0 flex flex-col">
-      <div className="h-16"></div>
 
       <div className="flex-1 px-4 overflow-hidden">
         <div className="h-full flex flex-col">

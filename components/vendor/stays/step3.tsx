@@ -68,7 +68,6 @@ export default function Step3({ onNext, onBack, currentStep, totalSteps }: Step3
 
   return (
     <div className="flex flex-col h-screen">
-      <div className="h-16"></div>
 
       <div className="flex-1 overflow-y-auto">
         <div className="max-w-[1200px] mx-auto px-4 pb-20">

@@ -17,6 +17,16 @@ interface Step4Props {
   onStayTypeChange: (type: "entire" | "individual") => void
 }
 
+interface FormData {
+  name: string
+  description: string
+  basePrice: string
+  guestCapacity: number
+  bedCount: number
+  bathroomCount: number
+  roomCount: number
+}
+
 export default function Step4({ 
   onNext, 
   onBack, 
@@ -25,13 +35,14 @@ export default function Step4({
   stayType,
   onStayTypeChange 
 }: Step4Props) {
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<FormData>({
     name: "",
     description: "",
     basePrice: "",
     guestCapacity: 1,
     bedCount: 1,
     bathroomCount: 1,
+    roomCount: 1
   })
 
   const [images, setImages] = useState<{ [key: string]: string }>({
@@ -611,7 +622,7 @@ export default function Step4({
               onNext={onNext}
               onBack={onBack}
               isFirstStep={false}
-              isNextDisabled={false}
+              isNextDisabled={!formData.name || !formData.basePrice || (stayType === "individual" && !formData.description)}
             />
           </div>
         </div>
