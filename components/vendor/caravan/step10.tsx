@@ -93,8 +93,12 @@ export default function Step10({ onNext }: Step10Props) {
     <div className="fixed inset-0 flex flex-col bg-white">
       {/* App bar */}
 
-      <div className="flex-1 flex flex-col">
+         {/* Space for app bar */}
+         <div className="hidden md:block">
         <VendorBar />
+      </div>
+
+      <div className="flex-1 flex flex-col ">
         <div className="w-full max-w-3xl mx-auto px-4 pt-8 pb-4 flex flex-col items-center">
           <h1 className="text-2xl font-semibold text-center mb-6">Verification</h1>
           

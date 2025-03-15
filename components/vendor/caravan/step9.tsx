@@ -3,6 +3,9 @@
 import { Button } from "@/components/ui/button"
 import Image from "next/image"
 import TermsIllustration from "@/public/terms&conditions.png"
+import VendorBar from "./vendorbar";
+import Link from "next/link";
+import { ArrowRightIcon } from "@/public/assets/CustomIcon";
 
 interface Step9Props {
   onNext: () => void;
@@ -16,8 +19,22 @@ export default function Step9({ onNext }: Step9Props) {
 
   return (
     <div className="fixed inset-0 flex flex-col">
+
+      {/* Mobile: Top navigation with back button and progress bar */}
+      <div className="flex md:hidden items-center justify-between px-4 sm:px-6 mt-10 mb-6">
+        <Link href="" className="inline-flex items-center text-sm text-muted-foreground hover:text-primary">
+          <span className="mr-2">
+            <ArrowRightIcon />
+          </span>
+        </Link>
+        </div>
+
+
+
       {/* Space for app bar */}
-      <div className="h-16"></div>
+      <div className="hidden md:block">
+        <VendorBar />
+      </div>
 
       <div className="flex-1 overflow-auto">
         <div className="h-full flex flex-col justify-center items-center py-8 px-4 md:px-8">
@@ -48,10 +65,11 @@ export default function Step9({ onNext }: Step9Props) {
                   </div>
                 </div>
 
-                <div className="mt-10">
+                {/* Desktop-only button */}
+                <div className="mt-10 hidden md:block">
                   <Button
                     onClick={handleStartVerification}
-                    className="bg-black text-white hover:bg-black/90 rounded-full py-3 px-6"
+                    className="bg-black text-white hover:bg-black/90 rounded-[60px] py-[14px] px-[32px]"
                   >
                     Start Verification
                   </Button>
@@ -80,7 +98,15 @@ export default function Step9({ onNext }: Step9Props) {
         </div>
       </div>
 
+      {/* Mobile: Full width Start Verification button - fixed at bottom */}
+      <div className="md:hidden fixed bottom-0 left-0 right-0 bg-white px-4 py-4 shadow-[0_-4px_10px_rgba(0,0,0,0.05)]">
+        <Button
+          onClick={handleStartVerification}
+          className="w-full bg-black text-white hover:bg-black/90 rounded-[60px] py-[14px] px-[32px]"
+        >
+          Start Verification
+        </Button>
+      </div>
     </div>
   );
 }
-

@@ -12,7 +12,6 @@ import Step8 from "@/components/vendor/caravan/step8"
 import Step9 from "@/components/vendor/caravan/step9"
 import Step10 from "@/components/vendor/caravan/step10"
 import Step11 from "@/components/vendor/caravan/step11"
-import VendorBar from "@/components/vendor/caravan/vendorbar"
 
 export default function CaravanRegistration() {
   const [currentStep, setCurrentStep] = useState(1)
@@ -104,8 +103,7 @@ export default function CaravanRegistration() {
       )}
       {currentStep === 11 && (
         <Step11 
-          onBack={() => setCurrentStep(10)}
-        />
+          onBack={() => setCurrentStep(10)} currentStep={0} totalSteps={0}        />
       )}
     </div>
   )
