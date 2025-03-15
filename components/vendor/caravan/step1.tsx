@@ -7,6 +7,9 @@ import { useState, useRef } from "react";
 import Image from "next/image";
 import StepProgress from "../StepProgress";
 import StepNavigation from "../StepNavigation";
+import VendorBar from "./vendorbar";
+import Link from "next/link";
+import { ArrowRightIcon } from "@/public/assets/CustomIcon";
 
 interface Step1Props {
   onNext: () => void;
@@ -67,6 +70,26 @@ export default function Step1({ onNext, onBack, currentStep, totalSteps }: Step1
 
   return (
     <>
+      <div className="hidden md:block">
+        <VendorBar />
+      </div>
+
+      {/* Mobile: Top navigation with back button and progress bar */}
+      <div className="flex md:hidden items-center justify-between px-4 sm:px-6 mt-10 mb-6">
+        <Link href="" className="inline-flex items-center text-sm text-muted-foreground hover:text-primary">
+          <span className="mr-2">
+            <ArrowRightIcon />
+          </span>
+        </Link>
+        
+        <div className="flex-grow flex justify-center">
+          <StepProgress 
+            currentStep={currentStep} 
+            totalSteps={totalSteps} 
+          />
+        </div>
+      </div>
+
       <div className="py-4 px-4 sm:px-6 md:px-8 lg:px-[8em]">
         <div className="py-4 sm:py-6 md:py-8 px-0 sm:px-4 md:px-6 lg:px-[7rem]">
           <div className="space-y-6 md:space-y-8">
@@ -103,11 +126,11 @@ export default function Step1({ onNext, onBack, currentStep, totalSteps }: Step1
                   name="description"
                   value={formData.description}
                   onChange={handleInputChange}
-                  placeholder="Write here"
+                  placeholder="Write here..."
                   className="border-[#EAECF0] min-h-[120px] bg-white focus:ring-0 focus:border-[#B0B0B0] resize-none"
                 />
                 <div className="text-right text-xs text-[#334054] mt-1">
-                  {formData.description.length}/500
+                  {formData.description.length}/200
                 </div>
               </div>
 
@@ -128,7 +151,7 @@ export default function Step1({ onNext, onBack, currentStep, totalSteps }: Step1
                   name="rules"
                   value={formData.rules}
                   onChange={handleInputChange}
-                  placeholder="Write here"
+                  placeholder="Write here..."
                   className="border-[#EAECF0] min-h-[120px] bg-white focus:ring-0 focus:border-[#B0B0B0] resize-none"
                 />
               </div>
@@ -246,8 +269,18 @@ export default function Step1({ onNext, onBack, currentStep, totalSteps }: Step1
           </div>
         </div>
 
-        {/* Navigation */}
-        <div className="mt-8 flex justify-between items-center border-t border-[#E7E8E9] pt-6">
+        {/* Mobile: Full width Next button */}
+        <div className="md:hidden mt-8 px-4 sm:px-6 pb-6">
+          <Button
+            onClick={onNext}
+            className="w-full bg-black text-white hover:bg-black/90 rounded-[60px] py-[14px] px-[32px]"
+          >
+            Next
+          </Button>
+        </div>
+
+        {/* Desktop: Original navigation with progress and next/back buttons */}
+        <div className="hidden md:flex mt-8 justify-between items-center border-t border-[#E7E8E9] pt-6 px-4 sm:px-6 md:px-8 lg:px-[7rem]">
           <StepProgress 
             currentStep={currentStep} 
             totalSteps={totalSteps} 

@@ -28,7 +28,6 @@ export default function CaravanRegistration() {
 
   return (
     <div>
-      {currentStep !== 10 && currentStep !== 11 && <VendorBar />}
       {currentStep === 1 && (
         <Step1 
           onNext={handleNext} 
