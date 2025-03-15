@@ -40,11 +40,11 @@ export default function ServiceSelection() {
   return (
     <div className="h-screen flex flex-col overflow-hidden">
       <div className="flex-1 px-6 md:p-[80px] overflow-hidden">
-        <Link href="/auth/login" className="inline-flex items-center text-sm text-muted-foreground hover:text-primary mb-6">
+        <Link href="/auth/login" className="inline-flex items-center text-sm text-muted-foreground hover:text-primary mb-6 mt-10">
           <span className="mr-2">
             <ArrowRightIcon />
           </span>
-          <span>Back</span>
+          <span className="hidden md:block">Back</span>
         </Link>
 
         <div className="flex flex-col md:flex-row h-[calc(100%-40px)] gap-8 md:gap-16">
@@ -164,16 +164,19 @@ export default function ServiceSelection() {
               </RadioGroup>
             </div>
 
-            <div className="mt-4">
+
+            <div className="mb-[4rem] w-full">
               <Button 
                 onClick={handleNext}
                 disabled={!selectedService}
-                className="bg-black text-white hover:bg-black/90 rounded-full py-3 px-6 disabled:opacity-50 disabled:cursor-not-allowed"
+                className="bg-black text-white hover:bg-black/90 rounded-full py-3 px-6 disabled:opacity-50 disabled:cursor-not-allowed w-full md:w-auto"
               >
-                Click Here to continue
+                <span className="md:hidden">Next</span>
+                <span className="hidden md:inline">Click Here to continue</span>
               </Button>
             </div>
           </div>
+
 
           <div className="hidden md:flex md:w-1/2 items-center justify-center">
             <div className="relative w-full h-[500px]">

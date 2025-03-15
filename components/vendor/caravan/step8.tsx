@@ -12,6 +12,10 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import Image from "next/image";
+import VendorBar from "./vendorbar";
+import Link from "next/link";
+import { ArrowRightIcon } from "@/public/assets/CustomIcon";
+import { Button } from "@/components/ui/button";
 
 interface Step8Props {
   onNext: () => void;
@@ -65,199 +69,227 @@ export default function Step8({ onNext, onBack, currentStep, totalSteps }: Step8
   };
 
   return (
-    <div className="fixed inset-0 flex flex-col">
-      {/* Space for app bar */}
-      <div className="h-16"></div>
+    <div className="flex flex-col min-h-screen">
+      <div className="hidden md:block">
+        <VendorBar />
+      </div>
 
-      <div className="flex-1 px-4 md:px-20 lg:px-40 overflow-auto">
-        <div className="h-full flex flex-col">
-          {/* Logo */}
-         
+      {/* Mobile: Top navigation with back button and progress bar */}
+      <div className="flex md:hidden items-center justify-between px-4 sm:px-6 mt-10 mb-6">
+        <Link href="" className="inline-flex items-center text-sm text-muted-foreground hover:text-primary">
+          <span className="mr-2">
+            <ArrowRightIcon />
+          </span>
+        </Link>
+        
+        <div className="flex-grow flex justify-center">
+          <StepProgress 
+            currentStep={currentStep} 
+            totalSteps={totalSteps} 
+          />
+        </div>
+      </div>
 
-          <div className="mt-2 mb-8">
-            <h2 className="text-xl md:text-2xl text-center font-semibold text-[#112211]">
-              Personal Details
-            </h2>
-          </div>
-
-          <div className="w-full max-w-3xl mx-auto space-y-6">
-            {/* First Name and Last Name */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div>
-                <label className="text-sm text-gray-600 block mb-2">
-                  First Name
-                </label>
-                <Input
-                  name="firstName"
-                  value={formData.firstName}
-                  onChange={handleInputChange}
-                  placeholder="First Name"
-                  className="border-[#E7E8E9] h-10 bg-white focus:ring-0 focus:border-[#B0B0B0]"
-                />
-              </div>
-              
-              <div>
-                <label className="text-sm text-gray-600 block mb-2">
-                  Last Name
-                </label>
-                <Input
-                  name="lastName"
-                  value={formData.lastName}
-                  onChange={handleInputChange}
-                  placeholder="Last Name"
-                  className="border-[#E7E8E9] h-10 bg-white focus:ring-0 focus:border-[#B0B0B0]"
-                />
-              </div>
-            </div>
-
-            {/* State and City */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div>
-                <label className="text-sm text-gray-600 block mb-2">
-                  State
-                </label>
-                <Select value={formData.state} onValueChange={handleSelectChange("state")}>
-                  <SelectTrigger className="border-[#E7E8E9] h-10 bg-white focus:ring-0 focus:border-[#B0B0B0]">
-                    <SelectValue placeholder="Select" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="delhi">Delhi</SelectItem>
-                    <SelectItem value="maharashtra">Maharashtra</SelectItem>
-                    <SelectItem value="karnataka">Karnataka</SelectItem>
-                    <SelectItem value="tamilnadu">Tamil Nadu</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-              
-              <div>
-                <label className="text-sm text-gray-600 block mb-2">
-                  City
-                </label>
-                <Select value={formData.city} onValueChange={handleSelectChange("city")}>
-                  <SelectTrigger className="border-[#E7E8E9] h-10 bg-white focus:ring-0 focus:border-[#B0B0B0]">
-                    <SelectValue placeholder="Select" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="newdelhi">New Delhi</SelectItem>
-                    <SelectItem value="mumbai">Mumbai</SelectItem>
-                    <SelectItem value="bangalore">Bangalore</SelectItem>
-                    <SelectItem value="chennai">Chennai</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-            </div>
-
-            {/* Date of Birth and Marital Status */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div>
-                <label className="text-sm text-gray-600 block mb-2">
-                  Date of Birth
-                </label>
-                <Input
-                  name="dateOfBirth"
-                  value={formData.dateOfBirth}
-                  onChange={handleInputChange}
-                  placeholder="DD/MM/YYYY"
-                  className="border-[#E7E8E9] h-10 bg-white focus:ring-0 focus:border-[#B0B0B0]"
-                />
-              </div>
-              
-              <div>
-                <label className="text-sm text-gray-600 block mb-2">
-                  Marital Status
-                </label>
-                <Select value={formData.maritalStatus} onValueChange={handleSelectChange("maritalStatus")}>
-                  <SelectTrigger className="border-[#E7E8E9] h-10 bg-white focus:ring-0 focus:border-[#B0B0B0]">
-                    <SelectValue placeholder="Select" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="single">Single</SelectItem>
-                    <SelectItem value="married">Married</SelectItem>
-                    <SelectItem value="divorced">Divorced</SelectItem>
-                    <SelectItem value="widowed">Widowed</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-            </div>
-
-            {/* ID Proof */}
+      {/* Main content */}
+      <div className="flex-grow px-4 sm:px-6 md:px-8 lg:px-[8em] pb-24 md:pb-32">
+        <div className="py-4 sm:py-6 md:py-8 px-0 sm:px-4 md:px-6 lg:px-[7rem]">
+          <div className="space-y-6 md:space-y-8">
             <div>
-              <label className="text-sm text-gray-600 block mb-2">
-                ID Proof
-              </label>
-              <Select value={formData.idProof} onValueChange={handleSelectChange("idProof")}>
-                <SelectTrigger className="border-[#E7E8E9] h-10 bg-white focus:ring-0 focus:border-[#B0B0B0]">
-                  <SelectValue placeholder="Select" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="aadhar">Aadhar Card</SelectItem>
-                  <SelectItem value="pan">PAN Card</SelectItem>
-                  <SelectItem value="passport">Passport</SelectItem>
-                  <SelectItem value="driving">Driving License</SelectItem>
-                </SelectContent>
-              </Select>
+              <h2 className="text-2xl md:text-[32px] text-center font-semibold text-[#112211]">
+                Personal Details
+              </h2>
             </div>
 
-            {/* ID Photos */}
-            <div>
-              <label className="text-sm text-gray-600 block mb-2">
-                ID Photos
-              </label>
-              <input
-                type="file"
-                ref={fileInputRef}
-                className="hidden"
-                accept="image/*"
-                onChange={handlePhotoUpload}
-              />
-              <div 
-                onClick={() => fileInputRef.current?.click()}
-                className="cursor-pointer border border-dashed border-[#E7E8E9] rounded-lg h-[120px] flex flex-col items-center justify-center bg-[#F9FAFB] hover:bg-[#F0F1F3] transition-colors relative overflow-hidden"
-              >
-                {idPhoto ? (
-                  <Image
-                    src={idPhoto}
-                    alt="ID Photo"
-                    fill
-                    style={{ objectFit: "contain" }}
+            <div className="w-full max-w-3xl mx-auto space-y-6">
+              {/* First Name and Last Name */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                  <label className="text-sm text-gray-600 block mb-2">
+                    First Name
+                  </label>
+                  <Input
+                    name="firstName"
+                    value={formData.firstName}
+                    onChange={handleInputChange}
+                    placeholder="First Name"
+                    className="border-[#E7E8E9] h-10 bg-white focus:ring-0 focus:border-[#B0B0B0]"
                   />
-                ) : (
-                  <div className="flex flex-col items-center gap-1">
-                    <svg
-                      width="24"
-                      height="24"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path
-                        d="M12 5V19M5 12H19"
-                        stroke="#667085"
-                        strokeWidth="2"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      />
-                    </svg>
-                    <span className="text-sm text-[#667085]">Upload here</span>
-                  </div>
-                )}
+                </div>
+                
+                <div>
+                  <label className="text-sm text-gray-600 block mb-2">
+                    Last Name
+                  </label>
+                  <Input
+                    name="lastName"
+                    value={formData.lastName}
+                    onChange={handleInputChange}
+                    placeholder="Last Name"
+                    className="border-[#E7E8E9] h-10 bg-white focus:ring-0 focus:border-[#B0B0B0]"
+                  />
+                </div>
+              </div>
+
+              {/* State and City */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                  <label className="text-sm text-gray-600 block mb-2">
+                    State
+                  </label>
+                  <Select value={formData.state} onValueChange={handleSelectChange("state")}>
+                    <SelectTrigger className="border-[#E7E8E9] h-10 bg-white focus:ring-0 focus:border-[#B0B0B0]">
+                      <SelectValue placeholder="Select" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="delhi">Delhi</SelectItem>
+                      <SelectItem value="maharashtra">Maharashtra</SelectItem>
+                      <SelectItem value="karnataka">Karnataka</SelectItem>
+                      <SelectItem value="tamilnadu">Tamil Nadu</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+                
+                <div>
+                  <label className="text-sm text-gray-600 block mb-2">
+                    City
+                  </label>
+                  <Select value={formData.city} onValueChange={handleSelectChange("city")}>
+                    <SelectTrigger className="border-[#E7E8E9] h-10 bg-white focus:ring-0 focus:border-[#B0B0B0]">
+                      <SelectValue placeholder="Select" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="newdelhi">New Delhi</SelectItem>
+                      <SelectItem value="mumbai">Mumbai</SelectItem>
+                      <SelectItem value="bangalore">Bangalore</SelectItem>
+                      <SelectItem value="chennai">Chennai</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+              </div>
+
+              {/* Date of Birth and Marital Status */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                  <label className="text-sm text-gray-600 block mb-2">
+                    Date of Birth
+                  </label>
+                  <Input
+                    name="dateOfBirth"
+                    value={formData.dateOfBirth}
+                    onChange={handleInputChange}
+                    placeholder="DD/MM/YYYY"
+                    className="border-[#E7E8E9] h-10 bg-white focus:ring-0 focus:border-[#B0B0B0]"
+                  />
+                </div>
+                
+                <div>
+                  <label className="text-sm text-gray-600 block mb-2">
+                    Marital Status
+                  </label>
+                  <Select value={formData.maritalStatus} onValueChange={handleSelectChange("maritalStatus")}>
+                    <SelectTrigger className="border-[#E7E8E9] h-10 bg-white focus:ring-0 focus:border-[#B0B0B0]">
+                      <SelectValue placeholder="Select" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="single">Single</SelectItem>
+                      <SelectItem value="married">Married</SelectItem>
+                      <SelectItem value="divorced">Divorced</SelectItem>
+                      <SelectItem value="widowed">Widowed</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+              </div>
+
+              {/* ID Proof */}
+              <div>
+                <label className="text-sm text-gray-600 block mb-2">
+                  ID Proof
+                </label>
+                <Select value={formData.idProof} onValueChange={handleSelectChange("idProof")}>
+                  <SelectTrigger className="border-[#E7E8E9] h-10 bg-white focus:ring-0 focus:border-[#B0B0B0]">
+                    <SelectValue placeholder="Select" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="aadhar">Aadhar Card</SelectItem>
+                    <SelectItem value="pan">PAN Card</SelectItem>
+                    <SelectItem value="passport">Passport</SelectItem>
+                    <SelectItem value="driving">Driving License</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+
+              {/* ID Photos */}
+              <div>
+                <label className="text-sm text-gray-600 block mb-2">
+                  ID Photos
+                </label>
+                <input
+                  type="file"
+                  ref={fileInputRef}
+                  className="hidden"
+                  accept="image/*"
+                  onChange={handlePhotoUpload}
+                />
+                <div 
+                  onClick={() => fileInputRef.current?.click()}
+                  className="cursor-pointer border border-dashed border-[#E7E8E9] rounded-lg h-[120px] flex flex-col items-center justify-center bg-[#F9FAFB] hover:bg-[#F0F1F3] transition-colors relative overflow-hidden"
+                >
+                  {idPhoto ? (
+                    <Image
+                      src={idPhoto}
+                      alt="ID Photo"
+                      fill
+                      style={{ objectFit: "contain" }}
+                    />
+                  ) : (
+                    <div className="flex flex-col items-center gap-1">
+                      <svg
+                        width="24"
+                        height="24"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          d="M12 5V19M5 12H19"
+                          stroke="#667085"
+                          strokeWidth="2"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        />
+                      </svg>
+                      <span className="text-sm text-[#667085]">Upload here</span>
+                    </div>
+                  )}
+                </div>
               </div>
             </div>
           </div>
         </div>
       </div>
 
-      {/* Navigation */}
-      <div className="border-t border-[#E7E8E9] pt-3 pb-3 px-4">
-        <div className="flex justify-between items-center">
-          <StepProgress currentStep={currentStep} totalSteps={totalSteps} />
-          <StepNavigation
-            onNext={onNext}
-            onBack={onBack}
-            isFirstStep={false}
-            isNextDisabled={false}
-          />
-        </div>
+      {/* Mobile: Full width Next button - fixed at bottom */}
+      <div className="md:hidden fixed bottom-0 left-0 right-0 bg-white px-4 py-4 shadow-[0_-4px_10px_rgba(0,0,0,0.05)]">
+        <Button
+          onClick={onNext}
+          className="w-full bg-black text-white hover:bg-black/90 rounded-[60px] py-[14px] px-[32px]"
+        >
+          Next
+        </Button>
+      </div>
+
+      {/* Desktop: Original navigation with progress and next/back buttons - fixed at bottom */}
+      <div className="hidden md:flex fixed bottom-0 left-0 right-0 bg-white justify-between items-center border-t border-[#E7E8E9] pt-6 pb-6 px-4 sm:px-6 md:px-8 lg:px-[7rem] shadow-[0_-4px_10px_rgba(0,0,0,0.05)]">
+        <StepProgress 
+          currentStep={currentStep} 
+          totalSteps={totalSteps} 
+        />
+        <StepNavigation 
+          onNext={onNext}
+          onBack={onBack}
+          isFirstStep={false}
+          isNextDisabled={false}
+        />
       </div>
     </div>
   );
