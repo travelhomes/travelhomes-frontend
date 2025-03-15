@@ -9,7 +9,7 @@ export default function StepProgress({ currentStep, totalSteps }: StepProgressPr
   return (
     <div className="flex items-center gap-3">
       <div className="text-sm font-medium text-[#112211]">
-        {currentStep === 1 ? 'NaN' : Math.max(0, currentStep - 1)}/{totalSteps} Completed
+        {currentStep === 1 ? '0' : Math.max(0, currentStep - 1)}/{totalSteps} Completed
       </div>
       <div className="flex gap-2">
         {[...Array(totalSteps)].map((_, index) => (
