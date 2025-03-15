@@ -6,6 +6,9 @@ import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import StepProgress from "../StepProgress";
 import StepNavigation from "../StepNavigation";
+import VendorBar from "./vendorbar";
+import Link from "next/link";
+import { ArrowRightIcon } from "@/public/assets/CustomIcon";
 
 interface Step4Props {
   onNext: () => void;
@@ -47,158 +50,190 @@ export default function Step4({ onNext, onBack, currentStep, totalSteps }: Step4
   };
 
   return (
-    <div className="fixed inset-0 flex flex-col">
-      {/* Space for app bar */}
-      <div className="h-16"></div>
+    <div className="flex flex-col min-h-screen">
+      <div className="hidden md:block">
+        <VendorBar />
+      </div>
 
-      <div className="flex-1 px-4 md:px-20 lg:px-40 overflow-hidden h-full">
-        <div className="h-full flex flex-col">
-          <div className="mt-6 mb-8">
-            <h2 className="text-xl md:text-2xl text-center font-semibold text-[#112211]">
-              Caravan Features
-            </h2>
-          </div>
+      {/* Mobile: Top navigation with back button and progress bar */}
+      <div className="flex md:hidden items-center justify-between px-4 sm:px-6 mt-10 mb-6">
+        <Link href="" className="inline-flex items-center text-sm text-muted-foreground hover:text-primary">
+          <span className="mr-2">
+            <ArrowRightIcon />
+          </span>
+        </Link>
+        
+        <div className="flex-grow flex justify-center">
+          <StepProgress 
+            currentStep={currentStep} 
+            totalSteps={totalSteps} 
+          />
+        </div>
+      </div>
 
-          <div className="space-y-6 px-[10rem]" >
-            {/* Capacity Inputs Row */}
-            <div className="flex flex-col gap-6">
-              {/* Seating Capacity */}
-              <div className="flex justify-between items-center">
-                <div className="flex-1 pr-4"> 
-                  <label className="text-sm font-medium text-[#334054] block mb-1">
-                    Seating Capacity
-                  </label>
-                  <p className="text-xs text-[#667085]">
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                  </p>
+
+      {/* Main content */}
+      <div className="flex-grow px-4 sm:px-6 md:px-8 lg:px-[8em] pb-24 md:pb-32">
+        <div className="py-4 sm:py-6 md:py-8 px-0 sm:px-4 md:px-6 lg:px-[7rem]">
+          <div className="space-y-6 md:space-y-8">
+            <div>
+              <h2 className="text-2xl md:text-[32px] text-center font-semibold text-[#112211]">
+                Caravan Features
+              </h2>
+            </div>
+
+            <div className="space-y-6">
+              {/* Capacity Inputs Row */}
+              <div className="flex flex-col gap-6">
+                {/* Seating Capacity */}
+                <div className="flex  md:flex-row md:justify-between md:items-center gap-2 md:gap-0">
+                  <div className="md:flex-1 md:pr-4"> 
+                    <label className="text-sm font-medium text-[#334054] block mb-1">
+                      Seating Capacity
+                    </label>
+                    <p className="text-xs text-[#667085]">
+                      Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                    </p>
+                  </div>
+
+                  <div className="flex items-center gap-3">
+                    <Button
+                      variant="outline"
+                      onClick={() => handleDecrement('seatingCapacity')}
+                      className="w-8 h-8 rounded-full border-[#E7E8E9] p-0 hover:bg-transparent hover:border-gray-300"
+                    >
+                      -
+                    </Button>
+                    <Input
+                      type="number"
+                      name="seatingCapacity"
+                      value={formData.seatingCapacity}
+                      onChange={handleInputChange}
+                      className="w-12 text-center border-[#E7E8E9] h-9 bg-white focus:ring-0 focus:border-[#B0B0B0]"
+                      min={1}
+                    />
+                    <Button
+                      variant="outline"
+                      onClick={() => handleIncrement('seatingCapacity')}
+                      className="w-8 h-8 rounded-full border-[#E7E8E9] p-0 hover:bg-transparent hover:border-gray-300"
+                    >
+                      +
+                    </Button>
+                  </div>
                 </div>
 
-                <div className="flex items-center gap-3">
-                  <Button
-                    variant="outline"
-                    onClick={() => handleDecrement('seatingCapacity')}
-                    className="w-8 h-8 rounded-full border-[#E7E8E9] p-0 hover:bg-transparent hover:border-gray-300"
-                  >
-                    -
-                  </Button>
-                  <Input
-                    type="number"
-                    name="seatingCapacity"
-                    value={formData.seatingCapacity}
-                    onChange={handleInputChange}
-                    className="w-12 text-center border-[#E7E8E9] h-9 bg-white focus:ring-0 focus:border-[#B0B0B0]"
-                    min={1}
-                  />
-                  <Button
-                    variant="outline"
-                    onClick={() => handleIncrement('seatingCapacity')}
-                    className="w-8 h-8 rounded-full border-[#E7E8E9] p-0 hover:bg-transparent hover:border-gray-300"
-                  >
-                    +
-                  </Button>
+                {/* Sleeping Capacity */}
+                <div className="flex md:flex-row md:justify-between md:items-center gap-2 md:gap-0">
+                  <div className="md:flex-1 md:pr-4">
+                    <label className="text-sm font-medium text-[#334054] block mb-1">
+                      Sleeping Capacity
+                    </label>
+                    <p className="text-xs text-[#667085]">
+                      Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                    </p>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <Button
+                      variant="outline"
+                      onClick={() => handleDecrement('sleepingCapacity')}
+                      className="w-8 h-8 rounded-full border-[#E7E8E9] p-0 hover:bg-transparent hover:border-gray-300"
+                    >
+                      -
+                    </Button>
+                    <Input
+                      type="number"
+                      name="sleepingCapacity"
+                      value={formData.sleepingCapacity}
+                      onChange={handleInputChange}
+                      className="w-12 text-center border-[#E7E8E9] h-9 bg-white focus:ring-0 focus:border-[#B0B0B0]"
+                      min={1}
+                    />
+                    <Button
+                      variant="outline"
+                      onClick={() => handleIncrement('sleepingCapacity')}
+                      className="w-8 h-8 rounded-full border-[#E7E8E9] p-0 hover:bg-transparent hover:border-gray-300"
+                    >
+                      +
+                    </Button>
+                  </div>
                 </div>
               </div>
 
-              {/* Sleeping Capacity */}
-              <div className="flex justify-between items-center">
-                <div className="flex-1 pr-4">
-                  <label className="text-sm font-medium text-[#334054] block mb-1">
-                    Sleeping Capacity
-                  </label>
-                  <p className="text-xs text-[#667085]">
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                  </p>
-                </div>
-                <div className="flex items-center gap-3">
-                  <Button
-                    variant="outline"
-                    onClick={() => handleDecrement('sleepingCapacity')}
-                    className="w-8 h-8 rounded-full border-[#E7E8E9] p-0 hover:bg-transparent hover:border-gray-300"
-                  >
-                    -
-                  </Button>
-                  <Input
-                    type="number"
-                    name="sleepingCapacity"
-                    value={formData.sleepingCapacity}
-                    onChange={handleInputChange}
-                    className="w-12 text-center border-[#E7E8E9] h-9 bg-white focus:ring-0 focus:border-[#B0B0B0]"
-                    min={1}
-                  />
-                  <Button
-                    variant="outline"
-                    onClick={() => handleIncrement('sleepingCapacity')}
-                    className="w-8 h-8 rounded-full border-[#E7E8E9] p-0 hover:bg-transparent hover:border-gray-300"
-                  >
-                    +
-                  </Button>
-                </div>
+              {/* Address */}
+              <div className="mt-4">
+                <label className="text-sm font-medium text-[#334054] block mb-2">
+                  Address
+                </label>
+                <Input
+                  name="address"
+                  value={formData.address}
+                  onChange={handleInputChange}
+                  placeholder="Location"
+                  className="border-[#E7E8E9] h-10 bg-white focus:ring-0 focus:border-[#B0B0B0]"
+                />
               </div>
-            </div>
 
-            {/* Address */}
-            <div className="mt-4">
-              <label className="text-sm font-medium text-[#334054] block mb-2">
-                Address
-              </label>
-              <Input
-                name="address"
-                value={formData.address}
-                onChange={handleInputChange}
-                placeholder="Location"
-                className="border-[#E7E8E9] h-10 bg-white focus:ring-0 focus:border-[#B0B0B0]"
-              />
-            </div>
+              {/* State, City, Pincode */}
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                <Input
+                  name="state"
+                  value={formData.state}
+                  onChange={handleInputChange}
+                  placeholder="State"
+                  className="border-[#E7E8E9] h-10 bg-white focus:ring-0 focus:border-[#B0B0B0]"
+                />
+                <Input
+                  name="city"
+                  value={formData.city}
+                  onChange={handleInputChange}
+                  placeholder="City"
+                  className="border-[#E7E8E9] h-10 bg-white focus:ring-0 focus:border-[#B0B0B0]"
+                />
+                <Input
+                  name="pincode"
+                  value={formData.pincode}
+                  onChange={handleInputChange}
+                  placeholder="Pincode"
+                  className="border-[#E7E8E9] h-10 bg-white focus:ring-0 focus:border-[#B0B0B0]"
+                />
+              </div>
 
-            {/* State, City, Pincode */}
-            <div className="grid grid-cols-3 gap-4">
-              <Input
-                name="state"
-                value={formData.state}
-                onChange={handleInputChange}
-                placeholder="State"
-                className="border-[#E7E8E9] h-10 bg-white focus:ring-0 focus:border-[#B0B0B0]"
-              />
-              <Input
-                name="city"
-                value={formData.city}
-                onChange={handleInputChange}
-                placeholder="City"
-                className="border-[#E7E8E9] h-10 bg-white focus:ring-0 focus:border-[#B0B0B0]"
-              />
-              <Input
-                name="pincode"
-                value={formData.pincode}
-                onChange={handleInputChange}
-                placeholder="Pincode"
-                className="border-[#E7E8E9] h-10 bg-white focus:ring-0 focus:border-[#B0B0B0]"
-              />
-            </div>
-
-            {/* Map Section */}
-            <div className="mt-4 h-[180px] relative rounded-md overflow-hidden border border-[#E7E8E9]">
-              <Image 
-                src="https://maps.googleapis.com/maps/api/staticmap?center=40.7128,-74.0060&zoom=13&size=600x300&maptype=roadmap&markers=color:red%7C40.7128,-74.0060&key=YOUR_API_KEY_HERE"
-                alt="Location Map"
-                fill
-                className="object-cover"
-              />
+              {/* Map Section */}
+              <div className="mt-4 h-[180px] relative rounded-md overflow-hidden border border-[#E7E8E9]">
+                <Image 
+                  src="https://maps.googleapis.com/maps/api/staticmap?center=40.7128,-74.0060&zoom=13&size=600x300&maptype=roadmap&markers=color:red%7C40.7128,-74.0060&key=YOUR_API_KEY_HERE"
+                  alt="Location Map"
+                  fill
+                  className="object-cover"
+                />
+              </div>
             </div>
           </div>
         </div>
       </div>
 
-      {/* Navigation */}
-      <div className="border-t border-[#E7E8E9] pt-3 pb-3 px-4">
-        <div className="flex justify-between items-center">
-          <StepProgress currentStep={currentStep} totalSteps={totalSteps} />
-          <StepNavigation
-            onNext={onNext}
-            onBack={onBack}
-            isFirstStep={false}
-            isNextDisabled={false}
-          />
-        </div>
+      {/* Mobile: Full width Next button - fixed at bottom */}
+      <div className="md:hidden fixed bottom-0 left-0 right-0 bg-white px-4 py-4 shadow-[0_-4px_10px_rgba(0,0,0,0.05)]">
+        <Button
+          onClick={onNext}
+          className="w-full bg-black text-white hover:bg-black/90 rounded-[60px] py-[14px] px-[32px]"
+        >
+          Next
+        </Button>
+      </div>
+
+      {/* Desktop: Original navigation with progress and next/back buttons - fixed at bottom */}
+      <div className="hidden md:flex fixed bottom-0 left-0 right-0 bg-white justify-between items-center border-t border-[#E7E8E9] pt-6 pb-6 px-4 sm:px-6 md:px-8 lg:px-[7rem] shadow-[0_-4px_10px_rgba(0,0,0,0.05)]">
+        <StepProgress 
+          currentStep={currentStep} 
+          totalSteps={totalSteps} 
+        />
+        <StepNavigation 
+          onNext={onNext}
+          onBack={onBack}
+          isFirstStep={false}
+          isNextDisabled={false}
+        />
       </div>
     </div>
   );
