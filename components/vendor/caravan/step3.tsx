@@ -4,6 +4,10 @@ import { useState } from "react";
 import StepProgress from "../StepProgress";
 import StepNavigation from "../StepNavigation";
 import { Bath, Tv } from 'lucide-react';
+import VendorBar from "./vendorbar";
+import Link from "next/link";
+import { ArrowRightIcon } from "@/public/assets/CustomIcon";
+import { Button } from "@/components/ui/button";
 
 interface Step3Props {
   onNext: () => void;
@@ -32,94 +36,128 @@ export default function Step3({ onNext, onBack, currentStep, totalSteps }: Step3
   };
 
   return (
-    <div className="fixed inset-0 flex flex-col">
-      {/* Top spacing area */}
-      <div className="h-16"></div>
+    <>
+      <div className="hidden md:block">
+        <VendorBar />
+      </div>
 
-      <div className="flex-1 px-4 overflow-hidden">
-        <div className="h-full flex flex-col">
-          <div className="mt-6 mb-6">
-            <h2 className="text-xl md:text-2xl text-center font-semibold text-[#112211]">
-              Caravan Features
-            </h2>
-          </div>
+      {/* Mobile: Top navigation with back button and progress bar */}
+      <div className="flex md:hidden items-center justify-between px-4 sm:px-6 mt-10 mb-6">
+        <Link href="" className="inline-flex items-center text-sm text-muted-foreground hover:text-primary">
+          <span className="mr-2">
+            <ArrowRightIcon />
+          </span>
+        </Link>
+        
+        <div className="flex-grow flex justify-center">
+          <StepProgress 
+            currentStep={currentStep} 
+            totalSteps={totalSteps} 
+          />
+        </div>
+      </div>
+  
 
-          <div className="flex flex-col items-center justify-start space-y-5">
-            {/* Row 1 */}
-            <div className="flex flex-wrap justify-center gap-3">
-              <Feature feature={{ id: "washroom", name: "Washroom", icon: <Bath className="w-5 h-5" /> }} 
-                isSelected={selectedFeatures.includes("washroom")} 
-                onToggle={toggleFeature} />
-              <Feature feature={{ id: "hot-water", name: "Hot Water", icon: <Tv className="w-5 h-5" /> }} 
-                isSelected={selectedFeatures.includes("hot-water")} 
-                onToggle={toggleFeature} />
-              <Feature feature={{ id: "fan", name: "Fan", icon: <Tv className="w-5 h-5" /> }} 
-                isSelected={selectedFeatures.includes("fan")} 
-                onToggle={toggleFeature} />
-              <Feature feature={{ id: "driver", name: "Driver", icon: <Tv className="w-5 h-5" /> }} 
-                isSelected={selectedFeatures.includes("driver")} 
-                onToggle={toggleFeature} />
-            </div>
-            
-            {/* Row 2 */}
-            <div className="flex flex-wrap justify-center gap-3">
-              <Feature feature={{ id: "refrigerator", name: "Refrigerator", icon: <Tv className="w-5 h-5" /> }} 
-                isSelected={selectedFeatures.includes("refrigerator")} 
-                onToggle={toggleFeature} />
-              <Feature feature={{ id: "ac", name: "AC", icon: <Tv className="w-5 h-5" /> }} 
-                isSelected={selectedFeatures.includes("ac")} 
-                onToggle={toggleFeature} />
-              <Feature feature={{ id: "camping-tent", name: "Camping Tent", icon: <Tv className="w-5 h-5" /> }} 
-                isSelected={selectedFeatures.includes("camping-tent")} 
-                onToggle={toggleFeature} />
-              <Feature feature={{ id: "table-chair", name: "Table & Chair", icon: <Tv className="w-5 h-5" /> }} 
-                isSelected={selectedFeatures.includes("table-chair")} 
-                onToggle={toggleFeature} />
-            </div>
-            
-            {/* Row 3 */}
-            <div className="flex flex-wrap justify-center gap-3">
-              <Feature feature={{ id: "drinking-water", name: "Drinking Water", icon: <Tv className="w-5 h-5" /> }} 
-                isSelected={selectedFeatures.includes("drinking-water")} 
-                onToggle={toggleFeature} />
-              <Feature feature={{ id: "bath", name: "Bath", icon: <Bath className="w-5 h-5" /> }} 
-                isSelected={selectedFeatures.includes("bath")} 
-                onToggle={toggleFeature} />
-              <Feature feature={{ id: "microwave-oven", name: "Microwave Oven", icon: <Tv className="w-5 h-5" /> }} 
-                isSelected={selectedFeatures.includes("microwave-oven")} 
-                onToggle={toggleFeature} />
-              <Feature feature={{ id: "indoor-games", name: "Indoor Games", icon: <Tv className="w-5 h-5" /> }} 
-                isSelected={selectedFeatures.includes("indoor-games")} 
-                onToggle={toggleFeature} />
-              <Feature feature={{ id: "bedsheet", name: "Bedsheet", icon: <Tv className="w-5 h-5" /> }} 
-                isSelected={selectedFeatures.includes("bedsheet")} 
-                onToggle={toggleFeature} />
-            </div>
-            
-            {/* Row 4 */}
-            <div className="flex flex-wrap justify-center gap-3">
-              <Feature feature={{ id: "outdoor-games", name: "Outdoor Games", icon: <Tv className="w-5 h-5" /> }} 
-                isSelected={selectedFeatures.includes("outdoor-games")} 
-                onToggle={toggleFeature} />
-              <Feature feature={{ id: "stove-induction", name: "Stove/Induction", icon: <Tv className="w-5 h-5" /> }} 
-                isSelected={selectedFeatures.includes("stove-induction")} 
-                onToggle={toggleFeature} />
-              <Feature feature={{ id: "kitchen-utensils", name: "Kitchen Utensils", icon: <Tv className="w-5 h-5" /> }} 
-                isSelected={selectedFeatures.includes("kitchen-utensils")} 
-                onToggle={toggleFeature} />
-              <Feature feature={{ id: "others", name: "+ Others", icon: <Tv className="w-5 h-5" /> }} 
-                isSelected={selectedFeatures.includes("others")} 
-                onToggle={toggleFeature} />
+      <div className="flex flex-col min-h-[calc(100vh-180px)] md:min-h-[calc(100vh-220px)]">
+        <div className="flex-grow py-4 px-4 sm:px-6 md:px-8 lg:px-[8em]">
+          <div className="py-4 sm:py-6 md:py-8 px-0 sm:px-4 md:px-6 lg:px-[7rem]">
+            <div className="space-y-6 md:space-y-8">
+              <div>
+                <h2 className="text-2xl md:text-[32px] text-center font-semibold text-[#112211]">
+                  Caravan Features
+                </h2>
+              </div>
+
+              <div className="flex flex-col items-center justify-start space-y-5">
+                {/* Row 1 */}
+                <div className="flex flex-wrap justify-center gap-3">
+                  <Feature feature={{ id: "washroom", name: "Washroom", icon: <Bath className="w-5 h-5" /> }} 
+                    isSelected={selectedFeatures.includes("washroom")} 
+                    onToggle={toggleFeature} />
+                  <Feature feature={{ id: "hot-water", name: "Hot Water", icon: <Tv className="w-5 h-5" /> }} 
+                    isSelected={selectedFeatures.includes("hot-water")} 
+                    onToggle={toggleFeature} />
+                  <Feature feature={{ id: "fan", name: "Fan", icon: <Tv className="w-5 h-5" /> }} 
+                    isSelected={selectedFeatures.includes("fan")} 
+                    onToggle={toggleFeature} />
+                  <Feature feature={{ id: "driver", name: "Driver", icon: <Tv className="w-5 h-5" /> }} 
+                    isSelected={selectedFeatures.includes("driver")} 
+                    onToggle={toggleFeature} />
+                </div>
+                
+                {/* Row 2 */}
+                <div className="flex flex-wrap justify-center gap-3">
+                  <Feature feature={{ id: "refrigerator", name: "Refrigerator", icon: <Tv className="w-5 h-5" /> }} 
+                    isSelected={selectedFeatures.includes("refrigerator")} 
+                    onToggle={toggleFeature} />
+                  <Feature feature={{ id: "ac", name: "AC", icon: <Tv className="w-5 h-5" /> }} 
+                    isSelected={selectedFeatures.includes("ac")} 
+                    onToggle={toggleFeature} />
+                  <Feature feature={{ id: "camping-tent", name: "Camping Tent", icon: <Tv className="w-5 h-5" /> }} 
+                    isSelected={selectedFeatures.includes("camping-tent")} 
+                    onToggle={toggleFeature} />
+                  <Feature feature={{ id: "table-chair", name: "Table & Chair", icon: <Tv className="w-5 h-5" /> }} 
+                    isSelected={selectedFeatures.includes("table-chair")} 
+                    onToggle={toggleFeature} />
+                </div>
+                
+                {/* Row 3 */}
+                <div className="flex flex-wrap justify-center gap-3">
+                  <Feature feature={{ id: "drinking-water", name: "Drinking Water", icon: <Tv className="w-5 h-5" /> }} 
+                    isSelected={selectedFeatures.includes("drinking-water")} 
+                    onToggle={toggleFeature} />
+                  <Feature feature={{ id: "bath", name: "Bath", icon: <Bath className="w-5 h-5" /> }} 
+                    isSelected={selectedFeatures.includes("bath")} 
+                    onToggle={toggleFeature} />
+                  <Feature feature={{ id: "microwave-oven", name: "Microwave Oven", icon: <Tv className="w-5 h-5" /> }} 
+                    isSelected={selectedFeatures.includes("microwave-oven")} 
+                    onToggle={toggleFeature} />
+                  <Feature feature={{ id: "indoor-games", name: "Indoor Games", icon: <Tv className="w-5 h-5" /> }} 
+                    isSelected={selectedFeatures.includes("indoor-games")} 
+                    onToggle={toggleFeature} />
+                  <Feature feature={{ id: "bedsheet", name: "Bedsheet", icon: <Tv className="w-5 h-5" /> }} 
+                    isSelected={selectedFeatures.includes("bedsheet")} 
+                    onToggle={toggleFeature} />
+                </div>
+                
+                {/* Row 4 */}
+                <div className="flex flex-wrap justify-center gap-3">
+                  <Feature feature={{ id: "outdoor-games", name: "Outdoor Games", icon: <Tv className="w-5 h-5" /> }} 
+                    isSelected={selectedFeatures.includes("outdoor-games")} 
+                    onToggle={toggleFeature} />
+                  <Feature feature={{ id: "stove-induction", name: "Stove/Induction", icon: <Tv className="w-5 h-5" /> }} 
+                    isSelected={selectedFeatures.includes("stove-induction")} 
+                    onToggle={toggleFeature} />
+                  <Feature feature={{ id: "kitchen-utensils", name: "Kitchen Utensils", icon: <Tv className="w-5 h-5" /> }} 
+                    isSelected={selectedFeatures.includes("kitchen-utensils")} 
+                    onToggle={toggleFeature} />
+                  <Feature feature={{ id: "others", name: "+ Others", icon: <Tv className="w-5 h-5" /> }} 
+                    isSelected={selectedFeatures.includes("others")} 
+                    onToggle={toggleFeature} />
+                </div>
+              </div>
             </div>
           </div>
         </div>
-      </div>
 
-      {/* Navigation */}
-      <div className="border-t border-[#E7E8E9] pt-3 pb-3 px-4">
-        <div className="flex justify-between items-center">
-          <StepProgress currentStep={currentStep} totalSteps={totalSteps} />
-          <StepNavigation
+        {/* Mobile: Full width Next button - fixed at bottom */}
+        <div className="md:hidden mt-[10rem]  px-4  py-4 ">
+          <Button
+            onClick={onNext}
+            disabled={selectedFeatures.length === 0}
+            className="w-full bg-black text-white hover:bg-black/90 rounded-[60px] py-[14px] px-[32px] disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            Next
+          </Button>
+        </div>
+
+        {/* Desktop: Original navigation with progress and next/back buttons - fixed at bottom */}
+        <div className="hidden md:flex justify-between items-center pt-2  md:mt-[17rem] border-t mx-[10rem]">
+          <StepProgress 
+            currentStep={currentStep} 
+            totalSteps={totalSteps} 
+          />
+          <StepNavigation 
             onNext={onNext}
             onBack={onBack}
             isFirstStep={false}
@@ -127,7 +165,7 @@ export default function Step3({ onNext, onBack, currentStep, totalSteps }: Step3
           />
         </div>
       </div>
-    </div>
+    </>
   );
 }
 
