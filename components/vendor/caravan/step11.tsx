@@ -6,7 +6,6 @@ import Link from "next/link"
 import VendorBar from "./vendorbar"
 import { ArrowRightIcon } from "@/public/assets/CustomIcon";
 import StepProgress from "../StepProgress";
-import StepNavigation from "../StepNavigation";
 
 interface Step11Props {
   onBack: () => void;
