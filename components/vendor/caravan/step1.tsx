@@ -69,7 +69,7 @@ export default function Step1({ onNext, onBack, currentStep, totalSteps }: Step1
   };
 
   return (
-    <>
+    <div className="flex flex-col min-h-screen">
       <div className="hidden md:block">
         <VendorBar />
       </div>
@@ -90,7 +90,8 @@ export default function Step1({ onNext, onBack, currentStep, totalSteps }: Step1
         </div>
       </div>
 
-      <div className="py-4 px-4 sm:px-6 md:px-8 lg:px-[8em]">
+      {/* Main content */}
+      <div className="flex-grow px-4 sm:px-6 md:px-8 lg:px-[8em] pb-24 md:pb-32">
         <div className="py-4 sm:py-6 md:py-8 px-0 sm:px-4 md:px-6 lg:px-[7rem]">
           <div className="space-y-6 md:space-y-8">
             <div>
@@ -268,31 +269,31 @@ export default function Step1({ onNext, onBack, currentStep, totalSteps }: Step1
             </div>
           </div>
         </div>
-
-        {/* Mobile: Full width Next button */}
-        <div className="md:hidden mt-8 px-4 sm:px-6 pb-6">
-          <Button
-            onClick={onNext}
-            className="w-full bg-black text-white hover:bg-black/90 rounded-[60px] py-[14px] px-[32px]"
-          >
-            Next
-          </Button>
-        </div>
-
-        {/* Desktop: Original navigation with progress and next/back buttons */}
-        <div className="hidden md:flex mt-8 justify-between items-center border-t border-[#E7E8E9] pt-6 px-4 sm:px-6 md:px-8 lg:px-[7rem]">
-          <StepProgress 
-            currentStep={currentStep} 
-            totalSteps={totalSteps} 
-          />
-          <StepNavigation 
-            onNext={onNext}
-            onBack={onBack}
-            isFirstStep={currentStep === 1}
-            isNextDisabled={false} // Disabled validation check for testing
-          />
-        </div>
       </div>
-    </>
+
+      {/* Mobile: Full width Next button - fixed at bottom */}
+      <div className="md:hidden fixed bottom-0 left-0 right-0 bg-white px-4 py-4 shadow-[0_-4px_10px_rgba(0,0,0,0.05)]">
+        <Button
+          onClick={onNext}
+          className="w-full bg-black text-white hover:bg-black/90 rounded-[60px] py-[14px] px-[32px]"
+        >
+          Next
+        </Button>
+      </div>
+
+      {/* Desktop: Original navigation with progress and next/back buttons - fixed at bottom */}
+      <div className="hidden md:flex fixed bottom-0 left-0 right-0 bg-white justify-between items-center border-t border-[#E7E8E9] pt-6 pb-6 px-4 sm:px-6 md:px-8 lg:px-[7rem] ">
+        <StepProgress 
+          currentStep={currentStep} 
+          totalSteps={totalSteps} 
+        />
+        <StepNavigation 
+          onNext={onNext}
+          onBack={onBack}
+          isFirstStep={currentStep === 1}
+          isNextDisabled={false} // Disabled validation check for testing
+        />
+      </div>
+    </div>
   );
 }
