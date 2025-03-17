@@ -46,7 +46,7 @@ export default function Step6({
 
       {/* Mobile: Top navigation with back button and progress bar */}
       <div className="flex md:hidden items-center justify-between px-4 sm:px-6 mt-10 mb-6">
-        <Link href="" className="inline-flex items-center text-sm text-muted-foreground hover:text-primary">
+        <Link href="" className="inline-flex items-center text-muted-foreground hover:text-primary">
           <span className="mr-2">
             <ArrowRightIcon />
           </span>
@@ -71,12 +71,12 @@ export default function Step6({
               </h2>
             </div>
 
-            <div className="w-full max-w-3xl mx-auto bg-white rounded-lg overflow-hidden">
+            <div className="w-full  mx-auto bg-white rounded-lg overflow-hidden">
               <div className="border border-[#E7E8E9] rounded-[12px] mt-4">
                 {/* First 5 User Discount */}
-                <div className="flex justify-between items-center p-4 ">
+                <div className="flex justify-between items-center border-dashed border-b p-4">
                   <div>
-                    <p className="text-sm font-medium">First 5 User Discount</p>
+                    <p className=" font-medium">First 5 User Discount</p>
                   </div>
                   <Switch
                     checked={firstUserDiscount}
@@ -88,14 +88,14 @@ export default function Step6({
                 {firstUserDiscount && (
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-4 p-4 bg-white">
                     <div>
-                      <label className="text-sm text-gray-600 block mb-2">
+                      <label className=" text-[#334054] block mb-2">
                         Discount Type
                       </label>
                       <Select
                         value={discountType}
                         onValueChange={setDiscountType}
                       >
-                        <SelectTrigger className="h-10">
+                        <SelectTrigger className="h-[50px]">
                           <SelectValue placeholder="Select type" />
                         </SelectTrigger>
                         <SelectContent>
@@ -106,7 +106,7 @@ export default function Step6({
                     </div>
 
                     <div>
-                      <label className="text-sm text-gray-600 block mb-2">
+                      <label className="text-[#334054] block mb-2">
                         Discount Percentage
                       </label>
                       <div className="relative">
@@ -120,13 +120,13 @@ export default function Step6({
                               e.target.value.replace(/[^0-9]/g, "")
                             )
                           }
-                          className="pl-8 h-10"
+                          className="pl-8 h-[50px]"
                         />
                       </div>
                     </div>
 
                     <div>
-                      <label className="text-sm text-gray-600 block mb-2">
+                      <label className=" text-[#334054] block mb-2">
                         Final Price
                       </label>
                       <div className="relative">
@@ -138,7 +138,7 @@ export default function Step6({
                           onChange={(e) =>
                             setFinalPrice(e.target.value.replace(/[^0-9]/g, ""))
                           }
-                          className="pl-8 h-10"
+                          className="pl-8 h-[50px]"
                         />
                       </div>
                     </div>
@@ -149,7 +149,7 @@ export default function Step6({
               {/* Festival Offers */}
               <div className="flex justify-between items-center p-4 border border-[#E7E8E9] rounded-[12px] mt-4">
                 <div>
-                  <p className="text-sm font-medium">Festival Offers</p>
+                  <p className="font-medium">Festival Offers</p>
                 </div>
                 <Switch
                   checked={festivalOffers}
@@ -160,7 +160,7 @@ export default function Step6({
               {/* Weekly or Monthly Offers */}
               <div className="flex justify-between items-center p-4 border border-[#E7E8E9] rounded-[12px] mt-4">
                 <div>
-                  <p className="text-sm font-medium">Weekly or Monthly Offers</p>
+                  <p className="text font-medium">Weekly or Monthly Offers</p>
                 </div>
                 <Switch
                   checked={weeklyMonthlyOffers}
@@ -171,7 +171,7 @@ export default function Step6({
               {/* Special Offers */}
               <div className="flex justify-between items-center p-4 border border-[#E7E8E9] rounded-[12px] mt-4">
                 <div>
-                  <p className="text-sm font-medium">Special Offers</p>
+                  <p className="font-medium">Special Offers</p>
                 </div>
                 <Switch
                   checked={specialOffers}

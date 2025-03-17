@@ -8,6 +8,12 @@ import VendorBar from "./vendorbar";
 import Link from "next/link";
 import { ArrowRightIcon } from "@/public/assets/CustomIcon";
 import { Button } from "@/components/ui/button";
+import { Plus_Jakarta_Sans } from "next/font/google";
+
+const plusJakartaSans = Plus_Jakarta_Sans({ 
+  subsets: ["latin"],
+  weight: ['400', '500', '600', '700'],
+});
 
 interface Step7Props {
   onNext: () => void;
@@ -38,14 +44,14 @@ export default function Step7({ onNext, onBack, currentStep, totalSteps }: Step7
   };
 
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className={`flex flex-col min-h-screen ${plusJakartaSans.className}`}>
       <div className="hidden md:block">
         <VendorBar />
       </div>
 
       {/* Mobile: Top navigation with back button and progress bar */}
       <div className="flex md:hidden items-center justify-between px-4 sm:px-6 mt-10 mb-6">
-        <Link href="" className="inline-flex items-center text-sm text-muted-foreground hover:text-primary">
+        <Link href="" className="inline-flex items-center  text-muted-foreground hover:text-primary">
           <span className="mr-2">
             <ArrowRightIcon />
           </span>
@@ -61,19 +67,19 @@ export default function Step7({ onNext, onBack, currentStep, totalSteps }: Step7
 
       {/* Main content */}
       <div className="flex-grow px-4 sm:px-6 md:px-8 lg:px-[8em] pb-24 md:pb-32">
-        <div className="py-4 sm:py-6 md:py-8 px-0 sm:px-4 md:px-6 lg:px-[7rem]">
-          <div className="space-y-6 md:space-y-8">
+        <div className="py-4 sm:py-6 md:py-8 px-0 sm:px-4 md:px-6 lg:px-[7rem] flex justify-center">
+          <div className="space-y-6 md:space-y-8 w-full max-w-[890px]">
             <div>
-              <h2 className="text-2xl md:text-[32px] text-center font-semibold text-[#112211]">
+              <h2 className="text-2xl mb-[50px] md:text-[32px] text-center font-semibold text-[#112211]">
                 Business Details
               </h2>
             </div>
 
-            <div className="w-full max-w-3xl mx-auto space-y-6">
+            <div className="space-y-6 ">
               {/* Brand Name and Legal Company Name */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
-                  <label className="text-sm text-gray-600 block mb-2">
+                  <label className=" text-gray-600 block mb-2">
                     Brand Name
                   </label>
                   <Input
@@ -81,12 +87,12 @@ export default function Step7({ onNext, onBack, currentStep, totalSteps }: Step7
                     value={formData.brandName}
                     onChange={handleInputChange}
                     placeholder="Name"
-                    className="border-[#E7E8E9] h-10 bg-white focus:ring-0 focus:border-[#B0B0B0]"
+                    className="border-[#E7E8E9] placeholder-[#98A2B3] h-[50px] bg-white focus:ring-0 focus:border-[#B0B0B0]"
                   />
                 </div>
                 
                 <div>
-                  <label className="text-sm text-gray-600 block mb-2">
+                  <label className=" text-gray-600 block mb-2">
                     Legal Company Name
                   </label>
                   <Input
@@ -94,7 +100,7 @@ export default function Step7({ onNext, onBack, currentStep, totalSteps }: Step7
                     value={formData.legalCompanyName}
                     onChange={handleInputChange}
                     placeholder="Company Name"
-                    className="border-[#E7E8E9] h-10 bg-white focus:ring-0 focus:border-[#B0B0B0]"
+                    className="border-[#E7E8E9] placeholder-[#98A2B3] h-[50px] bg-white focus:ring-0 focus:border-[#B0B0B0]"
                   />
                 </div>
               </div>
@@ -102,7 +108,7 @@ export default function Step7({ onNext, onBack, currentStep, totalSteps }: Step7
               {/* GST Number and Business Email ID */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
-                  <label className="text-sm text-gray-600 block mb-2">
+                  <label className=" text-gray-600 block mb-2">
                     GST Number
                   </label>
                   <Input
@@ -110,12 +116,12 @@ export default function Step7({ onNext, onBack, currentStep, totalSteps }: Step7
                     value={formData.gstNumber}
                     onChange={handleInputChange}
                     placeholder="XXXXXXXX"
-                    className="border-[#E7E8E9] h-10 bg-white focus:ring-0 focus:border-[#B0B0B0]"
+                    className="border-[#E7E8E9] placeholder-[#98A2B3] h-[50px] bg-white focus:ring-0 focus:border-[#B0B0B0]"
                   />
                 </div>
                 
                 <div>
-                  <label className="text-sm text-gray-600 block mb-2">
+                  <label className=" text-gray-600 block mb-2">
                     Business Email ID
                   </label>
                   <Input
@@ -123,33 +129,34 @@ export default function Step7({ onNext, onBack, currentStep, totalSteps }: Step7
                     value={formData.businessEmailId}
                     onChange={handleInputChange}
                     placeholder="example@mail.com"
-                    className="border-[#E7E8E9] h-10 bg-white focus:ring-0 focus:border-[#B0B0B0]"
+                    className="border-[#E7E8E9] placeholder-[#3e7be4] text-[#98A2B3] h-[50px] bg-white focus:ring-0 focus:border-[#B0B0B0]"
                   />
                 </div>
               </div>
 
               {/* Business Phone Number */}
               <div>
-                <label className="text-sm text-gray-600 block mb-2">
+                <label className=" text-gray-600 block mb-2">
                   Business Phone number
                 </label>
                 <div className="flex">
                   <div className="flex items-center border border-[#E7E8E9] rounded-l-md px-3 bg-white">
-                    <span className="text-sm text-gray-600">+91</span>
+                    <span className="mr-4">🇮🇳</span>
+                    <span className=" text-[#98A2B3]">+91</span>
                   </div>
                   <Input
                     name="businessPhoneNumber"
                     value={formData.businessPhoneNumber}
                     onChange={handleInputChange}
-                    placeholder="XXXX-XXXX"
-                    className="border-[#E7E8E9] h-10 bg-white focus:ring-0 focus:border-[#B0B0B0] rounded-l-none"
+                    placeholder="83443-52234"
+                    className="border-[#E7E8E9] text-[#98A2B3] h-[50px] bg-white focus:ring-0 focus:border-[#B0B0B0] rounded-l-none"
                   />
                 </div>
               </div>
 
               {/* Business Address */}
               <div>
-                <label className="text-sm text-gray-600 block mb-2">
+                <label className=" text-gray-600 block mb-2">
                   Business Address
                 </label>
                 <Input
@@ -157,7 +164,7 @@ export default function Step7({ onNext, onBack, currentStep, totalSteps }: Step7
                   value={formData.businessAddress}
                   onChange={handleInputChange}
                   placeholder="Locality"
-                  className="border-[#E7E8E9] h-10 bg-white focus:ring-0 focus:border-[#B0B0B0]"
+                  className="border-[#E7E8E9] h-[50px] bg-white focus:ring-0 focus:border-[#B0B0B0]"
                 />
               </div>
 
@@ -168,21 +175,21 @@ export default function Step7({ onNext, onBack, currentStep, totalSteps }: Step7
                   value={formData.state}
                   onChange={handleInputChange}
                   placeholder="State"
-                  className="border-[#E7E8E9] h-10 bg-white focus:ring-0 focus:border-[#B0B0B0]"
+                  className="border-[#E7E8E9] h-[50px] bg-white focus:ring-0 focus:border-[#B0B0B0]"
                 />
                 <Input
                   name="city"
                   value={formData.city}
                   onChange={handleInputChange}
                   placeholder="City"
-                  className="border-[#E7E8E9] h-10 bg-white focus:ring-0 focus:border-[#B0B0B0]"
+                  className="border-[#E7E8E9] h-[50px] bg-white focus:ring-0 focus:border-[#B0B0B0]"
                 />
                 <Input
                   name="pincode"
                   value={formData.pincode}
                   onChange={handleInputChange}
                   placeholder="Pincode"
-                  className="border-[#E7E8E9] h-10 bg-white focus:ring-0 focus:border-[#B0B0B0]"
+                  className="border-[#E7E8E9] h-[50px] bg-white focus:ring-0 focus:border-[#B0B0B0]"
                 />
               </div>
             </div>

@@ -8,6 +8,12 @@ import VendorBar from "./vendorbar";
 import Link from "next/link";
 import { ArrowRightIcon } from "@/public/assets/CustomIcon";
 import { Button } from "@/components/ui/button";
+import { Plus_Jakarta_Sans } from "next/font/google";
+
+const plusJakartaSans = Plus_Jakarta_Sans({ 
+  subsets: ["latin"],
+  weight: ['400', '500', '600', '700'],
+});
 
 interface Step3Props {
   onNext: () => void;
@@ -36,7 +42,7 @@ export default function Step3({ onNext, onBack, currentStep, totalSteps }: Step3
   };
 
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className={`flex flex-col min-h-screen ${plusJakartaSans.className}`}>
       <div className="hidden md:block">
         <VendorBar />
       </div>
@@ -69,7 +75,7 @@ export default function Step3({ onNext, onBack, currentStep, totalSteps }: Step3
 
             <div className="flex flex-col items-center justify-start space-y-5">
               {/* Row 1 */}
-              <div className="flex flex-wrap justify-center gap-3">
+              <div className="flex flex-wrap justify-center gap-5">
                 <Feature feature={{ id: "washroom", name: "Washroom", icon: <Bath className="w-5 h-5" /> }} 
                   isSelected={selectedFeatures.includes("washroom")} 
                   onToggle={toggleFeature} />
@@ -188,7 +194,7 @@ function Feature({
         <div className={isSelected ? "text-white" : "text-[#667085]"}>
           {feature.icon}
         </div>
-        <span className={`text-xs whitespace-nowrap
+        <span className={`px-2 whitespace-nowrap
           ${isSelected ? "text-white font-medium" : "text-[#667085] group-hover:text-gray-800"}`}
         >
           {feature.name}

@@ -26,11 +26,11 @@ interface Step8Props {
 
 export default function Step8({ onNext, onBack, currentStep, totalSteps }: Step8Props) {
   const [formData, setFormData] = useState({
-    firstName: "Rahul",
-    lastName: "Singh",
+    firstName: "",
+    lastName: "",
     state: "",
     city: "",
-    dateOfBirth: "01/01/2000",
+    dateOfBirth: "",
     maritalStatus: "",
     idProof: "",
   });
@@ -76,7 +76,7 @@ export default function Step8({ onNext, onBack, currentStep, totalSteps }: Step8
 
       {/* Mobile: Top navigation with back button and progress bar */}
       <div className="flex md:hidden items-center justify-between px-4 sm:px-6 mt-10 mb-6">
-        <Link href="" className="inline-flex items-center text-sm text-muted-foreground hover:text-primary">
+        <Link href="" className="inline-flex items-center  text-muted-foreground hover:text-primary">
           <span className="mr-2">
             <ArrowRightIcon />
           </span>
@@ -95,16 +95,16 @@ export default function Step8({ onNext, onBack, currentStep, totalSteps }: Step8
         <div className="py-4 sm:py-6 md:py-8 px-0 sm:px-4 md:px-6 lg:px-[7rem]">
           <div className="space-y-6 md:space-y-8">
             <div>
-              <h2 className="text-2xl md:text-[32px] text-center font-semibold text-[#112211]">
+              <h2 className="text-2xl md:text-[32px] mb-[50px] text-center font-semibold text-[#112211]">
                 Personal Details
               </h2>
             </div>
 
-            <div className="w-full max-w-3xl mx-auto space-y-6">
+            <div className="w-full md:w-[890px] mx-auto space-y-6">
               {/* First Name and Last Name */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
-                  <label className="text-sm text-gray-600 block mb-2">
+                  <label className=" text-[#334054] block mb-2">
                     First Name
                   </label>
                   <Input
@@ -112,12 +112,12 @@ export default function Step8({ onNext, onBack, currentStep, totalSteps }: Step8
                     value={formData.firstName}
                     onChange={handleInputChange}
                     placeholder="First Name"
-                    className="border-[#E7E8E9] h-10 bg-white focus:ring-0 focus:border-[#B0B0B0]"
+                    className="border-[#E7E8E9] h-[50px] bg-white focus:ring-0 focus:border-[#B0B0B0]"
                   />
                 </div>
                 
                 <div>
-                  <label className="text-sm text-gray-600 block mb-2">
+                  <label className=" text-[#334054] block mb-2">
                     Last Name
                   </label>
                   <Input
@@ -125,7 +125,7 @@ export default function Step8({ onNext, onBack, currentStep, totalSteps }: Step8
                     value={formData.lastName}
                     onChange={handleInputChange}
                     placeholder="Last Name"
-                    className="border-[#E7E8E9] h-10 bg-white focus:ring-0 focus:border-[#B0B0B0]"
+                    className="border-[#E7E8E9] h-[50px] bg-white focus:ring-0 focus:border-[#B0B0B0]"
                   />
                 </div>
               </div>
@@ -133,11 +133,11 @@ export default function Step8({ onNext, onBack, currentStep, totalSteps }: Step8
               {/* State and City */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
-                  <label className="text-sm text-gray-600 block mb-2">
+                  <label className=" text-[#334054] block mb-2">
                     State
                   </label>
                   <Select value={formData.state} onValueChange={handleSelectChange("state")}>
-                    <SelectTrigger className="border-[#E7E8E9] h-10 bg-white focus:ring-0 focus:border-[#B0B0B0]">
+                    <SelectTrigger className="border-[#E7E8E9] h-[50px] bg-white focus:ring-0 focus:border-[#B0B0B0]">
                       <SelectValue placeholder="Select" />
                     </SelectTrigger>
                     <SelectContent>
@@ -150,11 +150,11 @@ export default function Step8({ onNext, onBack, currentStep, totalSteps }: Step8
                 </div>
                 
                 <div>
-                  <label className="text-sm text-gray-600 block mb-2">
+                  <label className=" text-[#334054] block mb-2">
                     City
                   </label>
                   <Select value={formData.city} onValueChange={handleSelectChange("city")}>
-                    <SelectTrigger className="border-[#E7E8E9] h-10 bg-white focus:ring-0 focus:border-[#B0B0B0]">
+                    <SelectTrigger className="border-[#E7E8E9] h-[50px] bg-white focus:ring-0 focus:border-[#B0B0B0]">
                       <SelectValue placeholder="Select" />
                     </SelectTrigger>
                     <SelectContent>
@@ -170,7 +170,7 @@ export default function Step8({ onNext, onBack, currentStep, totalSteps }: Step8
               {/* Date of Birth and Marital Status */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
-                  <label className="text-sm text-gray-600 block mb-2">
+                  <label className=" text-[#334054] block mb-2">
                     Date of Birth
                   </label>
                   <Input
@@ -178,16 +178,16 @@ export default function Step8({ onNext, onBack, currentStep, totalSteps }: Step8
                     value={formData.dateOfBirth}
                     onChange={handleInputChange}
                     placeholder="DD/MM/YYYY"
-                    className="border-[#E7E8E9] h-10 bg-white focus:ring-0 focus:border-[#B0B0B0]"
+                    className="border-[#E7E8E9] h-[50px] bg-white focus:ring-0 focus:border-[#B0B0B0]"
                   />
                 </div>
                 
                 <div>
-                  <label className="text-sm text-gray-600 block mb-2">
+                  <label className=" text-[#334054] block mb-2">
                     Marital Status
                   </label>
                   <Select value={formData.maritalStatus} onValueChange={handleSelectChange("maritalStatus")}>
-                    <SelectTrigger className="border-[#E7E8E9] h-10 bg-white focus:ring-0 focus:border-[#B0B0B0]">
+                    <SelectTrigger className="border-[#E7E8E9] h-[50px] bg-white focus:ring-0 focus:border-[#B0B0B0]">
                       <SelectValue placeholder="Select" />
                     </SelectTrigger>
                     <SelectContent>
@@ -202,11 +202,11 @@ export default function Step8({ onNext, onBack, currentStep, totalSteps }: Step8
 
               {/* ID Proof */}
               <div>
-                <label className="text-sm text-gray-600 block mb-2">
+                <label className=" text-[#334054] block mb-2">
                   ID Proof
                 </label>
                 <Select value={formData.idProof} onValueChange={handleSelectChange("idProof")}>
-                  <SelectTrigger className="border-[#E7E8E9] h-10 bg-white focus:ring-0 focus:border-[#B0B0B0]">
+                  <SelectTrigger className="border-[#E7E8E9] h-[50px] bg-white focus:ring-0 focus:border-[#B0B0B0]">
                     <SelectValue placeholder="Select" />
                   </SelectTrigger>
                   <SelectContent>
@@ -220,7 +220,7 @@ export default function Step8({ onNext, onBack, currentStep, totalSteps }: Step8
 
               {/* ID Photos */}
               <div>
-                <label className="text-sm text-gray-600 block mb-2">
+                <label className=" text-[#334054] block mb-2">
                   ID Photos
                 </label>
                 <input
@@ -232,7 +232,7 @@ export default function Step8({ onNext, onBack, currentStep, totalSteps }: Step8
                 />
                 <div 
                   onClick={() => fileInputRef.current?.click()}
-                  className="cursor-pointer border border-dashed border-[#E7E8E9] rounded-lg h-[120px] flex flex-col items-center justify-center bg-[#F9FAFB] hover:bg-[#F0F1F3] transition-colors relative overflow-hidden"
+                  className="cursor-pointer border border-dashed border-[#E7E8E9] rounded-lg w-[250px] h-[180px] flex flex-col items-center justify-center bg-[#F9FAFB] hover:bg-[#F0F1F3] transition-colors relative overflow-hidden"
                 >
                   {idPhoto ? (
                     <Image
@@ -258,7 +258,7 @@ export default function Step8({ onNext, onBack, currentStep, totalSteps }: Step8
                           strokeLinejoin="round"
                         />
                       </svg>
-                      <span className="text-sm text-[#667085]">Upload here</span>
+                      <span className=" text-[#667085]">Upload here</span>
                     </div>
                   )}
                 </div>

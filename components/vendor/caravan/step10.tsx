@@ -103,7 +103,7 @@ export default function Step10({ onNext }: Step10Props) {
           <h1 className="text-2xl font-semibold text-center mb-6">Verification</h1>
           
           {/* Camera view or captured image */}
-          <div className="relative w-full max-w-md mx-auto aspect-[4/3] bg-gray-100 rounded-lg overflow-hidden mb-6">
+          <div className="relative w-full max-w-md mx-auto aspect-[3/2] bg-gray-100 rounded-lg overflow-hidden mb-6">
             {!capturedImage ? (
               <>
                 <video 
@@ -158,14 +158,14 @@ export default function Step10({ onNext }: Step10Props) {
               <Button
                 onClick={retakePhoto}
                 variant="outline"
-                className="border-black text-black hover:bg-gray-100 rounded-full py-2 px-6"
+                className="border-black text-black hover:bg-gray-100 rounded-full py-[25px] px-6"
               >
                 Retake
               </Button>
               
               <Button
                 onClick={handleSubmit}
-                className="bg-black text-white hover:bg-black/90 rounded-full py-2 px-6"
+                className="bg-black text-white hover:bg-black/90 rounded-full py-[25px] px-6"
               >
                 Submit
               </Button>

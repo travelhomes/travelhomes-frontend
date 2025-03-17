@@ -9,6 +9,12 @@ import StepNavigation from "../StepNavigation";
 import VendorBar from "./vendorbar";
 import Link from "next/link";
 import { ArrowRightIcon } from "@/public/assets/CustomIcon";
+import { Plus_Jakarta_Sans } from "next/font/google";
+
+const plusJakartaSans = Plus_Jakarta_Sans({ 
+  subsets: ["latin"],
+  weight: ['400', '500', '600', '700'],
+});
 
 interface Step4Props {
   onNext: () => void;
@@ -50,7 +56,7 @@ export default function Step4({ onNext, onBack, currentStep, totalSteps }: Step4
   };
 
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className={`flex flex-col min-h-screen ${plusJakartaSans.className}`}>
       <div className="hidden md:block">
         <VendorBar />
       </div>
@@ -74,10 +80,10 @@ export default function Step4({ onNext, onBack, currentStep, totalSteps }: Step4
 
       {/* Main content */}
       <div className="flex-grow px-4 sm:px-6 md:px-8 lg:px-[8em] pb-24 md:pb-32">
-        <div className="py-4 sm:py-6 md:py-8 px-0 sm:px-4 md:px-6 lg:px-[7rem]">
-          <div className="space-y-6 md:space-y-8">
+        <div className="py-4 sm:py-6 md:py-8 px-0 sm:px-4 md:px-6 lg:px-[7rem] flex justify-center">
+          <div className="space-y-6 md:space-y-8 w-full max-w-[800px]">
             <div>
-              <h2 className="text-2xl md:text-[32px] text-center font-semibold text-[#112211]">
+              <h2 className="text-2xl mb-[50px] md:text-[32px] text-center font-semibold text-[#112211]">
                 Caravan Features
               </h2>
             </div>
@@ -86,12 +92,12 @@ export default function Step4({ onNext, onBack, currentStep, totalSteps }: Step4
               {/* Capacity Inputs Row */}
               <div className="flex flex-col gap-6">
                 {/* Seating Capacity */}
-                <div className="flex  md:flex-row md:justify-between md:items-center gap-2 md:gap-0">
+                <div className="flex  md:flex-row md:justify-between md:items-center gap-2 md:gap-0 border-b border-[#EAECF0] pb-5">
                   <div className="md:flex-1 md:pr-4"> 
-                    <label className="text-sm font-medium text-[#334054] block mb-1">
+                    <label className="text font-medium text-[#000000] block mb-1">
                       Seating Capacity
                     </label>
-                    <p className="text-xs text-[#667085]">
+                    <p className="text-[14px] text-[#334054]">
                       Lorem ipsum dolor sit amet, consectetur adipiscing elit.
                     </p>
                   </div>
@@ -123,15 +129,16 @@ export default function Step4({ onNext, onBack, currentStep, totalSteps }: Step4
                 </div>
 
                 {/* Sleeping Capacity */}
-                <div className="flex md:flex-row md:justify-between md:items-center gap-2 md:gap-0">
-                  <div className="md:flex-1 md:pr-4">
-                    <label className="text-sm font-medium text-[#334054] block mb-1">
+                <div className="flex  md:flex-row md:justify-between md:items-center gap-2 md:gap-0 border-b border-[#EAECF0] pb-5">
+                  <div className="md:flex-1 md:pr-4"> 
+                    <label className="text font-medium text-[#000000] block mb-1">
                       Sleeping Capacity
                     </label>
-                    <p className="text-xs text-[#667085]">
+                    <p className="text-[14px] text-[#334054]">
                       Lorem ipsum dolor sit amet, consectetur adipiscing elit.
                     </p>
                   </div>
+
                   <div className="flex items-center gap-3">
                     <Button
                       variant="outline"
@@ -157,11 +164,11 @@ export default function Step4({ onNext, onBack, currentStep, totalSteps }: Step4
                     </Button>
                   </div>
                 </div>
-              </div>
+                </div>
 
               {/* Address */}
               <div className="mt-4">
-                <label className="text-sm font-medium text-[#334054] block mb-2">
+                <label className="text-[#334054] block mb-5">
                   Address
                 </label>
                 <Input
@@ -199,13 +206,16 @@ export default function Step4({ onNext, onBack, currentStep, totalSteps }: Step4
               </div>
 
               {/* Map Section */}
-              <div className="mt-4 h-[180px] relative rounded-md overflow-hidden border border-[#E7E8E9]">
-                <Image 
-                  src="https://maps.googleapis.com/maps/api/staticmap?center=40.7128,-74.0060&zoom=13&size=600x300&maptype=roadmap&markers=color:red%7C40.7128,-74.0060&key=YOUR_API_KEY_HERE"
-                  alt="Location Map"
-                  fill
-                  className="object-cover"
-                />
+              <div className="mt-4 h-[300px] relative rounded-md overflow-hidden border border-[#E7E8E9]">
+                <iframe 
+                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3888.5965665774604!2d77.5945627!3d12.9715987!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bae1670c9b44e6d%3A0xf8dfc3e8517e4fe0!2sBengaluru%2C%20Karnataka!5e0!3m2!1sen!2sin!4v1679900095651!5m2!1sen!2sin"
+                  width="100%"
+                  height="100%"
+                  style={{ border: 0 }}
+                  allowFullScreen
+                  loading="lazy"
+                  referrerPolicy="no-referrer-when-downgrade"
+                ></iframe>
               </div>
             </div>
           </div>
