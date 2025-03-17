@@ -33,7 +33,7 @@ export default function StepNavigation({
       <Button
         onClick={onNext}
         disabled={isNextDisabled}
-        className="bg-black text-white hover:bg-black/90 rounded-[60px] py-[14px] px-[32px] disabled:opacity-50 disabled:cursor-not-allowed"
+        className="bg-black py-[25px] text-white hover:bg-black/90 rounded-[60px] px-[40px] disabled:opacity-50 disabled:cursor-not-allowed"
       >
        Next
       </Button>

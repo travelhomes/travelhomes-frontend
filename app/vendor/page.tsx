@@ -38,20 +38,20 @@ export default function ServiceSelection() {
   }
 
   return (
-    <div className="h-screen flex flex-col overflow-hidden">
+    <div className="h-screen flex flex-col overflow-hidden ">
       <div className="flex-1 px-6 md:p-[80px] overflow-hidden">
-        <Link href="/auth/login" className="inline-flex items-center text-sm text-muted-foreground hover:text-primary mb-6 mt-10">
+        <Link href="/auth/login" className="inline-flex items-center text-sm text-muted-foreground hover:text-primary mb-[40px]">
           <span className="mr-2">
             <ArrowRightIcon />
           </span>
-          <span className="hidden md:block">Back</span>
+          <span className="hidden md:block text-[14px] text-[#131313]">Back</span>
         </Link>
 
         <div className="flex flex-col md:flex-row h-[calc(100%-40px)] gap-8 md:gap-16">
           <div className="w-full md:w-1/2 flex flex-col h-full">
-            <div className="mb-4">
-              <h2 className="text-2xl font-semibold text-[#112211]">Which service you are offering</h2>
-              <p className="text-sm text-[#112211] opacity-75">Let&apos;s get you all set up so you can start listing your services</p>
+            <div className="mb-[32px]">
+              <h2 className="text-[32px] mb-[10px] font-semibold text-[#112211]">Which service you are offering</h2>
+              <p className="text-[18px] text-[#112211]">Let&apos;s get you all set up so you can start listing your services</p>
             </div>
 
             <div className="flex-1">
@@ -61,19 +61,19 @@ export default function ServiceSelection() {
                   <Label
                     htmlFor="caravan"
                     className={cn(
-                      "flex items-center gap-4 rounded-lg border p-3 cursor-pointer relative transition-all",
+                      "flex items-center rounded-lg border p-3 cursor-pointer relative transition-all h-[110px] mb-[4px]",
                       selectedService === "caravan" 
                         ? "border-black bg-[#FDFDFD]" 
                         : "border-[#E7E8E9] bg-[#FDFDFD] hover:border-gray-300"
                     )}
                   >
                     <div className="flex items-center gap-3 flex-1">
-                      <div className="flex-shrink-0">
+                      <div className="flex-shrink-0 mr-[20px]">
                         <BusIcon />
                       </div>
                       <div>
-                        <div className="font-medium text-base text-[#112211]">Caravan Rental</div>
-                        <p className="text-sm text-[#112211] opacity-75 mt-1">Rent out your caravan to travelers looking for unique mobile accommodation experiences</p>
+                        <div className="font-medium mb-[8px] text-[20px] text-[#112211]">Caravan Rental</div>
+                        <p className="text-[16px] text-[#112211] opacity-75 mt-1">Lorem Ipsum text for better user experience</p>
                       </div>
                     </div>
                   
@@ -97,19 +97,19 @@ export default function ServiceSelection() {
                   <Label
                     htmlFor="stays"
                     className={cn(
-                      "flex items-center gap-4 rounded-lg border p-3 cursor-pointer relative transition-all",
+                      "flex items-center gap-4 rounded-lg border p-3 cursor-pointer relative transition-all h-[110px] mb-[4px]",
                       selectedService === "stays" 
                         ? "border-black bg-[#FDFDFD]" 
                         : "border-[#E7E8E9] bg-[#FDFDFD] hover:border-gray-300"
                     )}
                   >
                     <div className="flex items-center gap-3 flex-1">
-                      <div className="flex-shrink-0">
+                      <div className="flex-shrink-0 mr-[20px]">
                         <StayIcon />
                       </div>
                       <div>
-                        <div className="font-medium text-base text-[#112211]">Stays</div>
-                        <p className="text-sm text-[#112211] opacity-75 mt-1">List your unique stays and accommodations for guests seeking memorable experiences</p>
+                        <div className="font-medium mb-[8px] text-[20px] text-[#112211]">Stays</div>
+                        <p className="text-[16px] text-[#112211] opacity-75 mt-1">Lorem Ipsum text for better user experience</p>
                       </div>
                     </div>
                     <div
@@ -132,19 +132,19 @@ export default function ServiceSelection() {
                   <Label
                     htmlFor="activity"
                     className={cn(
-                      "flex items-center gap-4 rounded-lg border p-3 cursor-pointer relative transition-all",
+                      "flex items-center gap-4 rounded-lg border p-3 cursor-pointer relative transition-all h-[110px]",
                       selectedService === "activity" 
                         ? "border-black bg-[#FDFDFD]" 
                         : "border-[#E7E8E9] bg-[#FDFDFD] hover:border-gray-300"
                     )}
                   >
                     <div className="flex items-center gap-3 flex-1">
-                      <div className="flex-shrink-0">
+                      <div className="flex-shrink-0 mr-[20px]">
                         <ActiveIcon />
                       </div>
                       <div>
-                        <div className="font-medium text-base text-[#112211]">Activity</div>
-                        <p className="text-sm text-[#112211] opacity-75 mt-1">Share your exciting activities and adventures with travelers wanting to explore</p>
+                        <div className="font-medium text-[20px] mb-[8px] text-[#112211]">Activity</div>
+                        <p className="text-[16px] text-[#112211] opacity-75 mt-1">Lorem Ipsum text for better user experience</p>
                       </div>
                     </div>
                     <div
@@ -169,7 +169,7 @@ export default function ServiceSelection() {
               <Button 
                 onClick={handleNext}
                 disabled={!selectedService}
-                className="bg-black text-white hover:bg-black/90 rounded-full py-3 px-6 disabled:opacity-50 disabled:cursor-not-allowed w-full md:w-auto"
+                className="bg-black text-white hover:bg-black/90 rounded-full py-[14px] px-[32px] disabled:opacity-50 disabled:cursor-not-allowed h-[50px] mt-4 w-full md:w-auto"
               >
                 <span className="md:hidden">Next</span>
                 <span className="hidden md:inline">Click Here to continue</span>
