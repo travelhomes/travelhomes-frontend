@@ -10,6 +10,13 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import VendorBar from "../caravan/vendorbar";
 import Link from "next/link";
 import { ArrowRightIcon } from "@/public/assets/CustomIcon";
+import { Plus_Jakarta_Sans } from "next/font/google";
+import Image from "next/image";
+
+const plusJakartaSans = Plus_Jakarta_Sans({ 
+  subsets: ["latin"],
+  weight: ['400', '500', '600', '700'],
+});
 
 interface Step3Props {
   onNext: () => void;
@@ -22,7 +29,7 @@ export default function Step3({ onNext, onBack, currentStep, totalSteps }: Step3
   const [formData, setFormData] = useState({
     price: "5,934",
     personCapacity: 1,
-    timeDuration: "",
+    timeDuration: "1-hour",
     address: "",
     state: "",
     city: "",
@@ -65,7 +72,7 @@ export default function Step3({ onNext, onBack, currentStep, totalSteps }: Step3
   };
 
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className={`flex flex-col min-h-[50px]reen ${plusJakartaSans.className}`}>
       <div className="hidden md:block">
         <VendorBar />
       </div>
@@ -87,59 +94,49 @@ export default function Step3({ onNext, onBack, currentStep, totalSteps }: Step3
       </div>
 
       {/* Main content */}
-      <div className="flex-grow px-4 sm:px-6 md:px-8 lg:px-[8em] pb-24 md:pb-32 overflow-y-auto">
+      <div className="flex-grow px-4 sm:px-6 md:px-8 lg:px-[8em] pb-24 md:pb-32">
         <div className="py-4 sm:py-6 md:py-8 px-0 sm:px-4 md:px-6 lg:px-[7rem]">
-          <div className="space-y-6 md:space-y-8">
+          <div className="space-y-8 md:space-y-10">
             <div>
-              <h2 className="text-2xl md:text-[32px] text-center font-semibold text-[#112211]">
-                Activity Details
+              <h2 className="text-2xl md:text-[32px] text-center font-semibold text-[#112211] mb-8">
+                Pricing Details
               </h2>
             </div>
 
-            <div className="space-y-6 max-w-[800px] mx-auto">
+            <div className="space-y-8 max-w-[890px] mx-auto">
               {/* Price */}
               <div>
-                <label className="text-sm font-medium text-[#334054] block mb-2">
-                  Price (in Rupees)
+                <label className=" text-[#334054] block mb-3">
+                  Regular Price (in Rupees)
                 </label>
-                <div className="relative">
-                  <span className="absolute left-3 top-1/2 -translate-y-1/2 text-[#667085]">₹</span>
-                  <Input
-                    name="price"
-                    value={formData.price}
-                    onChange={handlePriceChange}
-                    placeholder="5,954"
-                    className="pl-8 border-[#E7E8E9] h-10 bg-white focus:ring-0 focus:border-[#B0B0B0]"
-                  />
-                </div>
+                    <div className="flex items-center font-extrabold">
+                      <span className="text-[24px] mr-1">₹</span>
+                      <span className="text-[24px]">{formData.price}</span>
+                    </div>
               </div>
 
               {/* Person Capacity */}
-              <div>
-                <label className="text-sm font-medium text-[#334054] block mb-2">
-                  Person Capacity
-                </label>
+              <div className="flex flex-row items-center justify-between border-b pb-5">
+                <div>
+                  <label className=" text-[#334054] block mb-[10px]">
+                    Person Capacity
+                  </label>
+                  <p className="text-[14px] mb-[10px] text-[#667085]">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                </div>
                 <div className="flex items-center gap-3">
                   <Button
                     type="button"
-                    variant="outline"
+                    variant="outline" 
                     onClick={handleDecrement}
                     className="w-8 h-8 rounded-full border-[#E7E8E9] p-0 hover:bg-transparent hover:border-gray-300"
                   >
                     <Minus className="w-4 h-4 text-[#667085]" />
                   </Button>
-                  <Input
-                    type="number"
-                    name="personCapacity"
-                    value={formData.personCapacity}
-                    onChange={handleInputChange}
-                    className="w-12 text-center border-[#E7E8E9] h-9 bg-white focus:ring-0 focus:border-[#B0B0B0]"
-                    min={1}
-                  />
+                  <div className="w-8 text-center">{formData.personCapacity}</div>
                   <Button
                     type="button"
                     variant="outline"
-                    onClick={handleIncrement}
+                    onClick={handleIncrement} 
                     className="w-8 h-8 rounded-full border-[#E7E8E9] p-0 hover:bg-transparent hover:border-gray-300"
                   >
                     <Plus className="w-4 h-4 text-[#667085]" />
@@ -149,11 +146,11 @@ export default function Step3({ onNext, onBack, currentStep, totalSteps }: Step3
 
               {/* Time Duration */}
               <div>
-                <label className="text-sm font-medium text-[#334054] block mb-2">
+                <label className=" text-[#334054] block mb-3">
                   Time Duration
                 </label>
                 <Select value={formData.timeDuration} onValueChange={handleSelectChange}>
-                  <SelectTrigger className="border-[#E7E8E9] h-10 bg-white focus:ring-0 focus:border-[#B0B0B0]">
+                  <SelectTrigger className="border-[#E7E8E9] h-[50px] bg-white focus:ring-0 focus:border-[#B0B0B0]">
                     <SelectValue placeholder="Select duration" />
                   </SelectTrigger>
                   <SelectContent>
@@ -169,41 +166,55 @@ export default function Step3({ onNext, onBack, currentStep, totalSteps }: Step3
 
               {/* Address */}
               <div>
-                <label className="text-sm font-medium text-[#334054] block mb-2">
+                <label className="text-[#334054] block mb-3">
                   Address
                 </label>
                 <Input
                   name="address"
                   value={formData.address}
                   onChange={handleInputChange}
-                  placeholder="Location"
-                  className="border-[#E7E8E9] h-10 bg-white focus:ring-0 focus:border-[#B0B0B0]"
+                  placeholder="Locality"
+                  className="border-[#E7E8E9] h-[50px] bg-white focus:ring-0 focus:border-[#B0B0B0] mb-4"
                 />
-              </div>
-
-              {/* State, City, Pincode */}
-              <div className="grid grid-cols-3 gap-4">
-                <Input
-                  name="state"
-                  value={formData.state}
-                  onChange={handleInputChange}
-                  placeholder="State"
-                  className="border-[#E7E8E9] h-10 bg-white focus:ring-0 focus:border-[#B0B0B0]"
-                />
-                <Input
-                  name="city"
-                  value={formData.city}
-                  onChange={handleInputChange}
-                  placeholder="City"
-                  className="border-[#E7E8E9] h-10 bg-white focus:ring-0 focus:border-[#B0B0B0]"
-                />
-                <Input
-                  name="pincode"
-                  value={formData.pincode}
-                  onChange={handleInputChange}
-                  placeholder="Pincode"
-                  className="border-[#E7E8E9] h-10 bg-white focus:ring-0 focus:border-[#B0B0B0]"
-                />
+                
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-4">
+                  <Input
+                    name="state"
+                    value={formData.state}
+                    onChange={handleInputChange}
+                    placeholder="State"
+                    className="border-[#E7E8E9] h-[50px] bg-white focus:ring-0 focus:border-[#B0B0B0]"
+                  />
+                  <Input
+                    name="city"
+                    value={formData.city}
+                    onChange={handleInputChange}
+                    placeholder="City"
+                    className="border-[#E7E8E9] h-[50px] bg-white focus:ring-0 focus:border-[#B0B0B0]"
+                  />
+                  <Input
+                    name="pincode"
+                    value={formData.pincode}
+                    onChange={handleInputChange}
+                    placeholder="Pincode"
+                    className="border-[#E7E8E9] h-[50px] bg-white focus:ring-0 focus:border-[#B0B0B0]"
+                  />
+                </div>
+                
+                {/* Google Map */}
+                <div className="relative w-full h-[50px]60px] overflow-hidden rounded-md border border-[#E7E8E9] mt-4">
+                  <iframe 
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d26356837.127240458!2d-113.70829262471046!3d36.25228826016936!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x54eab584e432360b%3A0x1c3bb99243deb742!2sUnited%20States!5e0!3m2!1sen!2sus!4v1689126069696!5m2!1sen!2sus" 
+                    width="100%" 
+                    height="160" 
+                    style={{ border: 0 }} 
+                    allowFullScreen 
+                    loading="lazy"
+                  ></iframe>
+                  <div className="absolute bottom-2 left-2 text-xs bg-white py-1 px-2 rounded shadow">
+                    <a href="#" className="text-blue-600">View larger map</a>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -212,6 +223,12 @@ export default function Step3({ onNext, onBack, currentStep, totalSteps }: Step3
 
       {/* Mobile: Full width Next button - fixed at bottom */}
       <div className="md:hidden fixed bottom-0 left-0 right-0 bg-white px-4 py-4 shadow-[0_-4px_10px_rgba(0,0,0,0.05)]">
+        <div className="flex items-center justify-between mb-2">
+          <p className="text-xs text-gray-500">2/7 Completed</p>
+          <Link href="" className="text-sm font-medium hover:underline">
+            Back
+          </Link>
+        </div>
         <Button
           onClick={onNext}
           className="w-full bg-black text-white hover:bg-black/90 rounded-[60px] py-[14px] px-[32px]"

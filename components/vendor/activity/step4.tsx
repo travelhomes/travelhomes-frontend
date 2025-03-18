@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
 import StepProgress from "../StepProgress";
 import StepNavigation from "../StepNavigation";
-import { Textarea } from "@/components/ui/textarea";
+import { Input } from "@/components/ui/input";
 import VendorBar from "../caravan/vendorbar";
 import Link from "next/link";
 import { ArrowRightIcon } from "@/public/assets/CustomIcon";
@@ -30,27 +30,27 @@ export default function Step4({ onNext, onBack, currentStep, totalSteps }: Step4
       </div>
 
       {/* Mobile: Top navigation with back button and progress bar */}
-      <div className="flex md:hidden items-center justify-between px-4 sm:px-6 mt-10 mb-6">
-        <Link href="" className="inline-flex items-center text-sm text-muted-foreground hover:text-primary">
+      <div className="flex md:hidden items-center justify-between :px-6 mt-10 mb-6">
+        <Link href="" className="inline-flex items-center  text-muted-foreground hover:text-primary">
           <span className="mr-2">
             <ArrowRightIcon />
           </span>
         </Link>
-        
+
         <div className="flex-grow flex justify-center">
-          <StepProgress 
-            currentStep={currentStep} 
-            totalSteps={totalSteps} 
+          <StepProgress
+            currentStep={currentStep}
+            totalSteps={totalSteps}
           />
         </div>
       </div>
 
       {/* Main content */}
-      <div className="flex-grow px-4 sm:px-6 md:px-8 lg:px-[8em] pb-24 md:pb-32 overflow-y-auto">
-        <div className="py-4 sm:py-6 md:py-8 px-0 sm:px-4 md:px-6 lg:px-[7rem]">
+      <div className="flex-grow  md:px-8 lg:px-[8em] pb-24 md:pb-32 overflow-y-auto">
+        <div className=" md:py-8 md:px-6 lg:px-[7rem]">
           <div className="space-y-6 md:space-y-8">
             <div>
-              <h2 className="text-2xl md:text-[32px] text-center font-semibold text-[#112211]">
+              <h2 className="text-2xl md:text-[32px] mb-[50px] text-center font-semibold text-[#112211]">
                 Inclusion & Exclusion
               </h2>
             </div>
@@ -58,21 +58,21 @@ export default function Step4({ onNext, onBack, currentStep, totalSteps }: Step4
             <div className="space-y-6 max-w-[800px] mx-auto">
               {/* Above price includes */}
               <div>
-                <label className="text-sm font-medium text-[#334054] block mb-4">
+                <label className=" text-[#334054] block mb-4">
                   Above price includes
                 </label>
-                <div className="space-y-2 mb-4">
+                <div className="space-y-2 mb-4 font-semibold">
                   {includes.map((item, index) => (
                     <div key={index} className="flex gap-2">
-                      <span className="text-sm text-[#667085]">{index + 1}.</span>
-                      <span className="text-sm text-[#667085]">{item}</span>
+                      <span >{index + 1}.</span>
+                      <span >{item}</span>
                     </div>
                   ))}
                 </div>
                 <div className="space-y-2">
-                  <Textarea
+                  <Input
                     placeholder="Text here..."
-                    className="min-h-[40px] border-[#E7E8E9] bg-white focus:ring-0 focus:border-[#B0B0B0] resize-none w-full"
+                    className="h-[50px] border-[#E7E8E9] bg-white focus:ring-0 focus:border-[#B0B0B0] w-full"
                   />
                   <div className="flex justify-end">
                     <Button
@@ -88,13 +88,13 @@ export default function Step4({ onNext, onBack, currentStep, totalSteps }: Step4
 
               {/* Above price excludes */}
               <div>
-                <label className="text-sm font-medium text-[#334054] block mb-4">
+                <label className=" text-[#334054] block mb-4">
                   Above price excludes
                 </label>
                 <div className="space-y-2">
-                  <Textarea
+                  <Input
                     placeholder="Text here..."
-                    className="min-h-[40px] border-[#E7E8E9] bg-white focus:ring-0 focus:border-[#B0B0B0] resize-none w-full"
+                    className="h-[50px] border-[#E7E8E9] bg-white focus:ring-0 focus:border-[#B0B0B0] w-full"
                   />
                   <div className="flex justify-end">
                     <Button
@@ -110,13 +110,13 @@ export default function Step4({ onNext, onBack, currentStep, totalSteps }: Step4
 
               {/* What expected from enjoyer */}
               <div>
-                <label className="text-sm font-medium text-[#334054] block mb-4">
+                <label className="text-[#334054] block mb-4">
                   What expected from enjoyer
                 </label>
                 <div className="space-y-2">
-                  <Textarea
+                  <Input
                     placeholder="Text here..."
-                    className="min-h-[40px] border-[#E7E8E9] bg-white focus:ring-0 focus:border-[#B0B0B0] resize-none w-full"
+                    className="h-[50px] border-[#E7E8E9] bg-white focus:ring-0 focus:border-[#B0B0B0] w-full"
                   />
                   <div className="flex justify-end">
                     <Button
@@ -145,12 +145,12 @@ export default function Step4({ onNext, onBack, currentStep, totalSteps }: Step4
       </div>
 
       {/* Desktop: Original navigation with progress and next/back buttons - fixed at bottom */}
-      <div className="hidden md:flex fixed bottom-0 left-0 right-0 bg-white justify-between items-center border-t border-[#E7E8E9] pt-6 pb-6 px-4 sm:px-6 md:px-8 lg:px-[7rem] shadow-[0_-4px_10px_rgba(0,0,0,0.05)]">
-        <StepProgress 
-          currentStep={currentStep} 
-          totalSteps={totalSteps} 
+      <div className="hidden md:flex fixed bottom-0 left-0 right-0 bg-white justify-between items-center border-t border-[#E7E8E9] pt-6 pb-6 :px-6 md:px-8 lg:px-[7rem] shadow-[0_-4px_10px_rgba(0,0,0,0.05)]">
+        <StepProgress
+          currentStep={currentStep}
+          totalSteps={totalSteps}
         />
-        <StepNavigation 
+        <StepNavigation
           onNext={onNext}
           onBack={onBack}
           isFirstStep={false}
