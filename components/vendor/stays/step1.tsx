@@ -7,6 +7,12 @@ import VendorBar from "../caravan/vendorbar"
 import Link from "next/link"
 import { ArrowRightIcon } from "@/public/assets/CustomIcon"
 import { Button } from "@/components/ui/button"
+import { Plus_Jakarta_Sans } from "next/font/google"
+
+const plusJakartaSans = Plus_Jakarta_Sans({ 
+  subsets: ["latin"],
+  weight: ['400', '500', '600', '700'],
+});
 
 interface PropertyType {
   id: string
@@ -48,7 +54,7 @@ export default function Step1({ onNext, onBack, currentStep, totalSteps }: Step1
   const [selectedType, setSelectedType] = useState<string>("")
 
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className={`flex flex-col min-h-screen ${plusJakartaSans.className}`}>
       <div className="hidden md:block">
         <VendorBar />
       </div>
@@ -72,21 +78,21 @@ export default function Step1({ onNext, onBack, currentStep, totalSteps }: Step1
 
       {/* Main content */}
       <div className="flex-grow px-4 sm:px-6 md:px-8 lg:px-[8em] pb-24 md:pb-32">
-        <div className="py-4 sm:py-6 md:py-8 px-0 sm:px-4 md:px-6 lg:px-[7rem]">
-          <div className="space-y-6 md:space-y-8">
+        <div className="py-4 sm:py-6 md:py-8 px-0 sm:px-4 md:px-6 lg:px-[7rem] flex justify-center">
+          <div className="space-y-6 md:space-y-8 w-full max-w-[890px]">
             <div>
-              <h2 className="text-2xl md:text-[32px] text-center font-semibold text-[#112211]">
+              <h2 className="text-2xl md:text-[32px] text-center font-semibold text-[#112211] mb-[48px]">
                 Types of Property
               </h2>
             </div>
 
             <div className="w-full">
-              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-[20px] ">
                 {propertyTypes.map((type) => (
                   <div
                     key={type.id}
                     onClick={() => setSelectedType(type.id)}
-                    className={`flex flex-col items-center justify-center p-4 rounded-lg cursor-pointer transition-all 
+                    className={`flex w-[170px] md:w-[210px] h-[80px] md:h-[107px] flex-col items-start justify-center p-4 rounded-lg cursor-pointer transition-all 
                       ${
                         selectedType === type.id
                           ? "border-2 border-black bg-[#FDFDFD]"

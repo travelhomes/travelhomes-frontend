@@ -112,7 +112,7 @@ export default function Step4({
 
       {/* Mobile: Top navigation with back button and progress bar */}
       <div className="flex md:hidden items-center justify-between px-4 sm:px-6 mt-10 mb-6">
-        <Link href="" className="inline-flex items-center text-sm text-muted-foreground hover:text-primary">
+        <Link href="" className="inline-flex items-center  text-muted-foreground hover:text-primary">
           <span className="mr-2">
             <ArrowRightIcon />
           </span>
@@ -138,7 +138,7 @@ export default function Step4({
           <div className="space-y-8 max-w-[800px] mx-auto">
             {/* Stay Type Selection */}
             <div>
-              <label className="text-sm font-medium text-[#334054] block mb-3">
+              <label className=" font-medium text-[#334054] block mb-3">
                 Select best what you think
               </label>
               <div className="flex gap-4">
@@ -157,7 +157,7 @@ export default function Step4({
                       <div className="w-2 h-2 rounded-full bg-white"></div>
                     )}
                   </div>
-                  <span className="text-sm">Entire Stay</span>
+                  <span className="">Entire Stay</span>
                 </div>
                 <div 
                   onClick={() => onStayTypeChange("individual")}
@@ -174,7 +174,7 @@ export default function Step4({
                       <div className="w-2 h-2 rounded-full bg-white"></div>
                     )}
                   </div>
-                  <span className="text-sm">Individual Room</span>
+                  <span className="">Individual Room</span>
                 </div>
               </div>
             </div>
@@ -185,7 +185,7 @@ export default function Step4({
                 {/* Guest Capacity */}
                 <div className="flex justify-between items-center">
                   <div className="flex-1 pr-4">
-                    <label className="text-sm font-medium text-[#334054] block mb-1">
+                    <label className=" font-medium text-[#334054] block mb-1">
                       Guest Capacity
                     </label>
                     <p className="text-xs text-[#667085]">
@@ -223,7 +223,7 @@ export default function Step4({
                 {/* Room Count */}
                 <div className="flex justify-between items-center">
                   <div className="flex-1 pr-4">
-                    <label className="text-sm font-medium text-[#334054] block mb-1">
+                    <label className=" font-medium text-[#334054] block mb-1">
                       Number of Rooms
                     </label>
                     <p className="text-xs text-[#667085]">
@@ -261,7 +261,7 @@ export default function Step4({
                 {/* Bed Count */}
                 <div className="flex justify-between items-center">
                   <div className="flex-1 pr-4">
-                    <label className="text-sm font-medium text-[#334054] block mb-1">
+                    <label className=" font-medium text-[#334054] block mb-1">
                       Number of Bed
                     </label>
                     <p className="text-xs text-[#667085]">
@@ -299,7 +299,7 @@ export default function Step4({
                 {/* Bathroom Count */}
                 <div className="flex justify-between items-center">
                   <div className="flex-1 pr-4">
-                    <label className="text-sm font-medium text-[#334054] block mb-1">
+                    <label className=" font-medium text-[#334054] block mb-1">
                       Number of Bathroom
                     </label>
                     <p className="text-xs text-[#667085]">
@@ -336,7 +336,7 @@ export default function Step4({
 
                 {/* Base Price */}
                 <div>
-                  <label className="text-sm font-medium text-[#334054] block mb-1">
+                  <label className=" font-medium text-[#334054] block mb-1">
                     Regular Price (in Rupees)
                   </label>
                   <div className="relative">
@@ -357,7 +357,7 @@ export default function Step4({
               <>
                 {/* Room Name */}
                 <div>
-                  <label className="text-sm font-medium text-[#334054] block mb-2">
+                  <label className=" font-medium text-[#334054] block mb-2">
                     Room 1
                   </label>
                   <Input
@@ -371,7 +371,7 @@ export default function Step4({
 
                 {/* Room Description */}
                 <div>
-                  <label className="text-sm font-medium text-[#334054] block mb-2">
+                  <label className=" font-medium text-[#334054] block mb-2">
                     Description
                   </label>
                   <Textarea
@@ -388,7 +388,7 @@ export default function Step4({
 
                 {/* Upload Photos */}
                 <div>
-                  <label className="text-sm font-medium text-[#334054] block mb-4">
+                  <label className=" font-medium text-[#334054] block mb-4">
                     Upload Photos
                   </label>
                   <input
@@ -414,7 +414,7 @@ export default function Step4({
                           />
                         ) : (
                           <div className="flex flex-col items-center gap-1">
-                            <span className="text-sm text-[#667085]">
+                            <span className=" text-[#667085]">
                               Cover Photo
                             </span>
                             <svg
@@ -456,7 +456,7 @@ export default function Step4({
                                 />
                               ) : (
                                 <div className="flex flex-col items-center gap-1">
-                                  <span className="text-sm text-[#667085]">
+                                  <span className=" text-[#667085]">
                                     Photos
                                   </span>
                                   <svg
@@ -490,7 +490,7 @@ export default function Step4({
                 {/* Guest Capacity */}
                 <div className="flex justify-between items-center">
                   <div className="flex-1 pr-4">
-                    <label className="text-sm font-medium text-[#334054] block mb-1">
+                    <label className=" font-medium text-[#334054] block mb-1">
                       Guest Capacity
                     </label>
                     <p className="text-xs text-[#667085]">
@@ -528,7 +528,7 @@ export default function Step4({
                 {/* Number of Bed */}
                 <div className="flex justify-between items-center">
                   <div className="flex-1 pr-4">
-                    <label className="text-sm font-medium text-[#334054] block mb-1">
+                    <label className=" font-medium text-[#334054] block mb-1">
                       Number of Bed
                     </label>
                     <p className="text-xs text-[#667085]">
@@ -566,7 +566,7 @@ export default function Step4({
                 {/* Number of Bathroom */}
                 <div className="flex justify-between items-center">
                   <div className="flex-1 pr-4">
-                    <label className="text-sm font-medium text-[#334054] block mb-1">
+                    <label className=" font-medium text-[#334054] block mb-1">
                       Number of Bathroom
                     </label>
                     <p className="text-xs text-[#667085]">
@@ -603,7 +603,7 @@ export default function Step4({
 
                 {/* Regular Price */}
                 <div>
-                  <label className="text-sm font-medium text-[#334054] block mb-1">
+                  <label className=" font-medium text-[#334054] block mb-1">
                     Regular Price (in Rupees)
                   </label>
                   <div className="relative">
@@ -621,7 +621,7 @@ export default function Step4({
 
                 {/* Room 2 */}
                 <div>
-                  <label className="text-sm font-medium text-[#334054] block mb-2">
+                  <label className=" font-medium text-[#334054] block mb-2">
                     Room 2
                   </label>
                   <Input

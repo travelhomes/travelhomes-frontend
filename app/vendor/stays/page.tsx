@@ -4,7 +4,7 @@ import { useState } from "react"
 import Step1 from "@/components/vendor/stays/step1"
 import Step2 from "@/components/vendor/stays/step2"
 import Step3 from "@/components/vendor/stays/step3"
-import Step4 from "@/components/vendor/stays/step4"
+import Step3Caravan from "@/components/vendor/caravan/step3"
 import Step6 from "@/components/vendor/caravan/step6"
 import Step7 from "@/components/vendor/caravan/step7"
 import Step8 from "@/components/vendor/caravan/step8"
@@ -58,15 +58,13 @@ export default function StaysRegistration() {
           totalSteps={totalSteps}
         />
       )}
-
+      
       {currentStep === 4 && (
-        <Step4 
+        <Step3Caravan 
           onNext={handleNext} 
           onBack={handleBack}
-          currentStep={currentStep}
+          currentStep={4}
           totalSteps={totalSteps}
-          stayType={stayType}
-          onStayTypeChange={handleStayTypeChange}
         />
       )}
 
@@ -74,7 +72,7 @@ export default function StaysRegistration() {
         <Step6 
           onNext={handleNext} 
           onBack={handleBack}
-          currentStep={currentStep}
+          currentStep={5}
           totalSteps={totalSteps}
         />
       )}
@@ -83,16 +81,16 @@ export default function StaysRegistration() {
         <Step7 
           onNext={handleNext} 
           onBack={handleBack}
-          currentStep={currentStep}
+          currentStep={6}
           totalSteps={totalSteps}
         />
       )}
 
       {currentStep === 7 && (
         <Step8 
-          onNext={handleNext} 
+          onNext={handleNext}
           onBack={handleBack}
-          currentStep={currentStep}
+          currentStep={7}
           totalSteps={totalSteps}
         />
       )}
@@ -108,10 +106,13 @@ export default function StaysRegistration() {
           onNext={handleNext}
         />
       )}
-
+      
       {currentStep === 10 && (
         <Step11 
-          onBack={() => setCurrentStep(9)} currentStep={0} totalSteps={0}        />
+          onBack={() => setCurrentStep(9)}
+          currentStep={10}
+          totalSteps={totalSteps}
+        />
       )}
     </div>
   )
