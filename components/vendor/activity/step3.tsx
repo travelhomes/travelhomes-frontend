@@ -11,7 +11,6 @@ import VendorBar from "../caravan/vendorbar";
 import Link from "next/link";
 import { ArrowRightIcon } from "@/public/assets/CustomIcon";
 import { Plus_Jakarta_Sans } from "next/font/google";
-import Image from "next/image";
 
 const plusJakartaSans = Plus_Jakarta_Sans({ 
   subsets: ["latin"],
@@ -42,12 +41,6 @@ export default function Step3({ onNext, onBack, currentStep, totalSteps }: Step3
       ...prev,
       [name]: value
     }));
-  };
-
-  const handlePriceChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    // Only allow numbers and commas
-    const value = e.target.value.replace(/[^0-9,]/g, '');
-    setFormData(prev => ({ ...prev, price: value }));
   };
 
   const handleIncrement = () => {

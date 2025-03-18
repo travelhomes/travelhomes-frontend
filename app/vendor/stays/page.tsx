@@ -14,7 +14,7 @@ import Step11 from "@/components/vendor/caravan/step11"
 
 export default function StaysRegistration() {
   const [currentStep, setCurrentStep] = useState(1)
-  const [stayType, setStayType] = useState<"entire" | "individual">("entire")
+  // Removed unused state variable
   const totalSteps = 10
 
   const handleNext = () => {
@@ -25,9 +25,6 @@ export default function StaysRegistration() {
     setCurrentStep((prev) => Math.max(prev - 1, 1))
   }
 
-  const handleStayTypeChange = (type: "entire" | "individual") => {
-    setStayType(type)
-  }
 
   return (
     <div>
