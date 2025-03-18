@@ -7,6 +7,12 @@ import VendorBar from "../caravan/vendorbar"
 import Link from "next/link"
 import { ArrowRightIcon } from "@/public/assets/CustomIcon"
 import { Button } from "@/components/ui/button"
+import { Plus_Jakarta_Sans } from "next/font/google"
+
+const plusJakartaSans = Plus_Jakarta_Sans({ 
+  subsets: ["latin"],
+  weight: ['400', '500', '600', '700'],
+});
 
 interface Step1Props {
   onNext: () => void
@@ -54,7 +60,7 @@ export default function Step1({ onNext, onBack, currentStep, totalSteps }: Step1
   }
 
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className={`flex flex-col min-h-screen ${plusJakartaSans.className}`}>
       <div className="hidden md:block">
         <VendorBar />
       </div>
@@ -76,30 +82,63 @@ export default function Step1({ onNext, onBack, currentStep, totalSteps }: Step1
       </div>
 
       {/* Main content */}
-      <div className="flex-grow px-4 sm:px-6 md:px-8 lg:px-[8em] pb-24 md:pb-32 overflow-y-auto">
+      <div className="flex-grow px-4 sm:px-6 md:px-8 lg:px-[8em] pb-24 md:pb-32">
         <div className="py-4 sm:py-6 md:py-8 px-0 sm:px-4 md:px-6 lg:px-[7rem]">
           <div className="space-y-6 md:space-y-8">
             <div>
-              <h2 className="text-2xl md:text-[32px] text-center font-semibold text-[#112211]">
+              <h2 className="text-2xl md:text-[32px] mb-[50px] text-center font-semibold text-[#112211]">
                 Types of Activity
               </h2>
             </div>
 
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 max-w-[1000px] mx-auto">
-              {activities.map((activity) => (
-                <div
-                  key={activity.id}
-                  onClick={() => toggleActivity(activity.id)}
-                  className={`flex flex-col items-center justify-center p-4 rounded-lg cursor-pointer transition-all ${
-                    selectedActivities.includes(activity.id)
-                      ? "border-2 border-black bg-black/5"
-                      : "border border-[#E7E8E9] hover:border-gray-300"
-                  }`}
-                >
-                  <span className="text-3xl mb-2">{activity.icon}</span>
-                  <span className="text-sm text-center text-[#112211]">{activity.name}</span>
-                </div>
-              ))}
+            <div className="flex flex-col items-center justify-start space-y-5">
+              {/* Row 1 */}
+              <div className="flex flex-wrap justify-center gap-3">
+                {activities.slice(0, 5).map((activity) => (
+                  <Activity 
+                    key={activity.id}
+                    activity={activity}
+                    isSelected={selectedActivities.includes(activity.id)}
+                    onToggle={toggleActivity}
+                  />
+                ))}
+              </div>
+
+              {/* Row 2 */}
+              <div className="flex flex-wrap justify-center gap-3">
+                {activities.slice(5, 10).map((activity) => (
+                  <Activity 
+                    key={activity.id}
+                    activity={activity}
+                    isSelected={selectedActivities.includes(activity.id)}
+                    onToggle={toggleActivity}
+                  />
+                ))}
+              </div>
+
+              {/* Row 3 */}
+              <div className="flex flex-wrap justify-center gap-3">
+                {activities.slice(10, 15).map((activity) => (
+                  <Activity 
+                    key={activity.id}
+                    activity={activity}
+                    isSelected={selectedActivities.includes(activity.id)}
+                    onToggle={toggleActivity}
+                  />
+                ))}
+              </div>
+
+              {/* Row 4 */}
+              <div className="flex flex-wrap justify-center gap-3">
+                {activities.slice(15).map((activity) => (
+                  <Activity 
+                    key={activity.id}
+                    activity={activity}
+                    isSelected={selectedActivities.includes(activity.id)}
+                    onToggle={toggleActivity}
+                  />
+                ))}
+              </div>
             </div>
 
             <div className="text-center mt-6 text-sm text-[#667085]">
@@ -113,7 +152,8 @@ export default function Step1({ onNext, onBack, currentStep, totalSteps }: Step1
       <div className="md:hidden fixed bottom-0 left-0 right-0 bg-white px-4 py-4 shadow-[0_-4px_10px_rgba(0,0,0,0.05)]">
         <Button
           onClick={onNext}
-          className="w-full bg-black text-white hover:bg-black/90 rounded-[60px] py-[14px] px-[32px]"
+          disabled={selectedActivities.length < 3}
+          className="w-full bg-black text-white hover:bg-black/90 rounded-[60px] py-[14px] px-[32px] disabled:opacity-50 disabled:cursor-not-allowed"
         >
           Next
         </Button>
@@ -129,9 +169,40 @@ export default function Step1({ onNext, onBack, currentStep, totalSteps }: Step1
           onNext={onNext}
           onBack={onBack}
           isFirstStep={true}
-          isNextDisabled={false}
+          isNextDisabled={selectedActivities.length < 3}
         />
       </div>
     </div>
   )
+}
+
+// Activity component
+function Activity({ 
+  activity, 
+  isSelected, 
+  onToggle 
+}: { 
+  activity: ActivityType; 
+  isSelected: boolean; 
+  onToggle: (id: string) => void; 
+}) {
+  return (
+    <div
+      onClick={() => onToggle(activity.id)}
+      className="flex flex-col items-center cursor-pointer transition-all group"
+    >
+      <div className={`flex items-center justify-center gap-2 px-3 py-2 rounded-full border
+        ${isSelected ? "border-black bg-black" : "border-[#E7E8E9] group-hover:border-gray-300"}`}
+      >
+        <div className={isSelected ? "text-white" : "text-[#667085]"}>
+          <span className="text-xl">{activity.icon}</span>
+        </div>
+        <span className={`px-2 whitespace-nowrap
+          ${isSelected ? "text-white font-medium" : "text-[#667085] group-hover:text-gray-800"}`}
+        >
+          {activity.name}
+        </span>
+      </div>
+    </div>
+  );
 } 

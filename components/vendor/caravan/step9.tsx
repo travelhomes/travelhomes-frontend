@@ -22,7 +22,7 @@ export default function Step9({ onNext }: Step9Props) {
 
       {/* Mobile: Top navigation with back button and progress bar */}
       <div className="flex md:hidden items-center justify-between px-4 sm:px-6 mt-10 mb-6">
-        <Link href="" className="inline-flex items-center text-sm text-muted-foreground hover:text-primary">
+        <Link href="" className="inline-flex items-center text-muted-foreground hover:text-primary">
           <span className="mr-2">
             <ArrowRightIcon />
           </span>
@@ -37,31 +37,32 @@ export default function Step9({ onNext }: Step9Props) {
       </div>
 
       <div className="flex-1 overflow-auto">
-        <div className="h-full flex flex-col justify-center items-center py-8 px-4 md:px-8">
-          <div className="w-full max-w-6xl mx-auto">
-            <div className="flex flex-col md:flex-row gap-8 md:gap-16 items-center">
+        <div className="h-full flex flex-col justify-center md:justify-start md:mt-[90px] items-center">
+          <div className="w-full mx-auto">
+            <div className="flex flex-col md:flex-row gap-8 md:gap-16 ">
               {/* Left side - Terms text */}
-              <div className="w-full md:w-1/2 flex flex-col items-center text-center md:text-left md:items-start max-w-xl mx-auto">
-                <h2 className="text-xl md:text-2xl font-semibold text-[#112211] mb-4">
-                  Terms & Conditions for Verification
+              <div className="w-[600px] md:w-1/2 flex flex-col items-center text-center md:text-left md:items-start ml-[100px]">
+                <h2 className="text-xl leading-[45px] w-[386px] md:text-[32px] font-semibold text-[#1C2939] mb-[20px]">
+                 <span> Terms & Conditions for </span> 
+                  <span>Verification</span>
                 </h2>
                 
-                <p className="text-sm text-gray-600 mb-8">
+                <p className=" text-[#485467] mb-8">
                   By proceeding with the verification process on <span className="font-medium">Travel Homes</span>, you agree to 
                   the following terms and conditions:
                 </p>
 
-                <div className="space-y-6 w-full">
+                <div className="space-y-6 w-full ">
                   <div>
-                    <p className="text-sm font-medium"> 1. Accurate Information - <span className="text-gray-600"> Provide truthful details false information may lead to account suspension.</span>  </p>
+                    <p className=" font-medium"> 1. Accurate Information - <span className="text-[#334054] font-normal"> Provide truthful details false information may lead to account suspension.</span>  </p>
                   </div>
 
                   <div>
-                    <p className="text-sm font-medium"> 2. Data Usage & Security - <span className="text-gray-600"> Your data is securely stored and used only for verification; third-party services may assist in the process.</span>  </p>
+                    <p className=" font-medium"> 2. Data Usage & Security - <span className="text-[#334054] font-normal"> Your data is securely stored and used only for verification; third-party services may assist in the process.</span>  </p>
                   </div>
 
                   <div>
-                    <p className="text-sm font-medium"> 3. Verification Rights - <span className="text-gray-600"> We may deny verification if information is invalid, and terms are subject to updates.</span>  </p>
+                    <p className="font-medium"> 3. Verification Rights - <span className="text-[#334054] font-normal"> We may deny verification if information is invalid, and terms are subject to updates.</span>  </p>
                   </div>
                 </div>
 
@@ -69,7 +70,7 @@ export default function Step9({ onNext }: Step9Props) {
                 <div className="mt-10 hidden md:block">
                   <Button
                     onClick={handleStartVerification}
-                    className="bg-black text-white hover:bg-black/90 rounded-[60px] py-[14px] px-[32px]"
+                    className="bg-black text-white hover:bg-black/90 rounded-[60px] py-[24px] px-[32px]"
                   >
                     Start Verification
                   </Button>

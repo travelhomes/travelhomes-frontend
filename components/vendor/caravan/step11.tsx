@@ -40,35 +40,35 @@ export default function Step11({ onBack, currentStep, totalSteps }: Step11Props)
       <div className="flex-grow px-4 sm:px-6 md:px-8 lg:px-[8em] pb-24 md:pb-32">
         <div className="py-4 sm:py-6 md:py-8 px-0 sm:px-4 md:px-6 lg:px-[7rem]">
           <div className="flex flex-col items-center justify-center">
-            <div className="w-full mx-auto">
+            <div className="w-[890px] mx-auto">
               {/* Party popper icon */}
               <div className="flex justify-center mb-6">
-                <div className="relative w-16 h-16 flex items-center justify-center">
-                  <span className="text-4xl">🎉</span>
+                <div className="relative flex items-center justify-center">
+                  <span className=" text-[100px]">🎉</span>
                 </div>
               </div>
               
               {/* Congratulations text */}
-              <h1 className="text-2xl md:text-[32px] font-semibold text-center mb-3">
+              <h1 className="text-2xl md:text-[32px] font-semibold text-center mb-[15px] text-[#131313] ">
                 Congratulations!
               </h1>
               
-              <p className="text-center text-gray-700 mb-8 text-sm">
+              <p className="text-center text-[#334054] text-[18px] mb-[50px]">
                 Thank you for submitting your camper van listing! Our team is reviewing the details to ensure it meets our
                 quality standards. We&apos;ll notify you via email as soon as your listing goes live.
               </p>
               
               {/* What happens next section */}
               <div className="mb-16">
-                <h2 className="font-medium mb-3">What happens next?</h2>
-                <ul className="space-y-2 text-sm">
+                <h2 className="font-medium text-[24px] text-[#131313] mb-3">What happens next?</h2>
+                <ul className="space-y-2">
                   <li className="flex items-start">
                     <span className="text-black mr-2">•</span>
-                    <span className="text-gray-700">Our team will review your listing within 24-48 hours. In some cases it may take up to seven working days.</span>
+                    <span className="text-[#334054]">Our team will review your listing within 24-48 hours. In some cases it may take up to seven working days.</span>
                   </li>
                   <li className="flex items-start">
                     <span className="text-black mr-2">•</span>
-                    <span className="text-gray-700">Once approved, your camper van will be live and ready for bookings.</span>
+                    <span className="text-[#334054]">Once approved, your camper van will be live and ready for bookings.</span>
                   </li>
                 </ul>
               </div>
@@ -89,27 +89,20 @@ export default function Step11({ onBack, currentStep, totalSteps }: Step11Props)
       </div>
 
       {/* Desktop: Bottom navigation - fixed at bottom */}
-      <div className="hidden md:flex fixed bottom-0 left-0 right-0 bg-white justify-between items-center border-t border-[#E7E8E9] pt-6 pb-6 px-4 sm:px-6 md:px-8 lg:px-[7rem] shadow-[0_-4px_10px_rgba(0,0,0,0.05)]">
-        <Button
-          onClick={onBack}
-          variant="ghost"
-          className="flex items-center text-gray-600 hover:bg-transparent hover:text-gray-900"
-        >
-          <ArrowLeft className="mr-2 h-4 w-4" />
-          Back
-        </Button>
+      <div className="hidden md:flex fixed bottom-0 left-0 right-0 bg-white justify-end items-center border-t border-[#E7E8E9] pt-6 pb-6 px-4 sm:px-6 md:px-8 lg:px-[7rem] shadow-[0_-4px_10px_rgba(0,0,0,0.05)]">
+       
         
         <div className="flex gap-3">
           <Button
             variant="outline"
-            className="rounded-[60px] border-gray-300 text-gray-700 hover:bg-gray-50 px-6"
+            className="rounded-[60px] border-gray-300 text-gray-700 hover:bg-gray-50 px-6 py-[25px]"
           >
             Edit
           </Button>
           
           <Link href="/">
             <Button
-              className="bg-black text-white hover:bg-black/90 rounded-[60px] px-6"
+              className="bg-black text-white hover:bg-black/90 rounded-[60px] px-6 py-[25px]"
             >
               Back to Home
             </Button>

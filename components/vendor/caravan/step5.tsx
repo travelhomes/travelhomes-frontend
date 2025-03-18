@@ -9,6 +9,12 @@ import StepNavigation from "../StepNavigation";
 import VendorBar from "./vendorbar";
 import Link from "next/link";
 import { ArrowRightIcon } from "@/public/assets/CustomIcon";
+import { Plus_Jakarta_Sans } from "next/font/google";
+
+const plusJakartaSans = Plus_Jakarta_Sans({ 
+  subsets: ["latin"],
+  weight: ['400', '500', '600', '700'],
+});
 
 interface Step5Props {
   onNext: () => void;
@@ -27,7 +33,7 @@ export default function Step5({ onNext, onBack, currentStep, totalSteps }: Step5
   };
 
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className={`flex flex-col min-h-screen ${plusJakartaSans.className}`}>
       <div className="hidden md:block">
         <VendorBar />
       </div>
@@ -51,18 +57,18 @@ export default function Step5({ onNext, onBack, currentStep, totalSteps }: Step5
 
       {/* Main content */}
       <div className="flex-grow px-4 sm:px-6 md:px-8 lg:px-[8em] pb-24 md:pb-32">
-        <div className="py-4 sm:py-6 md:py-8 px-0 sm:px-4 md:px-6 lg:px-[7rem]">
-          <div className="space-y-6 md:space-y-8">
+        <div className="py-4 sm:py-6 md:py-8 px-0 sm:px-4 md:px-6 lg:px-[7rem] flex justify-center">
+          <div className="space-y-6 md:space-y-8 w-full max-w-[800px]">
             <div>
-              <h2 className="text-2xl md:text-[32px] text-center font-semibold text-[#112211]">
+              <h2 className="text-2xl mb-[36px] md:text-[32px] text-center font-semibold text-[#112211]">
                 Pricing Details
               </h2>
             </div>
 
-            <div className="w-full space-y-6">
+            <div className="space-y-6">
               {/* Regular Price */}
               <div>
-                <label className="text-sm font-medium text-[#334054] block mb-2">
+                <label className=" text-[#334054] block mb-2">
                   Regular Price (in Rupees)
                 </label>
                 <div className="relative">
@@ -70,19 +76,19 @@ export default function Step5({ onNext, onBack, currentStep, totalSteps }: Step5
                   <Input
                     value={price}
                     onChange={handlePriceChange}
-                    className="pl-8 border-[#E7E8E9] h-10 bg-white focus:ring-0 focus:border-[#B0B0B0] font-medium"
+                    className="pl-8 border-[#E7E8E9] h-[50px] bg-white focus:ring-0 focus:border-[#B0B0B0] font-medium"
                   />
                 </div>
               </div>
 
               {/* Above price includes */}
               <div>
-                <label className="text-sm font-medium text-[#334054] block mb-2">
+                <label className=" text-[#334054] block mb-2">
                   Above price includes
                 </label>
                 <Input
                   placeholder="Text here..."
-                  className="border-[#E7E8E9] h-10 bg-white focus:ring-0 focus:border-[#B0B0B0] w-full"
+                  className="border-[#E7E8E9] h-[50px] bg-white focus:ring-0 focus:border-[#B0B0B0] w-full"
                 />
                 <div className="flex justify-end mt-1">
                   <Button
@@ -97,12 +103,12 @@ export default function Step5({ onNext, onBack, currentStep, totalSteps }: Step5
 
               {/* Below price includes */}
               <div>
-                <label className="text-sm font-medium text-[#334054] block mb-2">
+                <label className=" text-[#334054] block mb-2">
                   Below price excludes
                 </label>
                 <Input
                   placeholder="Text here..."
-                  className="border-[#E7E8E9] h-10 bg-white focus:ring-0 focus:border-[#B0B0B0] w-full"
+                  className="border-[#E7E8E9] h-[50px] bg-white focus:ring-0 focus:border-[#B0B0B0] w-full"
                 />
                 <div className="flex justify-end mt-1">
                   <Button

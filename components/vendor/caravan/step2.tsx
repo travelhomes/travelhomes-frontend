@@ -7,6 +7,12 @@ import { CamperCategoryIcon, ArrowRightIcon } from "@/public/assets/CustomIcon";
 import VendorBar from "./vendorbar";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import { Plus_Jakarta_Sans } from "next/font/google";
+
+const plusJakartaSans = Plus_Jakarta_Sans({ 
+  subsets: ["latin"],
+  weight: ['400', '500', '600', '700'],
+});
 
 interface Step2Props {
   onNext: () => void;
@@ -53,7 +59,7 @@ export default function Step2({ onNext, onBack, currentStep, totalSteps }: Step2
   const [selectedCategory, setSelectedCategory] = useState<string>("");
 
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className={`flex flex-col min-h-screen ${plusJakartaSans.className}`}>
       <div className="hidden md:block">
         <VendorBar />
       </div>
@@ -76,9 +82,9 @@ export default function Step2({ onNext, onBack, currentStep, totalSteps }: Step2
 
       {/* Main content */}
       <div className="flex-grow px-4 sm:px-6 md:px-8 lg:px-[8em] pb-24 md:pb-32">
-        <div className="py-4 sm:py-6 md:py-8 px-0 sm:px-4 md:px-6 lg:px-[7rem]">
-          <div className="space-y-6 md:space-y-8">
-            <div>
+        <div className="py-4 sm:py-6 md:py-8 px-0 sm:px-4 md:px-6 lg:px-[7rem] flex justify-center">
+          <div className="space-y-6 md:space-y-8 w-full max-w-[800px]">
+            <div className="mb-[20px">
               <h2 className="text-2xl md:text-[32px] text-center font-semibold text-[#112211]">
                 Choose a Camper Van Category
               </h2>
@@ -89,18 +95,18 @@ export default function Step2({ onNext, onBack, currentStep, totalSteps }: Step2
                 <div
                   key={category.id}
                   onClick={() => setSelectedCategory(category.id)}
-                  className={`flex items-center gap-4 p-4 md:p-6 border rounded-lg cursor-pointer transition-all
+                  className={`flex h-[110px] w-full items-center gap-4 p-4 md:p-6 border rounded-lg cursor-pointer transition-all
                     ${
                       selectedCategory === category.id
                         ? "border-black"
                         : "border-[#E7E8E9] hover:border-gray-300"
                     }`}
                 >
-                  <div className="flex-shrink-0">
+                  <div className="flex-shrink-0 mr-[10px]">
                     <CamperCategoryIcon />
                   </div>
-                  <div className="flex-grow">
-                    <h3 className="text-base font-medium text-[#112211]">
+                  <div className="flex-grow p-4">
+                    <h3 className=" font-medium text-[#112211]">
                       {category.title}
                     </h3>
                     <p className="text-sm text-[#667085] mt-1">

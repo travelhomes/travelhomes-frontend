@@ -10,6 +10,13 @@ import VendorBar from "../caravan/vendorbar";
 import Link from "next/link";
 import { ArrowRightIcon } from "@/public/assets/CustomIcon";
 import { Button } from "@/components/ui/button";
+import { Plus_Jakarta_Sans } from "next/font/google"
+
+const plusJakartaSans = Plus_Jakarta_Sans({ 
+  subsets: ["latin"],
+  weight: ['400', '500', '600', '700'],
+});
+
 
 interface Step2Props {
   onNext: () => void;
@@ -68,14 +75,14 @@ export default function Step2({ onNext, onBack, currentStep, totalSteps }: Step2
   };
 
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className={`flex flex-col min-h-screen ${plusJakartaSans.className}`}>
       <div className="hidden md:block">
         <VendorBar />
       </div>
 
       {/* Mobile: Top navigation with back button and progress bar */}
       <div className="flex md:hidden items-center justify-between px-4 sm:px-6 mt-10 mb-6">
-        <Link href="" className="inline-flex items-center text-sm text-muted-foreground hover:text-primary">
+        <Link href="" className="inline-flex items-center  text-muted-foreground hover:text-primary">
           <span className="mr-2">
             <ArrowRightIcon />
           </span>
@@ -94,7 +101,7 @@ export default function Step2({ onNext, onBack, currentStep, totalSteps }: Step2
         <div className="py-4 sm:py-6 md:py-8 px-0 sm:px-4 md:px-6 lg:px-[7rem]">
           <div className="space-y-6 md:space-y-8">
             <div>
-              <h2 className="text-2xl md:text-[32px] text-center font-semibold text-[#112211]">
+              <h2 className="text-2xl md:text-[32px] mb-[50px] text-center font-semibold text-[#112211]">
                 Activity Description
               </h2>
             </div>
@@ -102,15 +109,15 @@ export default function Step2({ onNext, onBack, currentStep, totalSteps }: Step2
             <div className="space-y-6 max-w-[800px] mx-auto">
               {/* Name Input */}
               <div>
-                <label className="text-sm font-medium text-[#334054] block mb-2">
+                <label className="text-[#334054] block mb-2">
                   Name
                 </label>
                 <Input
                   name="name"
                   value={formData.name}
                   onChange={handleInputChange}
-                  placeholder="Name"
-                  className="border-[#EAECF0] h-11 outline-none focus:ring-0 focus:border-[#B0B0B0]"
+                  placeholder="Name  of the Activity"
+                  className="border-[#EAECF0] h-[50px] outline-none focus:ring-0 focus:border-[#B0B0B0]"
                 />
                 <div className="text-right text-xs text-[#334054] mt-1">
                   {formData.name.length}/50
@@ -119,15 +126,15 @@ export default function Step2({ onNext, onBack, currentStep, totalSteps }: Step2
 
               {/* Description Input */}
               <div>
-                <label className="text-sm font-medium text-[#334054] block mb-2">
+                <label className=" text-[#334054] block mb-2">
                   Description
                 </label>
                 <Textarea
                   name="description"
                   value={formData.description}
                   onChange={handleInputChange}
-                  placeholder="Write here"
-                  className="border-[#EAECF0] min-h-[120px] bg-white focus:ring-0 focus:border-[#B0B0B0] resize-none"
+                  placeholder="Write here..."
+                  className="border-[#EAECF0] h-[120px] bg-white focus:ring-0 focus:border-[#B0B0B0] resize-none"
                 />
                 <div className="text-right text-xs text-[#334054] mt-1">
                   {formData.description.length}/500
@@ -136,7 +143,7 @@ export default function Step2({ onNext, onBack, currentStep, totalSteps }: Step2
 
               {/* Upload Photos */}
               <div>
-                <label className="text-sm font-medium text-[#334054] block mb-4">
+                <label className="  text-[#334054] block mb-4">
                   Upload Photos
                 </label>
                 <input
@@ -162,7 +169,7 @@ export default function Step2({ onNext, onBack, currentStep, totalSteps }: Step2
                         />
                       ) : (
                         <div className="flex flex-row md:flex-col items-center gap-1">
-                          <span className="text-sm text-[#667085]">
+                          <span className=" text-[#667085]">
                             Cover Photo
                           </span>
                           <svg
@@ -204,7 +211,7 @@ export default function Step2({ onNext, onBack, currentStep, totalSteps }: Step2
                               />
                             ) : (
                               <div className="flex flex-col items-center gap-1">
-                                <span className="text-sm text-[#667085]">
+                                <span className=" text-[#667085]">
                                   Photos
                                 </span>
                                 <svg

@@ -10,6 +10,12 @@ import StepNavigation from "../StepNavigation";
 import VendorBar from "./vendorbar";
 import Link from "next/link";
 import { ArrowRightIcon } from "@/public/assets/CustomIcon";
+import { Plus_Jakarta_Sans } from "next/font/google";
+
+const plusJakartaSans = Plus_Jakarta_Sans({ 
+  subsets: ["latin"],
+  weight: ['400', '500', '600', '700'],
+});
 
 interface Step1Props {
   onNext: () => void;
@@ -69,7 +75,7 @@ export default function Step1({ onNext, onBack, currentStep, totalSteps }: Step1
   };
 
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className={`flex flex-col min-h-screen ${plusJakartaSans.className}`}>
       <div className="hidden md:block">
         <VendorBar />
       </div>
@@ -92,18 +98,18 @@ export default function Step1({ onNext, onBack, currentStep, totalSteps }: Step1
 
       {/* Main content */}
       <div className="flex-grow px-4 sm:px-6 md:px-8 lg:px-[8em] pb-24 md:pb-32">
-        <div className="py-4 sm:py-6 md:py-8 px-0 sm:px-4 md:px-6 lg:px-[7rem]">
-          <div className="space-y-6 md:space-y-8">
-            <div>
-              <h2 className="text-2xl md:text-[32px] text-center font-semibold text-[#112211]">
+        <div className="py-4 sm:py-6 md:py-8 px-0 sm:px-4 md:px-6 lg:px-[7rem] flex justify-center">
+          <div className="space-y-6 md:space-y-8 w-full max-w-[615px]">
+            <div className="mb-[32px]">
+              <h2 className=" md:text-[32px] text-center font-semibold text-[#112211]">
                 Caravan Descriptions
               </h2>
             </div>
 
-            <div className="space-y-4 md:space-y-6">
+            <div className="space-y-4 md:space-y-6 w-full">
               {/* Name Input */}
               <div>
-                <label className="text-sm font-medium text-[#334054] block mb-2">
+                <label className=" font-normal text-[#334054] block mb-2">
                   Name
                 </label>
                 <Input
@@ -111,7 +117,7 @@ export default function Step1({ onNext, onBack, currentStep, totalSteps }: Step1
                   value={formData.name}
                   onChange={handleInputChange}
                   placeholder="Name"
-                  className="border-[#EAECF0] h-11 outline-none focus:ring-0 focus:border-[#B0B0B0]"
+                  className="border-[#EAECF0] text-[#EAECF0] h-11 outline-none focus:ring-0 focus:border-[#B0B0B0]"
                 />
                 <div className="text-right text-xs text-[#334054] mt-1">
                   {formData.name.length}/50
@@ -120,7 +126,7 @@ export default function Step1({ onNext, onBack, currentStep, totalSteps }: Step1
 
               {/* Description Input */}
               <div>
-                <label className="text-sm font-medium text-[#334054] block mb-2">
+                <label className=" font-normal text-[#334054] block mb-2">
                   Descriptions
                 </label>
                 <Textarea
@@ -136,17 +142,11 @@ export default function Step1({ onNext, onBack, currentStep, totalSteps }: Step1
               </div>
 
               {/* Rules & Regulation Input */}
-              <div>
+              <div className="relative">
                 <div className="flex justify-between items-center mb-2">
-                  <label className="text-sm font-medium text-[#334054]">
+                  <label className=" font-normal text-[#334054]">
                     Rules & Regulation
                   </label>
-                  <Button
-                    variant="ghost"
-                    className="text-[#131313] hover:text-black hover:bg-transparent p-0 h-auto text-sm"
-                  >
-                    + Add More
-                  </Button>
                 </div>
                 <Textarea
                   name="rules"
@@ -155,11 +155,17 @@ export default function Step1({ onNext, onBack, currentStep, totalSteps }: Step1
                   placeholder="Write here..."
                   className="border-[#EAECF0] min-h-[120px] bg-white focus:ring-0 focus:border-[#B0B0B0] resize-none"
                 />
+                   <Button
+                    variant="ghost"
+                    className="text-[#131313] text-[12px] absolute right-0 mt-2 hover:text-black hover:bg-transparent p-0 h-auto text-sm"
+                  >
+                    + Add More
+                  </Button>
               </div>
 
               {/* Upload Photos */}
               <div>
-                <label className="text-sm font-medium text-[#334054] block mb-2">
+                <label className="font-normal text-[#334054] block mb-2">
                   Upload Photos
                 </label>
                 <input
