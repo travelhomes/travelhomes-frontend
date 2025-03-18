@@ -3,7 +3,6 @@
 import { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import Image from "next/image";
 import StepProgress from "../StepProgress";
 import StepNavigation from "../StepNavigation";
 import VendorBar from "./vendorbar";

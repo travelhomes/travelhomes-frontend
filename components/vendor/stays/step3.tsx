@@ -11,8 +11,6 @@ import Link from "next/link";
 import { ArrowRightIcon } from "@/public/assets/CustomIcon";
 import { Button } from "@/components/ui/button";
 import { Plus_Jakarta_Sans } from "next/font/google";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { Label } from "@/components/ui/label";
 
 const plusJakartaSans = Plus_Jakarta_Sans({
   subsets: ["latin"],
@@ -27,11 +25,9 @@ interface Step3Props {
 }
 
 type StayType = "entireStay" | "individualRoom";
-type RoomType = "single" | "double" | "suite" | "deluxe";
 
 export default function Step3({ onNext, onBack, currentStep, totalSteps }: Step3Props) {
   const [stayType, setStayType] = useState<StayType>("entireStay");
-  const [roomType, setRoomType] = useState<RoomType>("single");
   const [formData, setFormData] = useState({
     name: "",
     description: "",

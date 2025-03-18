@@ -1,7 +1,6 @@
 "use client"
 
 import { Button } from "@/components/ui/button"
-import { ArrowLeft } from "lucide-react"
 import Link from "next/link"
 import VendorBar from "./vendorbar"
 import { ArrowRightIcon } from "@/public/assets/CustomIcon";
@@ -13,7 +12,7 @@ interface Step11Props {
   totalSteps: number;
 }
 
-export default function Step11({ onBack, currentStep, totalSteps }: Step11Props) {
+export default function Step11({ currentStep, totalSteps }: Step11Props) {
   return (
     <div className="flex flex-col min-h-screen">
       <div className="hidden md:block">
