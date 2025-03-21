@@ -12,7 +12,7 @@ export function Header({ title }: HeaderProps) {
   return (
     <header className="border-b bg-[#F9FAFB]">
       <div className="flex h-16 items-center justify-between px-8">
-        <h1 className="text-xl font-semibold">{title}</h1>
+        <h1 className="text-[24px] font-semibold">{title}</h1>
         
         <div className="flex items-center gap-4">
           <Button
