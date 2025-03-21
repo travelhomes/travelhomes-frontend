@@ -387,6 +387,17 @@ const MobileSearchIcon = () => {
     )
    }
 
+   const Logout = () => {
+    return (
+      <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M14.5312 12.1807L16.6646 10.0474L14.5312 7.91406" stroke="#C13515" strokeWidth="1.5" strokeMiterlimit="10" strokeLinecap="round" strokeLinejoin="round"/>
+<path d="M8.13281 10.0469H16.6078" stroke="#C13515" strokeWidth="1.5" strokeMiterlimit="10" strokeLinecap="round" strokeLinejoin="round"/>
+<path d="M9.79948 16.6693C6.11615 16.6693 3.13281 14.1693 3.13281 10.0026C3.13281 5.83594 6.11615 3.33594 9.79948 3.33594" stroke="#C13515" strokeWidth="1.5" strokeMiterlimit="10" strokeLinecap="round" strokeLinejoin="round"/>
+</svg>
+
+    )
+   }
+
 export {
   ListIcon,
   CarIcon,
@@ -414,5 +425,6 @@ export {
   BusIcon,
   CamperCategoryIcon,
   Testimoleft,
-  Testmoright
+  Testmoright,
+  Logout
 };
