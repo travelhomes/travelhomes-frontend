@@ -1,254 +1,223 @@
 import { Button } from "@/components/ui/button";
+import { CalendarIcon } from "@/public/assets/CustomIcon";
+import { ChevronDown, Clock, Upload } from "lucide-react";
+import { Plus_Jakarta_Sans } from "next/font/google";
 import { useState } from "react";
+import Image from "next/image";
+
+const plusJakartaSans = Plus_Jakarta_Sans({ 
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"]
+});
 
 export function NewBookingContent() {
-  const [step, setStep] = useState(1);
-  const [selectedPropertyType, setSelectedPropertyType] = useState("caravan");
-  
-  // Sample properties
-  const properties = [
-    { id: "prop1", name: "Newtown Motorhome", type: "caravan", image: "/properties/caravan1.jpg" },
-    { id: "prop2", name: "RV Motor Newway", type: "caravan", image: "/properties/caravan2.jpg" },
-    { id: "prop3", name: "Asthetic CamperVan", type: "caravan", image: "/properties/caravan3.jpg" },
-    { id: "prop4", name: "Luxury Beach House", type: "stays", image: "/properties/stay1.jpg" },
-    { id: "prop5", name: "Mountain View Cabin", type: "stays", image: "/properties/stay2.jpg" },
-    { id: "prop6", name: "Hiking Expedition", type: "activities", image: "/properties/activity1.jpg" },
-  ];
-  
-  const filteredProperties = properties.filter(
-    property => property.type === selectedPropertyType
-  );
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0] || null;
+    if (file) {
+      setSelectedFile(file);
+      const fileReader = new FileReader();
+      fileReader.onload = () => {
+        setPreviewUrl(fileReader.result as string);
+      };
+      fileReader.readAsDataURL(file);
+    }
+  };
 
   return (
-    <div className="p-4 space-y-6">
+    <div className="bg-white rounded-[12px] overflow-hidden relative min-h-[90vh]">
       {/* Header */}
-      <div className="flex items-center mb-6">
-        <h1 className="text-2xl font-semibold">Add New Booking</h1>
+      <div className="border-b border-[#EAECF0] py-[16px] px-[20px]">
+        <h1 className="text-[24px] font-semibold text-[#101828]">New Bookings</h1>
       </div>
       
-      {/* Step indicator */}
-      <div className="mb-8">
-        <div className="flex items-center">
-          <div className={`w-8 h-8 rounded-full flex items-center justify-center ${step >= 1 ? 'bg-black text-white' : 'bg-gray-200'}`}>
-            1
-          </div>
-          <div className={`h-1 w-16 ${step >= 2 ? 'bg-black' : 'bg-gray-200'}`}></div>
-          <div className={`w-8 h-8 rounded-full flex items-center justify-center ${step >= 2 ? 'bg-black text-white' : 'bg-gray-200'}`}>
-            2
-          </div>
-          <div className={`h-1 w-16 ${step >= 3 ? 'bg-black' : 'bg-gray-200'}`}></div>
-          <div className={`w-8 h-8 rounded-full flex items-center justify-center ${step >= 3 ? 'bg-black text-white' : 'bg-gray-200'}`}>
-            3
-          </div>
-        </div>
-        <div className="flex justify-between mt-2 text-sm font-medium">
-          <span>Select Property</span>
-          <span>Guest Information</span>
-          <span>Booking Details</span>
-        </div>
-      </div>
-      
-      {/* Step content */}
-      {step === 1 && (
+      {/* Form Content - Added pb-24 to make space for the fixed button */}
+      <div className="p-6 space-y-6 pb-24 relative">
+        {/* Service Name */}
         <div>
-          <div className="mb-6">
-            <h2 className="text-lg font-medium mb-4">Select Property Type</h2>
-            <div className="flex space-x-4">
-              <button 
-                className={`px-4 py-2 rounded-md ${selectedPropertyType === 'caravan' ? 'bg-black text-white' : 'bg-gray-100'}`}
-                onClick={() => setSelectedPropertyType('caravan')}
-              >
-                Caravans
-              </button>
-              <button 
-                className={`px-4 py-2 rounded-md ${selectedPropertyType === 'stays' ? 'bg-black text-white' : 'bg-gray-100'}`}
-                onClick={() => setSelectedPropertyType('stays')}
-              >
-                Stays
-              </button>
-              <button 
-                className={`px-4 py-2 rounded-md ${selectedPropertyType === 'activities' ? 'bg-black text-white' : 'bg-gray-100'}`}
-                onClick={() => setSelectedPropertyType('activities')}
-              >
-                Activities
-              </button>
+          <label className={`block font-normal text-[#334054] mb-2 ${plusJakartaSans.className}`}>Service Name</label>
+          <div className="relative">
+            <select 
+              className="w-full h-[48px] p-3 pr-10 border border-gray-200 rounded-lg appearance-none focus:outline-none"
+              defaultValue=""
+            >
+              <option value="" disabled>Select</option>
+              <option value="service1">XYX</option>
+              <option value="service2">XYZ</option>
+            </select>
+            <div className="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none">
+              <ChevronDown className="h-5 w-5 text-gray-400" />
             </div>
           </div>
-          
+        </div>
+        
+        {/* Name, Email, Phone Number in a row */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           <div>
-            <h2 className="text-lg font-medium mb-4">Select a Property</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              {filteredProperties.map(property => (
-                <div 
-                  key={property.id}
-                  className="border rounded-lg overflow-hidden hover:shadow-md cursor-pointer"
-                  onClick={() => setStep(2)}
-                >
-                  <div className="h-48 bg-gray-200">
-                    {/* Placeholder for property image */}
-                    <div className="w-full h-full flex items-center justify-center bg-gray-100">
-                      <span className="text-gray-400">{property.name}</span>
-                    </div>
-                  </div>
-                  <div className="p-4">
-                    <h3 className="font-medium">{property.name}</h3>
-                    <p className="text-sm text-gray-500 capitalize">{property.type}</p>
-                  </div>
-                </div>
-              ))}
-            </div>
+            <label className={`block text-[#334054] mb-2 ${plusJakartaSans.className}`}>Name</label>
+            <input 
+              type="text" 
+              className="w-full p-3 border border-gray-200 rounded-lg focus:outline-none" 
+              placeholder="Badal Singh"
+            />
+          </div>
+          <div>
+            <label className={`block text-[#334054] mb-2 ${plusJakartaSans.className}`}>Email</label>
+            <input 
+              type="email" 
+              className="w-full p-3 border border-gray-200 rounded-lg focus:outline-none" 
+              placeholder="Jpbadalsigh"
+            />
+          </div>
+          <div>
+            <label className={`block text-[#334054] mb-2 ${plusJakartaSans.className}`}>Phone Number</label>
+            <input 
+              type="tel" 
+              className="w-full p-3 border border-gray-200 rounded-lg focus:outline-none" 
+              placeholder="+91 52024 42423"
+            />
           </div>
         </div>
-      )}
-      
-      {step === 2 && (
-        <div>
-          <h2 className="text-lg font-medium mb-4">Guest Information</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 bg-white p-6 rounded-lg border">
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Full Name</label>
+        
+        {/* Checkin & Checkout Date, Time, Locations */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div>
+            <label className={`block text-[#334054] mb-2 ${plusJakartaSans.className}`}>Checkin & Checkout Date</label>
+            <div className="relative">
               <input 
                 type="text" 
-                className="w-full p-2 border rounded-md" 
-                placeholder="Enter guest's full name"
+                className="w-full p-3 border border-gray-200 rounded-lg focus:outline-none" 
+                placeholder="Jamshedpur"
               />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Email</label>
-              <input 
-                type="email" 
-                className="w-full p-2 border rounded-md" 
-                placeholder="Enter guest's email"
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Phone</label>
-              <input 
-                type="tel" 
-                className="w-full p-2 border rounded-md" 
-                placeholder="Enter guest's phone number"
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Number of Guests</label>
-              <input 
-                type="number" 
-                className="w-full p-2 border rounded-md" 
-                min="1"
-                placeholder="Enter number of guests"
-              />
-            </div>
-            <div className="md:col-span-2">
-              <label className="block text-sm font-medium text-gray-700 mb-1">Special Requests</label>
-              <textarea 
-                className="w-full p-2 border rounded-md" 
-                rows={3}
-                placeholder="Enter any special requests or notes"
-              ></textarea>
+              <div className="absolute inset-y-0 right-0 flex items-center pr-3">
+                <CalendarIcon />
+              </div>
             </div>
           </div>
-          
-          <div className="flex justify-between mt-6">
-            <Button 
-              className="bg-gray-200 hover:bg-gray-300 text-black"
-              onClick={() => setStep(1)}
-            >
-              Back
-            </Button>
-            <Button 
-              className="bg-black hover:bg-black/90 text-white"
-              onClick={() => setStep(3)}
-            >
-              Next
-            </Button>
+          <div>
+            <label className={`block text-[#334054] mb-2 ${plusJakartaSans.className}`}>Checkin & Checkout Time</label>
+            <div className="relative">
+              <input 
+                type="text" 
+                className="w-full p-3 border border-gray-200 rounded-lg focus:outline-none" 
+                placeholder="Jamshedpur"
+              />
+              <div className="absolute inset-y-0 right-0 flex items-center pr-3">
+                <Clock className="h-5 w-5 text-gray-400" />
+              </div>
+            </div>
           </div>
         </div>
-      )}
-      
-      {step === 3 && (
+        
+        {/* Location From and To */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div>
+            <label className={`block text-[#334054] mb-2 ${plusJakartaSans.className}`}>Location From</label>
+            <div className="relative">
+              <input 
+                type="text" 
+                className="w-full p-3 border border-gray-200 rounded-lg focus:outline-none" 
+                placeholder="Jamshedpur"
+              />
+              <div className="absolute inset-y-0 right-0 flex items-center pr-3">
+                <ChevronDown className="h-5 w-5 text-gray-400" />
+              </div>
+            </div>
+          </div>
+          <div>
+            <label className={`block text-[#334054] mb-2 ${plusJakartaSans.className}`}>Location To</label>
+            <div className="relative">
+              <input 
+                type="text" 
+                className="w-full p-3 border border-gray-200 rounded-lg focus:outline-none" 
+                placeholder="Jamshedpur"
+              />
+              <div className="absolute inset-y-0 right-0 flex items-center pr-3">
+                <ChevronDown className="h-5 w-5 text-gray-400" />
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        {/* Pickup Location */}
         <div>
-          <h2 className="text-lg font-medium mb-4">Booking Details</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 bg-white p-6 rounded-lg border">
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Check-in Date</label>
-              <input 
-                type="date" 
-                className="w-full p-2 border rounded-md" 
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Check-out Date</label>
-              <input 
-                type="date" 
-                className="w-full p-2 border rounded-md" 
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Price</label>
+          <label className={`block text-[#334054] mb-2 ${plusJakartaSans.className}`}>Pickup Location</label>
+          <input 
+            type="text" 
+            className="w-full p-3 border border-gray-200 rounded-lg focus:outline-none" 
+            placeholder="Badal Singh"
+          />
+        </div>
+        
+        {/* Upload ID */}
+        <div>
+          <label className={`block text-[#334054] mb-2 ${plusJakartaSans.className}`}>Upload ID</label>
+          <div className="border border-gray-200 rounded-lg p-6">
+            {previewUrl ? (
               <div className="relative">
-                <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-500">$</span>
-                <input 
-                  type="number" 
-                  className="w-full p-2 pl-7 border rounded-md" 
-                  placeholder="Enter booking price"
-                />
+                <div className="w-full aspect-[3/2] relative rounded-lg overflow-hidden">
+                  <Image 
+                    src={previewUrl} 
+                    alt="ID Document" 
+                    fill 
+                    style={{ objectFit: "contain" }}
+                  />
+                </div>
+                <Button
+                  type="button"
+                  onClick={() => {
+                    setSelectedFile(null);
+                    setPreviewUrl(null);
+                  }}
+                  className="absolute top-2 right-2 bg-white text-black hover:bg-gray-100 p-1 rounded-full"
+                >
+                  ✕
+                </Button>
+                <p className="mt-2 text-sm text-gray-500">{selectedFile?.name}</p>
               </div>
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Payment Status</label>
-              <select className="w-full p-2 border rounded-md">
-                <option value="paid">Paid</option>
-                <option value="pending">Pending</option>
-                <option value="partial">Partial Payment</option>
-              </select>
-            </div>
+            ) : (
+              <div className="flex flex-col items-center justify-center">
+                <label htmlFor="file-upload" className="cursor-pointer w-full">
+                  <div className="flex flex-col items-center justify-center p-4 hover:bg-gray-50">
+                    <div className="mb-4 p-3 bg-gray-100 rounded-full">
+                      <Upload className="h-6 w-6 text-gray-600" />
+                    </div>
+                    <p className="text-sm text-gray-500 text-center mb-1">Drag and drop choose file to upload your files.</p>
+                    <p className="text-sm text-gray-500 text-center">All pdf, doc, csv, xlsx types are supported</p>
+                    <input
+                      id="file-upload"
+                      type="file"
+                      className="hidden"
+                      accept="image/*,.pdf,.doc,.docx,.csv,.xlsx"
+                      onChange={handleFileChange}
+                    />
+                    <button
+                      type="button"
+                      onClick={() => document.getElementById('file-upload')?.click()}
+                      className="mt-4 px-4 py-2 bg-gray-100 text-gray-700 rounded-md hover:bg-gray-200 font-medium"
+                    >
+                      Browse Files
+                    </button>
+                  </div>
+                </label>
+              </div>
+            )}
           </div>
-          
-          <div className="mt-8 bg-white p-6 rounded-lg border">
-            <h3 className="font-medium mb-4">Booking Summary</h3>
-            <div className="space-y-2 text-sm">
-              <div className="flex justify-between">
-                <span className="text-gray-600">Property:</span>
-                <span className="font-medium">Newtown Motorhome</span>
-              </div>
-              <div className="flex justify-between">
-                <span className="text-gray-600">Guest:</span>
-                <span className="font-medium">Guest Name</span>
-              </div>
-              <div className="flex justify-between">
-                <span className="text-gray-600">Check-in:</span>
-                <span className="font-medium">-</span>
-              </div>
-              <div className="flex justify-between">
-                <span className="text-gray-600">Check-out:</span>
-                <span className="font-medium">-</span>
-              </div>
-              <div className="flex justify-between">
-                <span className="text-gray-600">Guests:</span>
-                <span className="font-medium">-</span>
-              </div>
-              <div className="flex justify-between">
-                <span className="text-gray-600">Total Price:</span>
-                <span className="font-medium">$0.00</span>
-              </div>
-            </div>
-          </div>
-          
-          <div className="flex justify-between mt-6">
+        </div>
+
+        {/* Submit Button Container - Using absolute positioning within the parent */}
+        <div className="absolute bottom-0 left-0 right-0 bg-white py-4 px-6 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.1)]">
+          <div className="flex justify-end">
             <Button 
-              className="bg-gray-200 hover:bg-gray-300 text-black"
-              onClick={() => setStep(2)}
+              className="rounded-full bg-black hover:bg-black/90 text-white px-8 py-6"
             >
-              Back
-            </Button>
-            <Button 
-              className="bg-black hover:bg-black/90 text-white"
-            >
-              Create Booking
+              Submit
             </Button>
           </div>
         </div>
-      )}
+      </div>
     </div>
   );
 } 
