@@ -4,8 +4,8 @@ import { Sidebar, Header } from "@/components/dashboard";
 import { 
   DashboardContent,
   BookingsCalendarContent,
-  BookingsDetailsContent,
-  NewBookingContent
+  NewBookingContent,
+  BookingsContent
 } from "@/components/dashboard/content";
 import { useState } from "react";
 
@@ -19,7 +19,7 @@ export default function Dashboard() {
       case "bookings-calendar":
         return <BookingsCalendarContent />;
       case "bookings-details":
-        return <BookingsDetailsContent />;
+        return <BookingsContent />;
       case "bookings-new":
         return <NewBookingContent />;
       case "dashboard":

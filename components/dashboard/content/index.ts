@@ -1,4 +1,4 @@
 export { DashboardContent } from './DashboardContent';
 export { BookingsCalendarContent } from './BookingsCalendarContent';
-export { BookingsDetailsContent } from './BookingsDetailsContent';
+export {BookingsContent} from "./BookingsContent"
 export { NewBookingContent } from './NewBookingContent'; 
