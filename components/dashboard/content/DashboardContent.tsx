@@ -44,7 +44,7 @@ export function DashboardContent() {
             <div className="bg-[#FFFFFF] rounded-[24px]" >
                 <div className="flex justify-between items-center py-[16px] px-[20px] border-b border-[#EAECF0]">
                     <h1 className="text-[20px] text-[#101828]">Overview</h1>
-                    <Button className="rounded-full bg-[#131313] hover:bg-black/90 text-white px-6 py-[25px] flex items-center gap-2">
+                    <Button className="rounded-full bg-[#131313] hover:bg-black/90 text-white px-[24px] py-[20px] flex items-center gap-2">
                         <span className="text-xl font-bold">+</span>
                         <span>New Booking</span>
                     </Button>

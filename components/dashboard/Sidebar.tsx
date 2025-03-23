@@ -1,6 +1,5 @@
 import Link from "next/link";
 import Logo from "@/public/mainlogo.png";
-import { usePathname } from "next/navigation";
 import { Logout } from "@/public/assets/CustomIcon"
 import {
   LayoutDashboard,
@@ -19,27 +18,42 @@ import {
   Calendar
 } from "lucide-react";
 import Image from "next/image";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 interface DropdownItem {
   name: string;
-  href: string;
+  section: string;
   icon?: React.ReactNode;
 }
 
 interface NavItem {
   name: string;
   icon: React.ReactNode;
-  href?: string;
+  section?: string;
   key?: string;
   hasDropdown?: boolean;
   dropdownItems?: DropdownItem[];
 }
 
-export function Sidebar() {
-  const pathname = usePathname();
-  const [openDropdown, setOpenDropdown] = useState<string | null>("bookings");
-  
+interface SidebarProps {
+  currentSection: string;
+  onNavigate: (section: string, title: string) => void;
+}
+
+export function Sidebar({ currentSection, onNavigate }: SidebarProps) {
+  const [openDropdown, setOpenDropdown] = useState<string | null>(null);
+
+  // Set initial open dropdowns based on current section
+  useEffect(() => {
+    if (currentSection.startsWith('bookings')) {
+      setOpenDropdown('bookings');
+    } else if (currentSection.startsWith('offering')) {
+      setOpenDropdown('offering');
+    } else if (currentSection.startsWith('marketing')) {
+      setOpenDropdown('marketing');
+    }
+  }, [currentSection]);
+
   const toggleDropdown = (key: string) => {
     setOpenDropdown(prev => prev === key ? null : key);
   };
@@ -48,7 +62,7 @@ export function Sidebar() {
     {
       name: "Dashboard",
       icon: <LayoutDashboard className="w-5 h-5" />,
-      href: "/dashboard",
+      section: "dashboard",
     },
     {
       name: "Bookings",
@@ -59,17 +73,17 @@ export function Sidebar() {
         {
           name: "Calendar",
           icon: <Calendar className="w-4 h-4" />,
-          href: "/dashboard/bookings/calendar",
+          section: "bookings-calendar",
         },
         {
           name: "Bookings Details",
           icon: <CalendarRange className="w-4 h-4" />,
-          href: "/dashboard/bookings/details",
+          section: "bookings-details",
         },
         {
           name: "Add New Bookings",
           icon: <CalendarRange className="w-4 h-4" />,
-          href: "/dashboard/bookings/new",
+          section: "bookings-new",
         },
       ],
     },
@@ -82,24 +96,24 @@ export function Sidebar() {
         {
           name: "Stays",
           icon: <Home className="w-4 h-4" />,
-          href: "/dashboard/offering/stays",
+          section: "offering-stays",
         },
         {
           name: "Caravan",
           icon: <Caravan className="w-4 h-4" />,
-          href: "/dashboard/offering/caravan",
+          section: "offering-caravan",
         },
         {
           name: "Activities",
           icon: <PlaneLanding className="w-4 h-4" />,
-          href: "/dashboard/offering/activities",
+          section: "offering-activities",
         },
       ],
     },
     {
       name: "Revenue",
       icon: <LineChart className="w-5 h-5" />,
-      href: "/dashboard/revenue",
+      section: "revenue",
     },
     {
       name: "Marketing",
@@ -109,12 +123,12 @@ export function Sidebar() {
       dropdownItems: [
         {
           name: "Campaigns",
-          href: "/dashboard/marketing/campaigns",
+          section: "marketing-campaigns",
           icon: <BarChart4 className="w-4 h-4" />,
         },
         {
           name: "Promotions",
-          href: "/dashboard/marketing/promotions",
+          section: "marketing-promotions",
           icon: <BarChart4 className="w-4 h-4" />,
         },
       ],
@@ -122,95 +136,90 @@ export function Sidebar() {
     {
       name: "Analytics",
       icon: <LineChart className="w-5 h-5" />,
-      href: "/dashboard/analytics",
+      section: "analytics",
     },
     {
       name: "Chat",
       icon: <MessageSquare className="w-5 h-5" />,
-      href: "/dashboard/chat",
+      section: "chat",
     },
     {
       name: "Settings",
       icon: <Settings className="w-5 h-5" />,
-      href: "/dashboard/settings",
+      section: "settings",
     },
   ];
 
-  const isLinkActive = (href: string) => {
-    return pathname === href || pathname.startsWith(href + '/');
+  // Check if a section is active
+  const isSectionActive = (section: string) => {
+    return currentSection === section;
+  };
+
+  // Check if any child of a dropdown is active
+  const hasActiveChild = (item: NavItem) => {
+    if (!item.hasDropdown) return false;
+    return item.dropdownItems?.some(subItem => isSectionActive(subItem.section)) || false;
   };
 
   return (
-    <div className="h-full bg-[#F9FAFB] border-r flex flex-col">
+    <div className="h-full bg-[#F9FAFB] flex flex-col">
       <div className="p-6 pl-[30px]">
-        <Link href="/">
+        <button onClick={() => onNavigate('dashboard', 'Dashboard')}>
           <div className="flex items-center">
             <Image
-              src={Logo} 
-              alt="TravelHomes Logo" 
+              src={Logo}
+              alt="TravelHomes Logo"
             />
           </div>
-        </Link>
+        </button>
       </div>
-      
+
       <div className="flex-1 px-[1rem] py-4">
         <nav className="space-y-1">
           {navItems.map((item) => {
-            const isActive = item.hasDropdown 
-              ? (item.dropdownItems?.some(subItem => isLinkActive(subItem.href)) || false)
-              : isLinkActive(item.href || '');
-            
+            // Only highlight non-dropdown items if directly active
+            const isActive = !item.hasDropdown && isSectionActive(item.section || '');
+
             if (item.hasDropdown) {
               const isOpen = openDropdown === item.key;
-              
+
               return (
                 <div key={item.key} className="mb-1">
                   <button
                     onClick={() => toggleDropdown(item.key || '')}
-                    className={`flex items-center justify-between w-full px-3 py-3 my-[8px] font-medium rounded-[12px] transition-colors
-                      ${isActive 
-                        ? "bg-[#131313] text-[#FFFFFF]" 
-                        : "text-[#7A757D] hover:bg-gray-100"
-                      }`}
+                    className="flex items-center justify-between w-full px-3 py-3 my-[8px] font-medium rounded-[12px] transition-colors text-[#7A757D] hover:bg-gray-100"
                   >
                     <div className="flex items-center">
-                      <span className={`mr-3 ${isActive ? "text-white" : "text-[#7A757D]"}`}>
+                      <span className="mr-3 text-[#7A757D]">
                         {item.icon}
                       </span>
                       {item.name}
                     </div>
-                    <ChevronDown 
-                      className={`w-4 h-4 transition-transform ${isOpen ? 'rotate-180' : ''} ${isActive ? "text-white" : "text-[#7A757D]"}`} 
+                    <ChevronDown
+                      className={`w-4 h-4 transition-transform ${isOpen ? 'rotate-180' : ''}`}
                     />
                   </button>
-                  
+
                   {isOpen && (
                     <div className="relative">
                       {/* Vertical line that connects all items */}
                       <div className="absolute left-[22px] top-1 bottom-1 w-[1px] bg-gray-200"></div>
-                      
+
                       <div className="space-y-1 relative">
                         {item.dropdownItems?.map((subItem, index) => {
-                          const isSubActive = isLinkActive(subItem.href);
-                          const isFirst = index === 0;
-                          const isLast = index === (item.dropdownItems?.length || 0) - 1;
-                          
+                          const isSubActive = isSectionActive(subItem.section);
+
                           return (
-                            <div key={subItem.href} className="flex relative pl-10">
+                            <div key={subItem.section} className="flex relative pl-10">
                               {/* Curved line for each item */}
                               <div className="absolute left-[22px] top-1/2 w-[10px] h-[1px] bg-gray-200"></div>
-                              
-                              {/* Highlight for active item - black background */}
-                              {isSubActive && (
-                                <div className="absolute left-0 right-4 top-0 bottom-0 bg-black rounded-lg -z-10"></div>
-                              )}
-                              
-                              <Link
-                                href={subItem.href}
-                                className={`flex items-center py-2 px-3 w-full text-sm font-medium rounded-md transition-colors
+
+                              <button
+                                onClick={() => onNavigate(subItem.section, item.name)}
+                                className={`flex items-center py-[10px] px-[12px] w-full text-sm font-medium rounded-[12px] transition-colors text-left
                                   ${isSubActive 
-                                    ? "text-white font-semibold" 
-                                    : "text-[#7A757D] hover:text-gray-900"
+                                    ? "bg-[#131313] text-white" 
+                                    : "text-[#7A757D] hover:bg-gray-100"
                                   }`}
                               >
                                 {subItem.icon && (
@@ -219,7 +228,7 @@ export function Sidebar() {
                                   </span>
                                 )}
                                 {subItem.name}
-                              </Link>
+                              </button>
                             </div>
                           );
                         })}
@@ -229,14 +238,14 @@ export function Sidebar() {
                 </div>
               );
             }
-            
+
             return (
-              <Link
-                key={item.href}
-                href={item.href || '#'}
-                className={`flex items-center px-3 py-3 my-[8px] font-medium rounded-[12px] transition-colors
-                  ${isActive 
-                    ? "bg-[#131313] text-[#FFFFFF]" 
+              <button
+                key={item.section}
+                onClick={() => onNavigate(item.section || '', item.name)}
+                className={`flex items-center px-3 py-3 my-[8px] font-medium rounded-[12px] transition-colors w-full text-left
+                  ${isActive
+                    ? "bg-[#131313] text-white" 
                     : "text-[#7A757D] hover:bg-gray-100"
                   }`}
               >
@@ -244,22 +253,21 @@ export function Sidebar() {
                   {item.icon}
                 </span>
                 {item.name}
-              </Link>
+              </button>
             );
           })}
         </nav>
       </div>
-      
+
       <div className="p-4 mt-auto">
-        <Link
-          href="/logout"
-          className="flex items-center px-3 py-3 font-medium text-[#C13515] rounded-md hover:bg-gray-100"
+        <button
+          className="flex items-center px-3 py-3 font-medium text-[#C13515] rounded-md hover:bg-gray-100 w-full text-left"
         >
-            <Logout />
-            <span className="ml-[12px]">
+          <Logout />
+          <span className="ml-[12px]">
             Logout
-            </span>
-        </Link>
+          </span>
+        </button>
       </div>
     </div>
   );

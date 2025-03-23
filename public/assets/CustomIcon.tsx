@@ -412,8 +412,8 @@ const MobileSearchIcon = () => {
    const GuestUser = () => {
     return (
       <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path fill-rule="evenodd" clip-rule="evenodd" d="M6.194 10.4062C8.96075 10.4062 11.3255 10.8255 11.3255 12.5003C11.3255 14.175 8.9765 14.6062 6.194 14.6062C3.4265 14.6062 1.0625 14.1908 1.0625 12.5153C1.0625 10.8398 3.41075 10.4062 6.194 10.4062Z" stroke="#1C2939" strokeLinecap="round" strokeLinejoin="round"/>
-<path fill-rule="evenodd" clip-rule="evenodd" d="M6.19575 8.015C4.37925 8.015 2.90625 6.54275 2.90625 4.72625C2.90625 2.90975 4.37925 1.4375 6.19575 1.4375C8.0115 1.4375 9.4845 2.90975 9.4845 4.72625C9.49125 6.536 8.02875 8.00825 6.219 8.015H6.19575Z" stroke="#1C2939" strokeLinecap="round" strokeLinejoin="round"/>
+<path fillRule="evenodd" clipRule="evenodd" d="M6.194 10.4062C8.96075 10.4062 11.3255 10.8255 11.3255 12.5003C11.3255 14.175 8.9765 14.6062 6.194 14.6062C3.4265 14.6062 1.0625 14.1908 1.0625 12.5153C1.0625 10.8398 3.41075 10.4062 6.194 10.4062Z" stroke="#1C2939" strokeLinecap="round" strokeLinejoin="round"/>
+<path fillRule="evenodd" clipRule="evenodd" d="M6.19575 8.015C4.37925 8.015 2.90625 6.54275 2.90625 4.72625C2.90625 2.90975 4.37925 1.4375 6.19575 1.4375C8.0115 1.4375 9.4845 2.90975 9.4845 4.72625C9.49125 6.536 8.02875 8.00825 6.219 8.015H6.19575Z" stroke="#1C2939" strokeLinecap="round" strokeLinejoin="round"/>
 <path d="M11.3594 7.16194C12.5601 6.99319 13.4849 5.96269 13.4871 4.71544C13.4871 3.48619 12.5909 2.46619 11.4156 2.27344" stroke="#1C2939" strokeLinecap="round" strokeLinejoin="round"/>
 <path d="M12.9453 10.0469C14.1086 10.2201 14.9208 10.6281 14.9208 11.4681C14.9208 12.0464 14.5383 12.4214 13.9203 12.6561" stroke="#1C2939" strokeLinecap="round" strokeLinejoin="round"/>
 </svg>
