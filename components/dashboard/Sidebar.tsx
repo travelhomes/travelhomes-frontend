@@ -16,41 +16,39 @@ import {
   Calendar
 } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useState, useEffect } from "react";
 
 interface DropdownItem {
   name: string;
-  section: string;
+  path: string;
   icon?: React.ReactNode;
 }
 
 interface NavItem {
   name: string;
   icon: React.ReactNode;
-  section?: string;
+  path?: string;
   key?: string;
   hasDropdown?: boolean;
   dropdownItems?: DropdownItem[];
 }
 
-interface SidebarProps {
-  currentSection: string;
-  onNavigate: (section: string, title: string) => void;
-}
-
-export function Sidebar({ currentSection, onNavigate }: SidebarProps) {
+export function Sidebar() {
+  const pathname = usePathname();
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
 
-  // Set initial open dropdowns based on current section
+  // Set initial open dropdowns based on current path
   useEffect(() => {
-    if (currentSection.startsWith('bookings')) {
+    if (pathname.includes('/dashboard/bookings')) {
       setOpenDropdown('bookings');
-    } else if (currentSection.startsWith('offering')) {
+    } else if (pathname.includes('/dashboard/offering')) {
       setOpenDropdown('offering');
-    } else if (currentSection.startsWith('marketing')) {
+    } else if (pathname.includes('/dashboard/marketing')) {
       setOpenDropdown('marketing');
     }
-  }, [currentSection]);
+  }, [pathname]);
 
   const toggleDropdown = (key: string) => {
     setOpenDropdown(prev => prev === key ? null : key);
@@ -60,7 +58,7 @@ export function Sidebar({ currentSection, onNavigate }: SidebarProps) {
     {
       name: "Dashboard",
       icon: <LayoutDashboard className="w-5 h-5" />,
-      section: "dashboard",
+      path: "/dashboard",
     },
     {
       name: "Bookings",
@@ -70,15 +68,15 @@ export function Sidebar({ currentSection, onNavigate }: SidebarProps) {
       dropdownItems: [
         {
           name: "Calendar",
-          section: "bookings-calendar",
+          path: "/dashboard/bookings/calendar",
         },
         {
           name: "Bookings Details",
-          section: "bookings-details",
+          path: "/dashboard/bookings/details",
         },
         {
           name: "Add New Bookings",
-          section: "bookings-new",
+          path: "/dashboard/bookings/new",
         },
       ],
     },
@@ -90,18 +88,18 @@ export function Sidebar({ currentSection, onNavigate }: SidebarProps) {
       dropdownItems: [
         {
           name: "Listing",
-          section: "offering-listing",
+          path: "/dashboard/offering/listing",
         },
         {
           name: "Add Offerings",
-          section: "offering-add",
+          path: "/dashboard/offering/add",
         },
       ],
     },
     {
       name: "Revenue",
       icon: <LineChart className="w-5 h-5" />,
-      section: "revenue",
+      path: "/dashboard/revenue",
     },
     {
       name: "Marketing",
@@ -111,12 +109,12 @@ export function Sidebar({ currentSection, onNavigate }: SidebarProps) {
       dropdownItems: [
         {
           name: "Campaigns",
-          section: "marketing-campaigns",
+          path: "/dashboard/marketing/campaigns",
           icon: <BarChart4 className="w-4 h-4" />,
         },
         {
           name: "Promotions",
-          section: "marketing-promotions",
+          path: "/dashboard/marketing/promotions",
           icon: <BarChart4 className="w-4 h-4" />,
         },
       ],
@@ -124,49 +122,49 @@ export function Sidebar({ currentSection, onNavigate }: SidebarProps) {
     {
       name: "Analytics",
       icon: <LineChart className="w-5 h-5" />,
-      section: "analytics",
+      path: "/dashboard/analytics",
     },
     {
       name: "Chat",
       icon: <MessageSquare className="w-5 h-5" />,
-      section: "chat",
+      path: "/dashboard/chat",
     },
     {
       name: "Settings",
       icon: <Settings className="w-5 h-5" />,
-      section: "settings",
+      path: "/dashboard/settings",
     },
   ];
 
-  // Check if a section is active
-  const isSectionActive = (section: string) => {
-    return currentSection === section;
+  // Check if a path is active
+  const isPathActive = (path: string) => {
+    return pathname === path;
   };
 
   // Check if any child of a dropdown is active
   const hasActiveChild = (item: NavItem) => {
     if (!item.hasDropdown) return false;
-    return item.dropdownItems?.some(subItem => isSectionActive(subItem.section)) || false;
+    return item.dropdownItems?.some(subItem => isPathActive(subItem.path)) || false;
   };
 
   return (
     <div className="h-full bg-[#F9FAFB] flex flex-col">
       <div className="p-6 pl-[30px]">
-        <button onClick={() => onNavigate('dashboard', 'Dashboard')}>
+        <Link href="/dashboard">
           <div className="flex items-center">
             <Image
               src={Logo}
               alt="TravelHomes Logo"
             />
           </div>
-        </button>
+        </Link>
       </div>
 
       <div className="flex-1 px-[1rem] py-4">
         <nav className="space-y-1">
           {navItems.map((item) => {
             // Only highlight non-dropdown items if directly active
-            const isActive = !item.hasDropdown && isSectionActive(item.section || '');
+            const isActive = !item.hasDropdown && isPathActive(item.path || '');
 
             if (item.hasDropdown) {
               const isOpen = openDropdown === item.key;
@@ -195,15 +193,15 @@ export function Sidebar({ currentSection, onNavigate }: SidebarProps) {
 
                       <div className="space-y-1 relative">
                         {item.dropdownItems?.map((subItem, index) => {
-                          const isSubActive = isSectionActive(subItem.section);
+                          const isSubActive = isPathActive(subItem.path);
 
                           return (
-                            <div key={subItem.section} className="flex relative pl-10">
+                            <div key={subItem.path} className="flex relative pl-10">
                               {/* Curved line for each item */}
                               <div className="absolute left-[22px] top-1/2 w-[10px] h-[1px] bg-gray-200"></div>
 
-                              <button
-                                onClick={() => onNavigate(subItem.section, item.name)}
+                              <Link
+                                href={subItem.path}
                                 className={`flex items-center py-[10px] px-[12px] w-full text-sm font-medium rounded-[12px] transition-colors text-left
                                   ${isSubActive 
                                     ? "bg-[#131313] text-white" 
@@ -216,7 +214,7 @@ export function Sidebar({ currentSection, onNavigate }: SidebarProps) {
                                   </span>
                                 )}
                                 {subItem.name}
-                              </button>
+                              </Link>
                             </div>
                           );
                         })}
@@ -228,9 +226,9 @@ export function Sidebar({ currentSection, onNavigate }: SidebarProps) {
             }
 
             return (
-              <button
-                key={item.section}
-                onClick={() => onNavigate(item.section || '', item.name)}
+              <Link
+                key={item.path}
+                href={item.path || ''}
                 className={`flex items-center px-3 py-3 my-[8px] font-medium rounded-[12px] transition-colors w-full text-left
                   ${isActive
                     ? "bg-[#131313] text-white" 
@@ -241,20 +239,18 @@ export function Sidebar({ currentSection, onNavigate }: SidebarProps) {
                   {item.icon}
                 </span>
                 {item.name}
-              </button>
+              </Link>
             );
           })}
         </nav>
       </div>
 
       <div className="p-4 mt-auto">
-        <button
-          className="flex items-center px-3 py-3 font-medium text-[#C13515] rounded-md hover:bg-gray-100 w-full text-left"
-        >
-          <Logout />
-          <span className="ml-[12px]">
-            Logout
+        <button className="flex items-center w-full px-3 py-3 text-[#7A757D] font-medium rounded-md transition-colors hover:bg-gray-100">
+          <span className="mr-3">
+            <Logout />
           </span>
+          Logout
         </button>
       </div>
     </div>

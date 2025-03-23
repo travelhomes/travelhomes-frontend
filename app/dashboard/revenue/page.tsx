@@ -1,20 +1,18 @@
-"use client";
+'use client';
 
 import { Sidebar, Header } from "@/components/dashboard";
-import { 
-  DashboardContent
-} from "@/components/dashboard/content";
+import { RevenueContent } from "@/components/dashboard/content";
 
-export default function Dashboard() {
+export default function RevenuePage() {
   return (
     <div className="flex h-screen">
       <Sidebar />
       <div className="flex flex-col flex-1 overflow-hidden">
-        <Header title="Dashboard" />
+        <Header title="Revenue" />
         <main className="flex-1 overflow-auto bg-[#F9FAFB] p-6">
-          <DashboardContent />
+          <RevenueContent />
         </main>
       </div>
     </div>
   );
-}
+} 

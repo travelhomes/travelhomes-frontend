@@ -1,20 +1,18 @@
-"use client";
+'use client';
 
 import { Sidebar, Header } from "@/components/dashboard";
-import { 
-  DashboardContent
-} from "@/components/dashboard/content";
+import { BookingsCalendarContent } from "@/components/dashboard/content";
 
-export default function Dashboard() {
+export default function BookingsCalendarPage() {
   return (
     <div className="flex h-screen">
       <Sidebar />
       <div className="flex flex-col flex-1 overflow-hidden">
-        <Header title="Dashboard" />
+        <Header title="Bookings Calendar" />
         <main className="flex-1 overflow-auto bg-[#F9FAFB] p-6">
-          <DashboardContent />
+          <BookingsCalendarContent />
         </main>
       </div>
     </div>
   );
-}
+} 
