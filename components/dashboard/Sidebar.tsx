@@ -1,4 +1,3 @@
-import Link from "next/link";
 import Logo from "@/public/mainlogo.png";
 import { Logout } from "@/public/assets/CustomIcon"
 import {
@@ -9,7 +8,6 @@ import {
   BarChart,
   MessageSquare,
   Settings,
-  LogOut,
   ChevronDown,
   Home,
   Caravan,
@@ -72,17 +70,14 @@ export function Sidebar({ currentSection, onNavigate }: SidebarProps) {
       dropdownItems: [
         {
           name: "Calendar",
-          icon: <Calendar className="w-4 h-4" />,
           section: "bookings-calendar",
         },
         {
           name: "Bookings Details",
-          icon: <CalendarRange className="w-4 h-4" />,
           section: "bookings-details",
         },
         {
           name: "Add New Bookings",
-          icon: <CalendarRange className="w-4 h-4" />,
           section: "bookings-new",
         },
       ],
@@ -94,19 +89,12 @@ export function Sidebar({ currentSection, onNavigate }: SidebarProps) {
       hasDropdown: true,
       dropdownItems: [
         {
-          name: "Stays",
-          icon: <Home className="w-4 h-4" />,
-          section: "offering-stays",
+          name: "Listing",
+          section: "offering-listing",
         },
         {
-          name: "Caravan",
-          icon: <Caravan className="w-4 h-4" />,
-          section: "offering-caravan",
-        },
-        {
-          name: "Activities",
-          icon: <PlaneLanding className="w-4 h-4" />,
-          section: "offering-activities",
+          name: "Add Offerings",
+          section: "offering-add",
         },
       ],
     },
