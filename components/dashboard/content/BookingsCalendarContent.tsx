@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui/button";
+import { CalendarIcon } from "@/public/assets/CustomIcon";
 import { ChevronDown, Plus } from "lucide-react";
 import { useState } from "react";
 
@@ -34,7 +35,7 @@ export function BookingsCalendarContent() {
       guestName: "Badal Singh",
       startDate: "04/11",
       endDate: "08/11",
-      color: "bg-[#FFF2E2]",
+      color: "bg-[#FDEBE0]",
       property: "prop1",
       dateRange: [4, 5, 6, 7, 8]
     },
@@ -43,7 +44,7 @@ export function BookingsCalendarContent() {
       guestName: "Badal Singh",
       startDate: "04/11",
       endDate: "08/11",
-      color: "bg-[#DDE7FF]",
+      color: "bg-[#DBF6FC]",
       property: "prop2",
       dateRange: [15,16,17]
     },
@@ -52,7 +53,7 @@ export function BookingsCalendarContent() {
       guestName: "Badal Singh",
       startDate: "04/11",
       endDate: "08/11",
-      color: "bg-[#E0DDFF]",
+      color: "bg-[#DBD9FF]",
       property: "prop4",
       dateRange: [7, 8, 9, 10, 11, 12]
     },
@@ -61,7 +62,7 @@ export function BookingsCalendarContent() {
       guestName: "Ayush Raj",
       startDate: "01/11",
       endDate: "11/11",
-      color: "bg-[#FCE1F9]",
+      color: "bg-[#F6E0FD]",
       property: "prop6",
       dateRange: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
     },
@@ -70,7 +71,7 @@ export function BookingsCalendarContent() {
       guestName: "Abhishek Kumar",
       startDate: "10/11",
       endDate: "12/11",
-      color: "bg-[#D6F5D6]",
+      color: "bg-[#E3FBE4]",
       property: "prop8",
       dateRange: [10, 11, 12, 13]
     }
@@ -91,14 +92,6 @@ export function BookingsCalendarContent() {
     const booking = getBookingForCell(propertyId, day);
     if (!booking) return false;
     return booking.dateRange[0] === day;
-  };
-  
-  // Check if a day is the last day of a booking range
-  const isLastDayOfBooking = (propertyId: string, day: number) => {
-    const booking = getBookingForCell(propertyId, day);
-    if (!booking) return false;
-    const lastIndex = booking.dateRange.length - 1;
-    return booking.dateRange[lastIndex] === day;
   };
   
   // Get the grid column span for a booking starting on this day
@@ -181,13 +174,8 @@ export function BookingsCalendarContent() {
                       <div className="flex items-center gap-2">
                         <span className="font-medium truncate">{booking.guestName}</span>
                         {booking.startDate && (
-                          <div className="text-xs flex items-center gap-1">
-                            <svg className="h-4 w-4 flex-shrink-0" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                              <path d="M8 2V5" stroke="#292D32" strokeWidth="1.5" strokeMiterlimit="10" strokeLinecap="round" strokeLinejoin="round"/>
-                              <path d="M16 2V5" stroke="#292D32" strokeWidth="1.5" strokeMiterlimit="10" strokeLinecap="round" strokeLinejoin="round"/>
-                              <path d="M3.5 9.09H20.5" stroke="#292D32" strokeWidth="1.5" strokeMiterlimit="10" strokeLinecap="round" strokeLinejoin="round"/>
-                              <path d="M21 8.5V17C21 20 19.5 22 16 22H8C4.5 22 3 20 3 17V8.5C3 5.5 4.5 3.5 8 3.5H16C19.5 3.5 21 5.5 21 8.5Z" stroke="#292D32" strokeWidth="1.5" strokeMiterlimit="10" strokeLinecap="round" strokeLinejoin="round"/>
-                            </svg>
+                          <div className="text-[14px] text-[#2D2D2D] flex items-center gap-1">
+                            <CalendarIcon />
                             <span>{booking.startDate} - {booking.endDate}</span>
                           </div>
                         )}
