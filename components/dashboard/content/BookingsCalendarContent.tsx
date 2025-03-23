@@ -112,7 +112,7 @@ export function BookingsCalendarContent() {
   const formatDay = (day: number) => day < 10 ? `0${day}` : `${day}`;
 
   return (
-    <div className="bg-white rounded-[12px]">
+    <div className="bg-white rounded-[12px] h-[90vh]">
       {/* Header with month selector and new booking button - combined in one row */}
       <div className="flex justify-between items-center py-[16px] px-[20px] border-b border-[#EAECF0]">
         <div className="flex items-center gap-4">
