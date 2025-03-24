@@ -7,4 +7,5 @@ export { AddOfferingContent } from './AddOfferingContent';
 export { RevenueContent } from './RevenueContent';
 export { MarketingContent } from './MarketingContent';
 export { OffersContent } from './OffersContent';
-export { AnalyticsContent } from './AnalyticsContent'; 
+export { AnalyticsContent } from './AnalyticsContent';
+export { ChatContent } from './ChatContent'; 

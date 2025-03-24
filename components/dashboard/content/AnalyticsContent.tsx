@@ -231,7 +231,6 @@ export function AnalyticsContent() {
             iconBgColor="bg-[#F4D2FF]"
           />
         </div>
-
         {/* Property Stats Cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 p-5">
           <StatCard

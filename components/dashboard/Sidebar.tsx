@@ -144,7 +144,7 @@ export function Sidebar() {
   };
 
   return (
-    <div className="h-full bg-[#F9FAFB] flex flex-col">
+    <div className="h-full bg-[#F9FAFB] flex flex-col w-[260px] flex-shrink-0">
       <div className="p-6 pl-[30px]">
         <Link href="/dashboard">
           <div className="flex items-center">
