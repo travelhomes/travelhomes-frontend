@@ -424,16 +424,16 @@ const MobileSearchIcon = () => {
    const CalendarIcon = () => {
     return (
       <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path d="M5.33594 1.33594V3.33594" stroke="#2D2D2D" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
-      <path d="M10.6641 1.33594V3.33594" stroke="#2D2D2D" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
-      <path d="M2.33594 6.0625H13.6693" stroke="#2D2D2D" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
-      <path d="M14 5.66927V11.3359C14 13.3359 13 14.6693 10.6667 14.6693H5.33333C3 14.6693 2 13.3359 2 11.3359V5.66927C2 3.66927 3 2.33594 5.33333 2.33594H10.6667C13 2.33594 14 3.66927 14 5.66927Z" stroke="#2D2D2D" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
-      <path d="M10.4625 9.13021H10.4685" stroke="#2D2D2D" stroke-linecap="round" stroke-linejoin="round"/>
-      <path d="M10.4625 11.1302H10.4685" stroke="#2D2D2D" stroke-linecap="round" stroke-linejoin="round"/>
-      <path d="M7.99373 9.13021H7.99972" stroke="#2D2D2D" stroke-linecap="round" stroke-linejoin="round"/>
-      <path d="M7.99373 11.1302H7.99972" stroke="#2D2D2D" stroke-linecap="round" stroke-linejoin="round"/>
-      <path d="M5.5328 9.13021H5.53878" stroke="#2D2D2D" stroke-linecap="round" stroke-linejoin="round"/>
-      <path d="M5.5328 11.1302H5.53878" stroke="#2D2D2D" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M5.33594 1.33594V3.33594" stroke="#2D2D2D" strokeMiterlimit="10" strokeLinecap="round" strokeLinejoin="round"/>
+      <path d="M10.6641 1.33594V3.33594" stroke="#2D2D2D" strokeMiterlimit="10" strokeLinecap="round" strokeLinejoin="round"/>
+      <path d="M2.33594 6.0625H13.6693" stroke="#2D2D2D" strokeMiterlimit="10" strokeLinecap="round" strokeLinejoin="round"/>
+      <path d="M14 5.66927V11.3359C14 13.3359 13 14.6693 10.6667 14.6693H5.33333C3 14.6693 2 13.3359 2 11.3359V5.66927C2 3.66927 3 2.33594 5.33333 2.33594H10.6667C13 2.33594 14 3.66927 14 5.66927Z" stroke="#2D2D2D" strokeMiterlimit="10" strokeLinecap="round" strokeLinejoin="round"/>
+      <path d="M10.4625 9.13021H10.4685" stroke="#2D2D2D" strokeLinecap="round" strokeLinejoin="round"/>
+      <path d="M10.4625 11.1302H10.4685" stroke="#2D2D2D" strokeLinecap="round" strokeLinejoin="round"/>
+      <path d="M7.99373 9.13021H7.99972" stroke="#2D2D2D" strokeLinecap="round" strokeLinejoin="round"/>
+      <path d="M7.99373 11.1302H7.99972" stroke="#2D2D2D" strokeLinecap="round" strokeLinejoin="round"/>
+      <path d="M5.5328 9.13021H5.53878" stroke="#2D2D2D" strokeLinecap="round" strokeLinejoin="round"/>
+      <path d="M5.5328 11.1302H5.53878" stroke="#2D2D2D" strokeLinecap="round" strokeLinejoin="round"/>
       </svg>      
     )
    }

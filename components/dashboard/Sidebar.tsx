@@ -9,11 +9,7 @@ import {
   MessageSquare,
   Settings,
   ChevronDown,
-  Home,
-  Caravan,
-  PlaneLanding,
   BarChart4,
-  Calendar
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -108,12 +104,12 @@ export function Sidebar() {
       hasDropdown: true,
       dropdownItems: [
         {
-          name: "Campaigns",
+          name: "Upload Content",
           path: "/dashboard/marketing/campaigns",
           icon: <BarChart4 className="w-4 h-4" />,
         },
         {
-          name: "Promotions",
+          name: "Offers",
           path: "/dashboard/marketing/promotions",
           icon: <BarChart4 className="w-4 h-4" />,
         },
