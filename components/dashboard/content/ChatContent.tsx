@@ -133,6 +133,8 @@ export function ChatContent() {
                   <Image
                     src={chat.image}
                     alt={chat.name}
+                    width={50}
+                    height={50}
                     className="w-full h-full object-cover"
                   />
                 </div>
@@ -173,6 +175,8 @@ export function ChatContent() {
                     src="https://pbs.twimg.com/profile_images/1775927507855998976/v1mOCezH_400x400.jpg"
                     alt="User avatar"
                     className="w-full h-full object-cover"
+                    width={50}
+                    height={50}
                   />
                 </div>
               )}
