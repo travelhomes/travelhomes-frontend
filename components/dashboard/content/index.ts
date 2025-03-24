@@ -5,4 +5,6 @@ export { NewBookingContent } from './NewBookingContent';
 export { OfferingContent } from './OfferingContent';
 export { AddOfferingContent } from './AddOfferingContent';
 export { RevenueContent } from './RevenueContent';
-export { MarketingContent } from './MarketingContent'; 
+export { MarketingContent } from './MarketingContent';
+export { OffersContent } from './OffersContent';
+export { AnalyticsContent } from './AnalyticsContent'; 

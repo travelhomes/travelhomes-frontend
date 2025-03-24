@@ -1,6 +1,7 @@
 'use client';
 
 import { Sidebar, Header } from "@/components/dashboard";
+import { AnalyticsContent } from "@/components/dashboard/content/AnalyticsContent";
 
 export default function AnalyticsPage() {
   return (
@@ -9,10 +10,7 @@ export default function AnalyticsPage() {
       <div className="flex flex-col flex-1 overflow-hidden">
         <Header title="Analytics" />
         <main className="flex-1 overflow-auto bg-[#F9FAFB] p-6">
-          <div className="flex flex-col items-center justify-center h-full">
-            <h2 className="text-2xl font-semibold mb-2">Analytics Dashboard</h2>
-            <p className="text-gray-500">This feature is coming soon.</p>
-          </div>
+          <AnalyticsContent />
         </main>
       </div>
     </div>
