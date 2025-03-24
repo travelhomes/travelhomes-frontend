@@ -4,6 +4,7 @@ import Image from "next/image";
 import { MoreVertical, ChevronLeft, ChevronRight } from "lucide-react";
 import { Plus_Jakarta_Sans } from "next/font/google";
 import { useRouter } from "next/navigation";
+import type { StaticImageData } from "next/image";
 
 // Sample images - Import more images for the slider
 import CamperVanImage1 from "@/public/assets/bestactivety/image1.png";
@@ -99,7 +100,7 @@ export function OfferingContent() {
   
   // Detect click outside to close menu
   useEffect(() => {
-    function handleClickOutside(event: MouseEvent) {
+    function handleClickOutside() {
       if (openMenuId !== null) {
         setOpenMenuId(null);
       }
@@ -174,7 +175,7 @@ interface OfferingCardProps {
   offering: {
     id: string;
     title: string;
-    images: any[];
+    images: StaticImageData[];
     type: string;
     seats: number;
     sleeps: number;

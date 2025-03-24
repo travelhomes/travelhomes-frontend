@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import { Plus_Jakarta_Sans } from "next/font/google";
-import { Button } from "@/components/ui/button";
 import { Eye, MousePointerClick, FileCheck, Clock, ChevronDown } from "lucide-react";
 import {
   AreaChart,
@@ -81,7 +80,7 @@ function StatCard({ title, value, icon, bgColor, iconBgColor }: StatCardProps) {
 
 interface ChartSectionProps {
   title: string;
-  data: any[];
+  data: {name: string; value: number}[];
   period: string;
   setPeriod: (value: string) => void;
 }

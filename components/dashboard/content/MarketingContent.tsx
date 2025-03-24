@@ -3,8 +3,8 @@
 import { useState } from "react";
 import { Plus_Jakarta_Sans } from "next/font/google";
 import { X, Upload } from "lucide-react";
-import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import Image from "next/image";
 
 const plusJakartaSans = Plus_Jakarta_Sans({
     subsets: ["latin"],
@@ -44,7 +44,7 @@ export function MarketingContent() {
                                 {uploadedImages.map((image, index) => (
                                     <div key={index} className="relative">
                                         <div className="w-full h-[150px] rounded-lg overflow-hidden">
-                                            <img
+                                            <Image
                                                 src={image}
                                                 alt={`Uploaded ${index + 1}`}
                                                 className="w-full h-full object-cover"

@@ -2,8 +2,9 @@
 
 import { useState } from "react";
 import { Plus_Jakarta_Sans } from "next/font/google";
-import { Image, Send } from "lucide-react";
+import { ImageIcon, Send } from "lucide-react";
 import { Input } from "@/components/ui/input";
+import Image from "next/image";
 
 const plusJakartaSans = Plus_Jakarta_Sans({
   subsets: ["latin"],
@@ -129,7 +130,7 @@ export function ChatContent() {
             >
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 rounded-full overflow-hidden">
-                  <img
+                  <Image
                     src={chat.image}
                     alt={chat.name}
                     className="w-full h-full object-cover"
@@ -168,7 +169,7 @@ export function ChatContent() {
             >
               {message.sender === "other" && (
                 <div className="w-8 h-8 rounded-full overflow-hidden flex-shrink-0">
-                  <img
+                  <Image
                     src="https://pbs.twimg.com/profile_images/1775927507855998976/v1mOCezH_400x400.jpg"
                     alt="User avatar"
                     className="w-full h-full object-cover"
@@ -200,15 +201,7 @@ export function ChatContent() {
                 onKeyPress={(e) => e.key === "Enter" && handleSendMessage()}
               />
               <button className="p-2 hover:bg-gray-100 rounded-full">
-                <svg 
-                  viewBox="0 0 24 24" 
-                  className="w-6 h-6 text-gray-600"
-                  fill="none" 
-                  stroke="currentColor" 
-                  strokeWidth="2"
-                >
-                  <path d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                </svg>
+                <ImageIcon className="w-6 h-6 text-gray-600" />
               </button>
             </div>
             <button

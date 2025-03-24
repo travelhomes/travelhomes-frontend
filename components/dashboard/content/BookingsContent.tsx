@@ -13,7 +13,7 @@ interface Booking {
 
 export function BookingsContent() {
   const [activeTab, setActiveTab] = useState("upcoming");
-  const [filterDate, setFilterDate] = useState("Today");
+  const [filterDate] = useState("Today");
   
   // Sample booking data for list view
   const bookings: Booking[] = [

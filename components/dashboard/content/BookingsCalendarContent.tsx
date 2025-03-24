@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { CalendarIcon } from "@/public/assets/CustomIcon";
-import { ChevronDown, Plus } from "lucide-react";
+import { ChevronDown } from "lucide-react";
 import { useState } from "react";
 
 interface BookingEntry {
@@ -14,7 +14,7 @@ interface BookingEntry {
 }
 
 export function BookingsCalendarContent() {
-  const [currentMonth, setCurrentMonth] = useState("November, 2024");
+  const [currentMonth] = useState("November, 2024");
   
   // Mock data for properties and bookings
   const properties = [

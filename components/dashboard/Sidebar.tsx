@@ -150,11 +150,6 @@ export function Sidebar() {
     return pathname === path;
   };
 
-  // Check if any child of a dropdown is active
-  const hasActiveChild = (item: NavItem) => {
-    if (!item.hasDropdown) return false;
-    return item.dropdownItems?.some(subItem => isPathActive(subItem.path)) || false;
-  };
 
   return (
     <div className="h-full bg-[#F9FAFB] flex flex-col w-[260px] flex-shrink-0">
@@ -201,7 +196,7 @@ export function Sidebar() {
                       <div className="absolute left-[22px] top-1 bottom-1 w-[1px] bg-gray-200"></div>
 
                       <div className="space-y-1 relative">
-                        {item.dropdownItems?.map((subItem, index) => {
+                        {item.dropdownItems?.map((subItem) => {
                           const isSubActive = isPathActive(subItem.path);
 
                           return (

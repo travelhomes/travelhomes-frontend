@@ -77,7 +77,7 @@ const paymentHistoryData = [
 ];
 
 export function RevenueContent() {
-  const [filterPeriod, setFilterPeriod] = useState("Monthly");
+  const [filterPeriod] = useState("Monthly");
 
   return (
     <div className={`${plusJakartaSans.className} bg-white rounded-xl h-[90vh] overflow-y-auto`}>
