@@ -43,6 +43,8 @@ export function Sidebar() {
       setOpenDropdown('offering');
     } else if (pathname.includes('/dashboard/marketing')) {
       setOpenDropdown('marketing');
+    } else if (pathname.includes('/dashboard/settings')) {
+      setOpenDropdown('settings');
     }
   }, [pathname]);
 
@@ -128,7 +130,18 @@ export function Sidebar() {
     {
       name: "Settings",
       icon: <Settings className="w-5 h-5" />,
-      path: "/dashboard/settings",
+      key: "settings",
+      hasDropdown: true,
+      dropdownItems: [
+        {
+          name: "General Settings",
+          path: "/dashboard/settings",
+        },
+        {
+          name: "Raise Issue Ticket",
+          path: "/dashboard/settings/issue",
+        },
+      ],
     },
   ];
 

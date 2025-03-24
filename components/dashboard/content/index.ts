@@ -8,4 +8,5 @@ export { RevenueContent } from './RevenueContent';
 export { MarketingContent } from './MarketingContent';
 export { OffersContent } from './OffersContent';
 export { AnalyticsContent } from './AnalyticsContent';
-export { ChatContent } from './ChatContent'; 
+export { ChatContent } from './ChatContent';
+export { SettingsContent } from './SettingsContent'; 
