@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { Plus_Jakarta_Sans } from "next/font/google";
 import { Button } from "@/components/ui/button";
-import { Pencil, X } from "lucide-react";
+import { Pencil, X, Plus, Instagram, Facebook } from "lucide-react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { Input } from "@/components/ui/input";
 
@@ -23,6 +23,15 @@ export default function ProfileContent() {
     currentPassword: "",
     newPassword: "",
     confirmPassword: ""
+  });
+  
+  const [socialLinks, setSocialLinks] = useState([
+    { title: "Badal Singh", url: "+91 5202442423" }
+  ]);
+  
+  const [socialAccounts, setSocialAccounts] = useState({
+    instagram: "@badal_ux",
+    facebook: "@badal_ux"
   });
   
   const userData = {
@@ -64,6 +73,23 @@ export default function ProfileContent() {
     });
     setShowPasswordModal(false);
   };
+  
+  const handleSocialLinkChange = (index: number, field: 'title' | 'url', value: string) => {
+    const updatedLinks = [...socialLinks];
+    updatedLinks[index][field] = value;
+    setSocialLinks(updatedLinks);
+  };
+  
+  const handleAddSocialLink = () => {
+    setSocialLinks([...socialLinks, { title: "", url: "" }]);
+  };
+  
+  const handleRemoveAccount = (type: 'instagram' | 'facebook') => {
+    setSocialAccounts(prev => ({
+      ...prev,
+      [type]: ""
+    }));
+  };
 
   useEffect(() => {
     const tab = searchParams.get("tab") as "personal" | "social" | "business";
@@ -78,9 +104,9 @@ export default function ProfileContent() {
       <div className="flex justify-between items-center py-[16px] px-[20px] border-b border-[#EAECF0]">
         <div className="flex gap-6">
           <button
-            className={`font-medium ${
+            className={`font-medium  pb-[10px] ${
               activeTab === "personal" 
-                ? "text-black border-b-2 border-[#131313]" 
+                ? "text-black border-b-2 border-[#131313] " 
                 : "text-gray-500 hover:text-black"
             }`}
             onClick={() => handleTabChange("personal")}
@@ -88,7 +114,7 @@ export default function ProfileContent() {
             Perosnal Details
           </button>
           <button
-            className={`font-medium ${
+            className={`font-medium  pb-[10px] ${
               activeTab === "social" 
                 ? "text-black border-b-2 border-[#131313]" 
                 : "text-gray-500 hover:text-black"
@@ -98,7 +124,7 @@ export default function ProfileContent() {
             Social Profile
           </button>
           <button
-            className={`font-medium ${
+            className={`font-medium  pb-[10px] ${
               activeTab === "business" 
                 ? "text-black border-b-2 border-[#131313]" 
                 : "text-gray-500 hover:text-black"
@@ -118,8 +144,8 @@ export default function ProfileContent() {
 
       {/* Content Area */}
       <div className="p-6 border-t">
-        <div className="p-6 relative bg-[#F6F6F6] rounded-[12px]">
-          {activeTab === "personal" && (
+        {activeTab === "personal" && (
+          <div className="p-6 relative bg-[#F6F6F6] rounded-[12px]">
             <div className="grid grid-cols-2 md:grid-cols-3 gap-x-6 gap-y-8">
               <div>
                 <p className="text-[#334054] mb-3">First Name</p>
@@ -156,31 +182,111 @@ export default function ProfileContent() {
                 <p className="text-[#717171]">{userData.idProof}</p>
               </div>
             </div>
-          )}
+          </div>
+        )}
 
-          {activeTab === "social" && (
-            <div>
-              <p className="text-gray-500">Add your social media profiles.</p>
+        {activeTab === "social" && (
+          <div className="space-y-8">
+            {/* Connected Account Section - White background with border */}
+            <div className="bg-white border border-gray-200 rounded-xl p-6">
+              <h2 className="text-xl font-semibold mb-3">Connected Account</h2>
+              <p className="text-[#485467] mb-6">Build trust with your network by connecting your social profiles</p>
+              
+              <div className="space-y-4">
+                {/* Instagram */}
+                <div className="flex items-center justify-between py-3 border-b pb-[28px]">
+                  <div className="flex items-center gap-4">
+                    <Instagram className="text-black" />
+                    <span className="font-medium">Instagram</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <span className="text-[#485467]">{socialAccounts.instagram}</span>
+                    <button 
+                      onClick={() => handleRemoveAccount('instagram')}
+                      className="text-gray-400 hover:text-gray-600"
+                    >
+                      <X size={18} />
+                    </button>
+                  </div>
+                </div>
+                
+                {/* Facebook */}
+                <div className="flex items-center justify-between pb-[28px] py-3">
+                  <div className="flex items-center gap-4">
+                    <Facebook className="text-black" />
+                    <span className="font-medium">Facebook</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <span className="text-[#485467]">{socialAccounts.facebook}</span>
+                    <button 
+                      onClick={() => handleRemoveAccount('facebook')}
+                      className="text-gray-400 hover:text-gray-600"
+                    >
+                      <X size={18} />
+                    </button>
+                  </div>
+                </div>
+              </div>
             </div>
-          )}
+            
+            {/* Links Section - Light gray background */}
+     <div className="bg-[#F9F9F9] p-6 rounded-xl">
+              <div className="flex gap-4 mb-6">
+                <div className="w-[40%]">
+                  <label className="block text-[#485467] mb-2">Link Title</label>
+                  <Input 
+                    value={socialLinks[0].title}
+                    onChange={(e) => handleSocialLinkChange(0, 'title', e.target.value)}
+                    className="h-12 border rounded-lg w-full"
+                    placeholder="Enter link title"
+                  />
+                </div>
+                <div className="w-[40%]">
+                  <label className="block text-[#485467] mb-2">URL</label>
+                  <Input 
+                    value={socialLinks[0].url}
+                    onChange={(e) => handleSocialLinkChange(0, 'url', e.target.value)}
+                    className="w-full h-12 border rounded-lg"
+                    placeholder="Enter URL"
+                  />
+                </div>
+                <div className="w-[10%] flex items-end">
+                  <Button className="rounded-full bg-[#131313] text-white w-full h-12">
+                    ADD
+                  </Button>
+                </div>
+              </div>
+            </div>       
+            <div className="flex justify-end">
+                <p 
+                  onClick={handleAddSocialLink}
+                  className="flex items-center  text-black px-5"
+                >
+                  <Plus size={18} />
+                  Add More
+                </p>
+              </div>
+          </div>
+        )}
 
-          {activeTab === "business" && (
-            <div>
-              <p className="text-gray-500">Add your business details.</p>
-            </div>
-          )}
-        </div>
+        {activeTab === "business" && (
+          <div className="p-6 relative bg-[#F6F6F6] rounded-[12px]">
+            <p className="text-gray-500">Add your business details.</p>
+          </div>
+        )}
         
-        {/* Edit Button - Positioned in the bottom right */}
-        <div className="flex justify-end mt-[20px]">
-          <Button 
-            onClick={handleEdit}
-            className="rounded-full h-[48px] bg-white hover:bg-gray-100 border border-black text-black flex items-center gap-2 px-6"
-          >
-            <Pencil className="w-4 h-4" />
-            Edit
-          </Button>
-        </div>
+        {/* Edit Button - Positioned in the bottom right - Only show for Personal and Business tabs */}
+        {activeTab !== "social" && (
+          <div className="flex justify-end mt-[20px]">
+            <Button 
+              onClick={handleEdit}
+              className="rounded-full h-[48px] bg-white hover:bg-gray-100 border border-black text-black flex items-center gap-2 px-6"
+            >
+              <Pencil className="w-4 h-4" />
+              Edit
+            </Button>
+          </div>
+        )}
       </div>
 
       {/* Change Password Modal */}
