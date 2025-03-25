@@ -1,22 +1,120 @@
 import { Button } from "@/components/ui/button";
 import { GuestUser } from "@/public/assets/CustomIcon";
-import { EyeIcon, ListFilter, ClipboardList, Wallet, Sparkles } from "lucide-react";
+import { EyeIcon, ListFilter, ClipboardList, Wallet, Sparkles, X } from "lucide-react";
 import Link from "next/link";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { createPortal } from "react-dom";
+
+interface TripData {
+    id: string;
+    clientName: string;
+    serviceName: string;
+    serviceColor: string;
+    checkIn: string;
+    checkOut: string;
+    guests: number;
+    location?: string;
+}
+
+// Modal component that uses createPortal for better overlay
+const TripModal = ({ trip, onClose }: { trip: TripData; onClose: () => void }) => {
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+    // Prevent body scroll when modal is open
+    document.body.style.overflow = 'hidden';
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, []);
+
+  if (!mounted) return null;
+
+  return createPortal(
+    <div 
+      className="fixed inset-0 z-[9999] overflow-hidden"
+      style={{ backgroundColor: 'rgba(0, 0, 0, 0.5)' }}
+    >
+      <div 
+        className="fixed inset-0" 
+        onClick={onClose}
+      />
+      <div className="flex items-center justify-center min-h-screen px-4">
+        <div 
+          className="bg-white w-[780px] rounded-xl p-8 h-[390px] relative z-[10000]"
+          onClick={(e) => e.stopPropagation()}
+        >
+           <button 
+              onClick={onClose}
+              className="absolute right-4 p-[4px] bg-[#E5E5E5] rounded-[30px] top-4 text-gray-500 hover:text-gray-800"
+            >
+              <X size={20} />
+            </button>
+          
+          <h2 className="text-2xl mb-[28px]">Trip Start</h2>
+          
+          <div className="grid grid-cols-3 gap-x-8 gap-y-6">
+            <div>
+              <label className="block text-[#212121] mb-3">Booking ID</label>
+              <p className="text-[20px] text-[#2A2A2A]">{trip.id}</p>
+            </div>
+            
+            <div>
+              <label className="block text-[#212121] mb-3">Client Name</label>
+              <p className="text-[20px] text-[#2A2A2A]">{trip.clientName}</p>
+            </div>
+            
+            <div>
+              <label className="block text-[#212121] mb-3">Service Name</label>
+              <p className="text-[20px] text-[#2A2A2A] font-normal">₹ 9.5 / kWh</p>
+            </div>
+          </div>
+          
+          <div className="grid grid-cols-3 gap-x-8 gap-y-6 mt-6">
+            <div>
+              <label className="block text-[#212121] mb-3">Check In</label>
+              <p className="text-[20px] text-[#2A2A2A]">{trip.checkIn}</p>
+            </div>
+            
+            <div>
+              <label className="block text-[#212121] mb-3">Check Out</label>
+              <p className="text-[20px] text-[#2A2A2A]">{trip.checkOut}</p>
+            </div>
+            
+            <div>
+              <label className="block text-[#212121] mb-3">No. of Guest</label>
+              <p className="text-[20px] text-[#2A2A2A]">{trip.guests}</p>
+            </div>
+          </div>
+          
+          <div className="mt-6">
+            <label className="block text-[#212121] mb-3">Location</label>
+            <p className="text-[20px] text-[#2A2A2A]">{trip.location}</p>
+          </div>
+        </div>
+      </div>
+    </div>,
+    document.body
+  );
+};
 
 export function DashboardContent() {
     const [tripStartingFilter, setTripStartingFilter] = useState("Today");
+    const [showTripModal, setShowTripModal] = useState(false);
+    const [selectedTrip, setSelectedTrip] = useState<TripData | null>(null);
 
     // Sample data for trip tables
     const tripData = [
         {
             id: "CV042W4",
             clientName: "Badal Singh",
-            serviceName: "XYX",
+            serviceName: "XYZ",
             serviceColor: "bg-[#FFF2E2] text-[#B86B00]",
             checkIn: "20/2/2024, 10:30 pm",
             checkOut: "20/2/2024, 10:30 pm",
-            guests: 7
+            guests: 7,
+            location: "Chhota govinpur janta market near shiva borwell, Jamshedpur, Jharkhand Pin - 831015"
         },
         {
             id: "CV042E4",
@@ -25,7 +123,8 @@ export function DashboardContent() {
             serviceColor: "bg-[#F6E0FD] text-[#B127DC]",
             checkIn: "20/2/2024, 10:30 pm",
             checkOut: "20/2/2024, 10:30 pm",
-            guests: 7
+            guests: 7,
+            location: "Chhota govinpur janta market near shiva borwell, Jamshedpur, Jharkhand Pin - 831015"
         },
         {
             id: "CV042344",
@@ -34,12 +133,22 @@ export function DashboardContent() {
             serviceColor: "bg-[#E3FBE4] text-[#37B800]",
             checkIn: "20/2/2024, 10:30 pm",
             checkOut: "20/2/2024, 10:30 pm",
-            guests: 7
+            guests: 7,
+            location: "Chhota govinpur janta market near shiva borwell, Jamshedpur, Jharkhand Pin - 831015"
         }
     ];
+    
+    const handleTripClick = (trip: TripData) => {
+        setSelectedTrip(trip);
+        setShowTripModal(true);
+    };
+
+    const handleCloseModal = () => {
+        setShowTripModal(false);
+    };
 
     return (
-        <div className=" space-y-8 bg-[#F9FAFB]">
+        <div className="space-y-8 bg-[#F9FAFB]">
             {/* Page Header with Title and Button */}
             <div className="bg-[#FFFFFF] rounded-[24px]" >
                 <div className="flex justify-between items-center py-[16px] px-[20px] border-b border-[#EAECF0]">
@@ -152,7 +261,11 @@ export function DashboardContent() {
                         </div>
 
                         {tripData.map((trip) => (
-                            <div key={trip.id} className="grid grid-cols-12 gap-4 py-4 px-4 border-b items-center">
+                            <div 
+                                key={trip.id} 
+                                className="grid grid-cols-12 gap-4 py-4 px-4 border-b items-center cursor-pointer hover:bg-gray-50" 
+                                onClick={() => handleTripClick(trip)}
+                            >
                                 <div className="col-span-2 text-[#4F59E5] font-bold">{trip.id}</div>
                                 <div className="col-span-2 text-[#485467]">{trip.clientName}</div>
                                 <div className="col-span-2">
@@ -208,7 +321,7 @@ export function DashboardContent() {
 
                     </div>
 
-                    {/* Trip Starting Table */}
+                    {/* Trip Ending Table */}
                     <div className="bg-white rounded-lg border overflow-hidden">
                         <div className="grid grid-cols-12 gap-4 py-4 px-4 bg-[#F2F4F7] border-b text-sm font-bold text-[#334054]">
                             <div className="col-span-2">Booking ID</div>
@@ -220,7 +333,11 @@ export function DashboardContent() {
                         </div>
 
                         {tripData.map((trip) => (
-                            <div key={trip.id} className="grid grid-cols-12 gap-4 py-4 px-4 border-b items-center">
+                            <div 
+                                key={trip.id} 
+                                className="grid grid-cols-12 gap-4 py-4 px-4 border-b items-center cursor-pointer hover:bg-gray-50"
+                                onClick={() => handleTripClick(trip)}
+                            >
                                 <div className="col-span-2 text-[#4F59E5] font-bold">{trip.id}</div>
                                 <div className="col-span-2 text-[#485467]">{trip.clientName}</div>
                                 <div className="col-span-2">
@@ -244,6 +361,11 @@ export function DashboardContent() {
                     </div>
                 </div>
             </div>
+            
+            {/* Render Trip Modal */}
+            {showTripModal && selectedTrip && (
+                <TripModal trip={selectedTrip} onClose={handleCloseModal} />
+            )}
         </div>
     );
 } 

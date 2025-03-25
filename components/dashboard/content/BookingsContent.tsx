@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
-import { ChevronDown, Users } from "lucide-react";
-import { useState } from "react";
+import { ChevronDown, Users, X } from "lucide-react";
+import { useState, useEffect } from "react";
+import { createPortal } from "react-dom";
 
 interface Booking {
   id: string;
@@ -9,11 +10,97 @@ interface Booking {
   checkIn: string;
   checkOut: string;
   guests: number;
+  location?: string;
 }
+
+// Modal component that uses createPortal for better overlay
+const BookingModal = ({ booking, onClose }: { booking: Booking; onClose: () => void }) => {
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+    // Prevent body scroll when modal is open
+    document.body.style.overflow = 'hidden';
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, []);
+
+  if (!mounted) return null;
+
+  return createPortal(
+    <div 
+      className="fixed inset-0 z-[9999] overflow-hidden"
+      style={{ backgroundColor: 'rgba(0, 0, 0, 0.5)' }}
+    >
+      <div 
+        className="fixed inset-0" 
+        onClick={onClose}
+      />
+      <div className="flex items-center justify-center min-h-screen px-4">
+        <div 
+          className="bg-white w-[780px] rounded-xl p-8 h-[390px] relative z-[10000]"
+          onClick={(e) => e.stopPropagation()}
+        >
+           <button 
+              onClick={onClose}
+              className="absolute right-4 p-[4px] bg-[#E5E5E5] rounded-[30px] top-4 text-gray-500 hover:text-gray-800"
+            >
+              <X size={20} />
+            </button>
+          
+          <h2 className="text-2xl mb-[28px]">Trip Start</h2>
+          
+          <div className="grid grid-cols-3 gap-x-8 gap-y-6">
+            <div>
+              <label className="block text-[#212121] mb-3">Booking ID</label>
+              <p className="text-[20px] text-[#2A2A2A]">{booking.id}</p>
+            </div>
+            
+            <div>
+              <label className="block text-[#212121] mb-3">Client Name</label>
+              <p className="text-[20px] text-[#2A2A2A]">{booking.clientName}</p>
+            </div>
+            
+            <div>
+              <label className="block text-[#212121] mb-3">Service Name</label>
+              <p className="text-[20px] text-[#2A2A2A] font-normal">₹ 9.5 / kWh</p>
+            </div>
+          </div>
+          
+          <div className="grid grid-cols-3 gap-x-8 gap-y-6 mt-6">
+            <div>
+              <label className="block text-[#212121] mb-3">Check In</label>
+              <p className="text-[20px] text-[#2A2A2A]">{booking.checkIn}</p>
+            </div>
+            
+            <div>
+              <label className="block text-[#212121] mb-3">Check Out</label>
+              <p className="text-[20px] text-[#2A2A2A]">{booking.checkOut}</p>
+            </div>
+            
+            <div>
+              <label className="block text-[#212121] mb-3">No. of Guest</label>
+              <p className="text-[20px] text-[#2A2A2A]">{booking.guests}</p>
+            </div>
+          </div>
+          
+          <div className="mt-6">
+            <label className="block text-[#212121] mb-3">Location</label>
+            <p className="text-[20px] text-[#2A2A2A]">{booking.location || "Chhota govinpur janta market near shiva borwell, Jamshedpur, Jharkhand Pin - 831015"}</p>
+          </div>
+        </div>
+      </div>
+    </div>,
+    document.body
+  );
+};
 
 export function BookingsContent() {
   const [activeTab, setActiveTab] = useState("upcoming");
   const [filterDate] = useState("Today");
+  const [showBookingModal, setShowBookingModal] = useState(false);
+  const [selectedBooking, setSelectedBooking] = useState<Booking | null>(null);
   
   // Sample booking data for list view
   const bookings: Booking[] = [
@@ -23,7 +110,8 @@ export function BookingsContent() {
       serviceName: "XYX",
       checkIn: "20/2/2024, 10:30 pm",
       checkOut: "20/2/2024, 10:30 pm",
-      guests: 7
+      guests: 7,
+      location: "Chhota govinpur janta market near shiva borwell, Jamshedpur, Jharkhand Pin - 831015"
     },
     {
       id: "CV042E4",
@@ -31,7 +119,8 @@ export function BookingsContent() {
       serviceName: "XYZ",
       checkIn: "20/2/2024, 10:30 pm",
       checkOut: "20/2/2024, 10:30 pm",
-      guests: 7
+      guests: 7,
+      location: "Chhota govinpur janta market near shiva borwell, Jamshedpur, Jharkhand Pin - 831015"
     },
     {
       id: "CV042E4",
@@ -39,7 +128,8 @@ export function BookingsContent() {
       serviceName: "XYZ",
       checkIn: "20/2/2024, 10:30 pm",
       checkOut: "20/2/2024, 10:30 pm",
-      guests: 7
+      guests: 7,
+      location: "Chhota govinpur janta market near shiva borwell, Jamshedpur, Jharkhand Pin - 831015"
     },
     {
       id: "CV042E4",
@@ -47,7 +137,8 @@ export function BookingsContent() {
       serviceName: "XYZ",
       checkIn: "20/2/2024, 10:30 pm",
       checkOut: "20/2/2024, 10:30 pm",
-      guests: 7
+      guests: 7,
+      location: "Chhota govinpur janta market near shiva borwell, Jamshedpur, Jharkhand Pin - 831015"
     },
     {
       id: "CV042E4",
@@ -55,7 +146,8 @@ export function BookingsContent() {
       serviceName: "XYZ",
       checkIn: "20/2/2024, 10:30 pm",
       checkOut: "20/2/2024, 10:30 pm",
-      guests: 7
+      guests: 7,
+      location: "Chhota govinpur janta market near shiva borwell, Jamshedpur, Jharkhand Pin - 831015"
     },
     {
       id: "CV042E4",
@@ -63,7 +155,8 @@ export function BookingsContent() {
       serviceName: "XYZ",
       checkIn: "20/2/2024, 10:30 pm",
       checkOut: "20/2/2024, 10:30 pm",
-      guests: 7
+      guests: 7,
+      location: "Chhota govinpur janta market near shiva borwell, Jamshedpur, Jharkhand Pin - 831015"
     },
     {
       id: "CV042344",
@@ -71,7 +164,8 @@ export function BookingsContent() {
       serviceName: "XYZ",
       checkIn: "20/2/2024, 10:30 pm",
       checkOut: "20/2/2024, 10:30 pm",
-      guests: 7
+      guests: 7,
+      location: "Chhota govinpur janta market near shiva borwell, Jamshedpur, Jharkhand Pin - 831015"
     }
   ];
 
@@ -85,6 +179,15 @@ export function BookingsContent() {
       default:
         return "bg-[#E3FBE4] text-[#37B800]";
     }
+  };
+
+  const handleBookingClick = (booking: Booking) => {
+    setSelectedBooking(booking);
+    setShowBookingModal(true);
+  };
+
+  const handleCloseModal = () => {
+    setShowBookingModal(false);
   };
 
   return (
@@ -149,7 +252,11 @@ export function BookingsContent() {
           </thead>
           <tbody className="divide-y divide-[#EAECF0]">
             {bookings.map((booking, index) => (
-              <tr key={index} className={`border-x border-[#EAECF0] ${index === bookings.length - 1 ? "border-b" : ""}`}>
+              <tr 
+                key={index} 
+                className={`border-x border-[#EAECF0] ${index === bookings.length - 1 ? "border-b" : ""} cursor-pointer hover:bg-gray-50`}
+                onClick={() => handleBookingClick(booking)}
+              >
                 <td className="py-[14px] px-[12px] font-medium text-[#131313]">{booking.id}</td>
                 <td className="py-[14px] px-[12px] text-[#485467]">{booking.clientName}</td>
                 <td className="py-[14px] px-[12px]">
@@ -170,6 +277,11 @@ export function BookingsContent() {
           </tbody>
         </table>
       </div>
+
+      {/* Render Booking Modal */}
+      {showBookingModal && selectedBooking && (
+        <BookingModal booking={selectedBooking} onClose={handleCloseModal} />
+      )}
     </div>
   );
 } 
