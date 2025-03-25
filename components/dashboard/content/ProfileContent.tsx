@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { Plus_Jakarta_Sans } from "next/font/google";
 import { Button } from "@/components/ui/button";
-import { EditIcon } from "lucide-react";
+import { EditIcon, Pencil } from "lucide-react";
 import { useSearchParams, useRouter } from "next/navigation";
 
 const plusJakartaSans = Plus_Jakarta_Sans({
@@ -89,42 +89,43 @@ export default function ProfileContent() {
       </div>
 
       {/* Content Area */}
-      <div className="p-6 relative border-t ">
+      <div className="p-6 border-t ">
+      <div className="p-6 relative bg-[#F6F6F6] rounded-[12px] ">
         {activeTab === "personal" && (
           <div className="grid grid-cols-2 md:grid-cols-3 gap-x-6 gap-y-8">
             <div>
-              <p className="text-gray-700 mb-2">First Name</p>
-              <p className="font-medium">{userData.firstName}</p>
+              <p className="text-[#334054] mb-3">First Name</p>
+              <p className="text-[#717171]">{userData.firstName}</p>
             </div>
             
             <div>
-              <p className="text-gray-700 mb-2">Last Name</p>
-              <p className="font-medium">{userData.lastName}</p>
+              <p className="text-[#334054] mb-3">Last Name</p>
+              <p className="text-[#717171]">{userData.lastName}</p>
             </div>
             
             <div>
-              <p className="text-gray-700 mb-2">Email</p>
-              <p className="font-medium">{userData.email}</p>
+              <p className="text-[#334054] mb-3">Email</p>
+              <p className="text-[#717171]">{userData.email}</p>
             </div>
             
             <div>
-              <p className="text-gray-700 mb-2">Phone Number</p>
-              <p className="font-medium">{userData.phone}</p>
+              <p className="text-[#334054] mb-3">Phone Number</p>
+              <p className="text-[#717171]">{userData.phone}</p>
             </div>
             
             <div>
-              <p className="text-gray-700 mb-2">State</p>
-              <p className="font-medium">{userData.state}</p>
+              <p className="text-[#334054] mb-3">State</p>
+              <p className="text-[#717171]">{userData.state}</p>
             </div>
             
             <div>
-              <p className="text-gray-700 mb-2">City</p>
-              <p className="font-medium">{userData.city}</p>
+              <p className="text-[#334054] mb-3">City</p>
+              <p className="text-[#717171]">{userData.city}</p>
             </div>
             
             <div>
-              <p className="text-gray-700 mb-2">Id Proof</p>
-              <p className="font-medium">{userData.idProof}</p>
+              <p className="text-[#334054] mb-3">Id Proof</p>
+              <p className="text-[#717171]">{userData.idProof}</p>
             </div>
           </div>
         )}
@@ -141,14 +142,18 @@ export default function ProfileContent() {
           </div>
         )}
         
+      
+      </div>
         {/* Edit Button - Positioned in the bottom right */}
+        <div className="flex justify-end mt-[20px]">
         <Button 
           onClick={handleEdit}
-          className="absolute bottom-8 right-8 rounded-full bg-white hover:bg-gray-100 border border-black text-black flex items-center gap-2 px-6"
+          className="  rounded-full h-[48px] bg-white hover:bg-gray-100 border border-black text-black items-center gap-2 px-6"
         >
-          <EditIcon className="w-4 h-4" />
+          <Pencil className="w-4 h-4" />
           Edit
         </Button>
+      </div>
       </div>
     </div>
   );

@@ -66,7 +66,7 @@ interface StatCardProps {
 
 function StatCard({ title, value, icon, bgColor, iconBgColor }: StatCardProps) {
   return (
-    <div className={`${bgColor} rounded-lg p-6 flex items-start`}>
+    <div className={`${bgColor} rounded-lg flex items-start`}>
       <div className={`h-[48px] w-[48px] rounded-full ${iconBgColor} flex items-center justify-center mr-4`}>
         {icon}
       </div>

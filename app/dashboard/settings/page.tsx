@@ -20,7 +20,7 @@ export default function SettingsPage() {
       <Sidebar />
       <div className="flex flex-col flex-1 overflow-hidden">
         <Header title="Settings" />
-        <main className="flex-1 overflow-auto bg-[#F9FAFB] p-6">
+        <main className="flex-1 overflow-auto bg-[#F9FAFB] px-6">
           <Suspense fallback={<div>Loading...</div>}>
             <SettingsPageContent />
           </Suspense>

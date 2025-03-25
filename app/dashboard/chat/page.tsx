@@ -9,7 +9,7 @@ export default function ChatPage() {
       <Sidebar />
       <div className="flex flex-col flex-1 overflow-hidden">
         <Header title="Chat" />
-        <main className="flex-1 overflow-auto bg-[#F9FAFB]">
+        <main className="flex-1 overflow-auto bg-[#F9FAFB] px-6">
           <ChatContent />
         </main>
       </div>

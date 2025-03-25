@@ -9,7 +9,7 @@ export default function BookingsDetailsPage() {
       <Sidebar />
       <div className="flex flex-col flex-1 overflow-hidden">
         <Header title="Bookings Details" />
-        <main className="flex-1 overflow-auto bg-[#F9FAFB] p-6">
+        <main className="flex-1 overflow-auto bg-[#F9FAFB] px-6">
           <BookingsContent />
         </main>
       </div>

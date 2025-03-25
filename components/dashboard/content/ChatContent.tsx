@@ -89,7 +89,7 @@ export function ChatContent() {
   };
 
   return (
-    <div className={`${plusJakartaSans.className} bg-white h-full flex`}>
+    <div className={`${plusJakartaSans.className} bg-white rounded-[12px] h-full flex`}>
       {/* Chat List */}
       <div className="w-[400px] border-r flex flex-col">
         {/* Tabs */}
