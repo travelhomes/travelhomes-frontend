@@ -11,7 +11,7 @@ export default function Dashboard() {
       <Sidebar />
       <div className="flex flex-col flex-1 overflow-hidden">
         <Header title="Dashboard" />
-        <main className="flex-1 overflow-auto bg-[#F9FAFB] p-6">
+        <main className="flex-1 overflow-auto bg-[#F9FAFB]">
           <DashboardContent />
         </main>
       </div>
