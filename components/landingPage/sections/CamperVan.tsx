@@ -79,14 +79,14 @@ export default function CamperListing() {
         </Link>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
         {campers.map((camper, index) => (
           //@ts-expect-error
           <CamperCard key={index} {...camper} />
         ))}
       </div>
 <Link href="/discover"> 
-      <button className="px-[20px] py-[12px] text-sm font-medium text-gray-700 border border-gray-300 rounded-[60px] text-center m-auto block md:hidden">
+      <button className="px-[20px] py-[12px] text-sm font-medium text-gray-700 border border-gray-300 rounded-[60px] text-center m-auto block md:hidden mt-6">
         Discover more
       </button>
       </Link>
@@ -139,10 +139,9 @@ function CamperCard({
 
   return (
     <Link href="/product">
-      <div className="relative">
+      <div className="w-[305px] h-[306px] flex flex-col">
         <div
-          className="relative w-full overflow-hidden rounded-[12px]"
-          style={{ paddingBottom: '100%' }}
+          className="relative w-full h-[204px] overflow-hidden rounded-[12px]"
           onMouseEnter={() => setIsHovered(true)}
           onMouseLeave={() => setIsHovered(false)}
         >
@@ -160,7 +159,7 @@ function CamperCard({
                   alt={`${title} - Image ${index + 1}`}
                   fill
                   className="object-cover"
-                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 60vw, 37vw"
+                  sizes="305px"
                   priority={index === 0}
                 />
               </div>
@@ -197,6 +196,7 @@ function CamperCard({
           <button
             onClick={(e) => {
               e.preventDefault();
+              e.stopPropagation();
               setIsFavorite(!isFavorite);
             }}
             className="absolute top-3 right-3 p-2 rounded-full z-20"
@@ -211,13 +211,11 @@ function CamperCard({
           </button>
 
           {/* Favorite Text */}
-          <div
-            className={`absolute top-3 left-3 ${
-              favoriteText ? "bg-white/90" : ""
-            } px-3 py-1 rounded-[4px] z-20`}
-          >
-            <span className="text-sm font-medium">{favoriteText}</span>
-          </div>
+          {favoriteText && (
+            <div className="absolute top-3 left-3 bg-white/90 px-3 py-1 rounded-[4px] z-20">
+              <span className="text-sm font-medium">{favoriteText}</span>
+            </div>
+          )}
 
           {/* Carousel Dots */}
           <div className="absolute bottom-3 left-0 right-0 flex justify-center gap-1.5 z-20">
@@ -232,7 +230,7 @@ function CamperCard({
           </div>
         </div>
 
-        <div className="py-4">
+        <div className="py-3">
           <div className="flex justify-between items-start">
             <h3
               className={`${plusJakartaSans.className} text-[15px] text-[#222222] font-semibold`}
@@ -252,7 +250,7 @@ function CamperCard({
           <div className="flex justify-between items-center text-[14px]">
             <div>
               <span className="text-[#5E5E5E] line-through">₹{price}</span>
-              <span className="ml-2 text-lg font-bold text-[222222]">
+              <span className="ml-2 text-lg font-bold text-[#222222]">
                 ₹{price}
               </span>
               <span className="text-[#222222]">/{period}</span>
