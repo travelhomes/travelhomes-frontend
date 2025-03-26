@@ -33,7 +33,7 @@ export default function Appbar() {
           {/* Right side buttons */}
           <div className="flex items-center space-x-4">
             <Link href="/vendor">
-              <button className="px-[20px] py-[12px] text-sm font-medium text-gray-700 border border-gray-300 rounded-[60px]">
+              <button className="px-[20px] bg-white cursor-pointer py-[12px] text-sm font-medium text-gray-700 border border-gray-300 rounded-[60px]">
                 <span className="flex items-center">
                   <ListIcon />
                   <span className="ml-2 text-[#131313]">List your offering</span>
@@ -82,7 +82,7 @@ export default function Appbar() {
               </DropdownMenu>
             ) : (
               <Link href="/auth/register">
-                <button className="px-[20px] py-[12px] text-sm font-medium text-white bg-black rounded-[60px]">
+                <button className="px-[20px] cursor-pointer py-[12px] text-sm font-medium text-black bg-white rounded-[60px]">
                   Register
                 </button>
               </Link>

@@ -20,16 +20,36 @@ export default function Home() {
 
   return (
     <>
-      <div className="py-[1rem] px-[1rem] md:px-[5rem]">
-        <Appbar />
-        <Header onTabChange={setActiveTab} />
-        <SearchFilter activeTab={activeTab} />
+      {/* Hero section with floating components */}
+      <div className="relative">
+        {/* Background image */}
         <Hero />
-        {/* Sections */}
+        
+        {/* Components in correct order */}
+        <div className="absolute top-0 left-0 right-0 z-10 px-[1rem] md:px-[5rem]">
+          {/* 1. Appbar at top */}
+          <Appbar />
+          
+          {/* 2. Hero heading is handled in Hero component */}
+          
+          {/* 3. Header below hero title */}
+          <div className="mt-[180px] md:mt-[250px]">
+            <Header onTabChange={setActiveTab} />
+          </div>
+          
+          {/* 4. Search filter at bottom */}
+          <div className="mt-6">
+            <SearchFilter activeTab={activeTab} />
+          </div>
+        </div>
+      </div>
+      
+      {/* Content sections */}
+      <div className="py-[1rem] px-[1rem] md:px-[5rem]">
         <CamperListing />
         <UniqueStay />
         <BestActivity />
-        {/* Destinations  */}
+        {/* Destinations */}
         <TrendingDestinations />
         <ServiceListing />
         <Testimonials />
