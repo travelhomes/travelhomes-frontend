@@ -70,10 +70,10 @@ export default function TrendingDestinations() {
       {/* Desktop Layout */}
       <div className="hidden lg:grid grid-cols-4 gap-4">
         <div className="col-span-1">
-          <h2 className="text-4xl font-bold mb-6">
+          <h2 className="text-4xl font-bold mt-5 mb-9">
             Trending destinations
           </h2>
-          <div className="relative rounded-2xl overflow-hidden group h-[300px]">
+          <div className="relative rounded-2xl overflow-hidden group h-[255px]">
             <Image
               src={Delhi}
               alt="Delhi"
@@ -95,7 +95,7 @@ export default function TrendingDestinations() {
         </div>
 
         <div className="col-span-1">
-          <div className="relative rounded-2xl overflow-hidden group h-[410px]">
+          <div className="relative rounded-2xl overflow-hidden group h-[390px]">
             <Image
               src={Kolkata}
               alt="Kolkata"
@@ -117,7 +117,7 @@ export default function TrendingDestinations() {
         </div>
 
         <div className="col-span-1">
-          <div className="relative rounded-2xl overflow-hidden group h-[410px]">
+          <div className="relative rounded-2xl overflow-hidden group h-[390px]">
             <Image
               src={Bombay}
               alt="Bombay"
@@ -139,7 +139,7 @@ export default function TrendingDestinations() {
         </div>
 
         <div className="col-span-1 flex flex-col">
-          <div className="relative rounded-2xl overflow-hidden group h-[270px]">
+          <div className="relative rounded-2xl overflow-hidden group h-[206px]">
             <Image
               src={Karela}
               alt="Kerala"
@@ -158,7 +158,7 @@ export default function TrendingDestinations() {
               <h3 className="text-white text-lg font-semibold">Kerala</h3>
             </div>
           </div>
-          <p className="text-gray-600 text-base md:text-lg text-center mt-4">
+          <p className="text-[#6A6A6A] text-[18px] text-base md:text-lg mt-4">
             When it comes to planning a dream destination, some destinations
             stand out as top recommendations for travelers.
           </p>

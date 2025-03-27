@@ -146,7 +146,7 @@ function CamperCard({
 
   return (
     <Link href="/product">
-      <div className="flex flex-col w-[120%] h-full">
+      <div className="flex flex-col w-[125%] h-full">
         <div
           className="relative w-full h-[204px] overflow-hidden rounded-[12px]"
           onMouseEnter={() => setIsHovered(true)}
