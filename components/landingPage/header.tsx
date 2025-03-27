@@ -94,6 +94,8 @@ export function Header({ onTabChange }: HeaderProps) {
           <Image
             src={category.icon} 
             alt={`${category.name} icon`} 
+            width={4}
+            height={4}
             className="w-4 h-4"
           />
         </div>
