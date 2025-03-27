@@ -1,25 +1,31 @@
 import Image from "next/image";
-import HeroImage from "@/public/heroSection.png";
+import heroBackground from "@/public/hero-image.png";
 
 export default function Hero() {
   return (
-    <div className="flex text-center md:text-left flex-col lg:flex-row items-center justify-between pt-[1rem] md:pt-[4rem]">
-      {/* Image on top for mobile, right for larger screens */}
-      <div className="order-1 lg:order-2 w-full lg:w-auto">
-        <Image src={HeroImage} alt={"Hero Image"} />
+    <div className="relative w-full h-[520px]">
+      {/* Background Image - ensuring full visibility */}
+      <div className="absolute inset-0 w-full h-full overflow-hidden">
+        <Image 
+          src={heroBackground} 
+          alt="Hero Background"
+          fill
+          priority
+          sizes="100vw"
+          quality={100}
+          style={{ objectFit: 'cover', objectPosition: 'center' }}
+        />
+        {/* Light dark overlay for better text contrast */}
+        <div className="absolute inset-0 bg-black bg-opacity-10"></div>
       </div>
 
-      {/* Text content below image for mobile, left for larger screens */}
-      <div className="order-2 lg:order-1 w-full lg:w-[550px] md:px-4 lg:pr-[55px] pt-8 lg:py-[80px]">
-        <p className="text-[30px] lg:text-[56px] leading-tight lg:leading-[72px] font-semibold text-[#131313]">
-          Explore The Unexplored in The Caravan!
-        </p>
-        <p className="text-[#535353] lg:text-[20px] mt-4">
-          Non, une fois votre devis établi, aucun coût supplémentaire ne
-          s&apos;ajoute. Nous nous engageons à une transparence totale et à une
-          tarification fixe, garantissant ainsi aucune surprise tarifaire après
-          l&apos;établissement du devis.
-        </p>
+      {/* Only the title, no subtext, positioned for 520px height */}
+      <div className="relative z-1 h-full flex flex-col items-center text-center text-white px-4 md:px-8 pt-[100px] md:pt-[120px]">
+        <div className="max-w-[800px] mx-auto">
+          <h1 className="text-[40px] md:text-[60px] font-bold leading-tight">
+            Explore The Unexplored in The Caravan!
+          </h1>
+        </div>
       </div>
     </div>
   );
