@@ -64,7 +64,7 @@ const campers = [
 export default function BestActively() {
 
   return (
-    <section className="md:px-4 mx-auto">
+    <section className="px-4 mx-auto max-w-7xl">
       <div className="flex justify-between items-center mb-8">
         <div>
           <h2 className="md:text-2xl text-[20px] font-bold mb-2">
@@ -81,7 +81,7 @@ export default function BestActively() {
         </Link>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 justify-items-center">
         {campers.map((camper, index) => (
           //@ts-expect-error
           <CamperCard key={index} {...camper} />
@@ -129,20 +129,20 @@ function CamperCard({
   const handlePrevImage = (e: React.MouseEvent) => {
     e.preventDefault();
     if (!isFirstImage) {
-      setCurrentImageIndex(prev => prev - 1);
+      setCurrentImageIndex((prev) => prev - 1);
     }
   };
 
   const handleNextImage = (e: React.MouseEvent) => {
     e.preventDefault();
     if (!isLastImage) {
-      setCurrentImageIndex(prev => prev + 1);
+      setCurrentImageIndex((prev) => prev + 1);
     }
   };
 
   return (
     <Link href="/product">
-      <div className="w-[305px] h-[306px] flex flex-col">
+      <div className="flex flex-col w-[120%] h-full">
         <div
           className="relative w-full h-[204px] overflow-hidden rounded-[12px]"
           onMouseEnter={() => setIsHovered(true)}
@@ -162,7 +162,7 @@ function CamperCard({
                   alt={`${title} - Image ${index + 1}`}
                   fill
                   className="object-cover"
-                  sizes="305px"
+                  sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, (max-width: 1280px) 33vw, 305px"
                   priority={index === 0}
                 />
               </div>
@@ -175,7 +175,9 @@ function CamperCard({
               <button
                 onClick={handlePrevImage}
                 className={`absolute left-3 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-white/90 flex items-center justify-center shadow-md transition-all hover:bg-white z-20 ${
-                  isFirstImage ? 'opacity-50 cursor-not-allowed' : 'hover:scale-105'
+                  isFirstImage
+                    ? "opacity-50 cursor-not-allowed"
+                    : "hover:scale-105"
                 }`}
                 aria-label="Previous image"
                 disabled={isFirstImage}
@@ -185,7 +187,9 @@ function CamperCard({
               <button
                 onClick={handleNextImage}
                 className={`absolute right-3 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-white/90 flex items-center justify-center shadow-md transition-all hover:bg-white z-20 ${
-                  isLastImage ? 'opacity-50 cursor-not-allowed' : 'hover:scale-105'
+                  isLastImage
+                    ? "opacity-50 cursor-not-allowed"
+                    : "hover:scale-105"
                 }`}
                 aria-label="Next image"
                 disabled={isLastImage}
@@ -202,7 +206,7 @@ function CamperCard({
               e.stopPropagation();
               setIsFavorite(!isFavorite);
             }}
-            className="absolute top-3 right-3 p-2 rounded-full z-50"
+            className="absolute top-3 right-3 p-2 rounded-full z-20"
           >
             <Heart
               className={`w-5 h-5 ${
@@ -215,13 +219,13 @@ function CamperCard({
 
           {/* Favorite Text */}
           {favoriteText && (
-            <div className="absolute top-3 left-3 bg-white/90 px-3 py-1 rounded-[4px]">
+            <div className="absolute top-3 left-3 bg-white/90 px-3 py-1 rounded-[4px] z-10">
               <span className="text-sm font-medium">{favoriteText}</span>
             </div>
           )}
 
           {/* Carousel Dots */}
-          <div className="absolute bottom-3 left-0 right-0 flex justify-center gap-1.5">
+          <div className="absolute bottom-3 left-0 right-0 flex justify-center gap-1.5 z-10">
             {images.map((_, index) => (
               <div
                 key={index}

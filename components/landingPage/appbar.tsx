@@ -83,7 +83,7 @@ export default function Appbar() {
             ) : (
               <Link href="/auth/register">
                 <button className="px-[20px] cursor-pointer py-[12px] text-sm font-medium text-black bg-white rounded-[60px]">
-                  Register
+Login
                 </button>
               </Link>
             )}

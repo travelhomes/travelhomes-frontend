@@ -192,25 +192,36 @@ export default function SearchFilter({ activeTab = 'campervan' }) {
     setCalendarOpen(true);
   };
 
-  const formatDateTime = (dateTime?: { date: Date; time?: string; period?: 'AM' | 'PM' }) => {
+  const formatDateTime = (dateTime?: { date: Date; time?: string }) => {
     if (!dateTime?.date) return "Add date";
     const formattedDate = dateTime.date.toLocaleDateString();
-    if (dateTime.time && dateTime.period) {
-      return `${formattedDate}, ${dateTime.time} ${dateTime.period}`;
+    if (dateTime.time) {
+      return `${formattedDate}, ${dateTime.time}`;
     }
     return formattedDate;
   };
 
-  const handleTimeSelect = (time: string, period: 'AM' | 'PM') => {
+  const handleTimeSelect = (timeWithPeriod: string) => {
     setDateTimeRange(prev => ({
       ...prev,
       [timePickerType]: {
         ...prev[timePickerType],
-        time,
-        period
+        time: timeWithPeriod
       }
     }));
+    
+    // Close current time picker
     setTimePickerOpen(false);
+    
+    // If check-in time was just set and check-out date exists but no time,
+    // automatically open the check-out time picker
+    if (timePickerType === 'checkIn' && dateTimeRange.checkOut?.date) {
+      // Use a slight delay to ensure the UI updates properly
+      setTimeout(() => {
+        setTimePickerType('checkOut');
+        setTimePickerOpen(true);
+      }, 100);
+    }
   };
 
   const formatGuestCount = () => {
@@ -516,13 +527,10 @@ export default function SearchFilter({ activeTab = 'campervan' }) {
           className="absolute top-full left-1/2 -translate-x-1/2 mt-2 z-50"
         >
           <TimeSelector 
+            timePickerType={timePickerType}
             onTimeSelect={handleTimeSelect}
             onClose={() => {
               setTimePickerOpen(false);
-              if (timePickerType === 'checkIn' && dateTimeRange.checkOut?.date) {
-                setTimePickerType('checkOut');
-                setTimePickerOpen(true);
-              }
             }}
           />
         </div>
