@@ -174,7 +174,7 @@ function CamperCard({
             <>
               <button
                 onClick={handlePrevImage}
-                className={`absolute left-3 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-white/90 flex items-center justify-center shadow-md transition-all hover:bg-white z-20 ${
+                className={`absolute left-3 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-white/90 flex items-center justify-center shadow-md transition-all hover:bg-white ${
                   isFirstImage
                     ? "opacity-50 cursor-not-allowed"
                     : "hover:scale-105"
@@ -206,7 +206,7 @@ function CamperCard({
               e.stopPropagation();
               setIsFavorite(!isFavorite);
             }}
-            className="absolute top-3 right-3 p-2 rounded-full z-20"
+            className="absolute top-3 right-3 p-2 rounded-full z-10"
           >
             <Heart
               className={`w-5 h-5 ${

@@ -89,7 +89,7 @@ export function Calendar({ onDateSelect, className }: CalendarProps) {
   }, [selectedDates, onDateSelect])
 
   return (
-    <div className={cn("p-4 rounded-xl bg-white", className)}>
+    <div className={cn("p-4 z rounded-xl z-20 bg-white", className)}>
       <div className="grid grid-cols-2 gap-8">
         {/* Current Month */}
         <div>
