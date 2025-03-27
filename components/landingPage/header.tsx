@@ -1,6 +1,7 @@
 "use client"
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import Image from "next/image";
 
 interface HeaderProps {
   onTabChange?: (tab: string) => void;
@@ -90,7 +91,7 @@ export function Header({ onTabChange }: HeaderProps) {
       >
         <div className="bg-white p-1.5 rounded-full flex items-center justify-center h-6 w-6">
           {/* Display the icon from the API URL */}
-          <img 
+          <Image
             src={category.icon} 
             alt={`${category.name} icon`} 
             className="w-4 h-4"
