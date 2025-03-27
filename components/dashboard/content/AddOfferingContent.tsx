@@ -5,8 +5,10 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { useState, useRef } from "react";
 import Image from "next/image";
-import { Plus_Jakarta_Sans } from "next/font/google";
 import { ChevronDown } from "lucide-react";
+
+import { Plus_Jakarta_Sans } from "next/font/google";
+
 
 const plusJakartaSans = Plus_Jakarta_Sans({ 
   subsets: ["latin"],

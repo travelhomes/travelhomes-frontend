@@ -140,9 +140,9 @@ export default function LatestArticles() {
                   </div>
                 </div>
                 <div className="mt-3">
-                  <h3 className="text-[15px] text-[#171717] leading-snug bg-red-500 px-2 py-1 inline-block rounded">
+                  <p className="text-[15px] text-[#171717] leading-snug bg-red-500 px-2 py-1 inline-block rounded">
                     {article.title}
-                  </h3>
+                  </p>
                 </div>
               </div>
             </Link>

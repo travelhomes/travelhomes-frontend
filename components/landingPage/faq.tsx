@@ -3,6 +3,16 @@
 import { useState } from 'react'
 import { Plus, Minus } from 'lucide-react'
 
+import { Plus_Jakarta_Sans } from "next/font/google";
+
+
+const plusJakartaSans = Plus_Jakarta_Sans({ 
+  subsets: ["latin"],
+  weight: ['400', '500', '600', '700'],
+});
+
+
+
 interface FAQItem {
   id: number
   question: string
@@ -42,8 +52,8 @@ export default function FAQ() {
     <div className="py-8 md:py-12 px-4 sm:px-6 lg:px-8">
       <div className="flex flex-col lg:flex-row gap-8">
         <div className="lg:mb-8 text-center lg:text-center w-full lg:w-[450px] lg:pr-[56px]">
-          <h2 className="text-2xl md:text-3xl font-bold mb-4">Frequently<br />Asked Questions</h2>
-          <p className="text-gray-600 mb-6 text-sm md:text-base">
+          <h2 className="text-2xl md:text-[36px] leading-10 font-bold mb-[25px]">Frequently<br />Asked Questions</h2>
+          <p className="text-[#989892] mb-[34px] text-sm md:text-base">
             Find answer go common inquiries about using lorem ipsum we&apos;re here to make your experience as smooth as possible and here answer am to provide you information
           </p>
           <div className="flex flex-row gap-2 justify-between border border-[#F6F6F6] h-[50px] shadow-sm rounded-[60px]">
@@ -69,7 +79,7 @@ export default function FAQ() {
             >
               <button
                 onClick={() => setOpenId(openId === faq.id ? null : faq.id)}
-                className={`flex justify-between items-center w-full p-3 sm:p-4 text-left ${
+                className={`flex justify-between items-center w-full p-3 sm:p-6 text-left ${
                   openId === faq.id ? 'bg-[#F6F6F6]' : 'hover:bg-gray-50'
                 }`}
                 aria-expanded={openId === faq.id}
@@ -94,7 +104,7 @@ export default function FAQ() {
                   ${openId === faq.id ? 'bg-[#F6F6F6]' : ''}
                 `}
               >
-                <div className="p-3 sm:p-4 pt-0 text-gray-600 text-sm sm:text-base">
+                <div className={`${plusJakartaSans.className} p-3 sm:p-4 pt-0 text-[#535353] text-sm sm:text-base`}>
                   {faq.answer}
                 </div>
               </div>
