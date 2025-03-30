@@ -89,12 +89,13 @@ export function Header({ onTabChange }: HeaderProps) {
         } px-4 py-2 rounded-full`} 
         onClick={() => handleButtonClick(category.id.toString(), category.name)}
       >
-        <div className="bg-white p-1.5 rounded-full flex items-center justify-center h-6 w-6">
+         <div className="bg-white p-1.5 rounded-full flex items-center justify-center h-6 w-6 relative">
           {/* Display the icon from the API URL */}
           <Image
-            src={category.icon} 
-            alt={`${category.name} icon`} 
-            className="w-4 h-4"
+            src={`${category.icon}`}
+            alt={`${category.name} icon`}
+            fill 
+            style={{ objectFit: 'cover' }} 
           />
         </div>
         <span className="text-sm font-medium pr-1">{category.name}</span>
