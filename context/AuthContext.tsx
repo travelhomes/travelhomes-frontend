@@ -75,6 +75,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const register = async (data: RegisterData) => {
     try {
+
+      const BASE_URL = process.env.NEXT_PUBLIC_BACKEND_URL || "http://3.7.52.212:5000";
+      console.log(`${BASE_URL}/api/auth/register`)
       const response = await axios.post(`${BASE_URL}/api/auth/register`, {
         email: data.email,
         phone: data.phone,
