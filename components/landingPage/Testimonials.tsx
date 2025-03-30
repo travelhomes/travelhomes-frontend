@@ -3,6 +3,14 @@
 import { useState, useRef } from 'react'
 import Image from 'next/image'
 import { Testimoleft, Testmoright } from '@/public/assets/CustomIcon'
+import { Plus_Jakarta_Sans } from "next/font/google";
+
+
+const plusJakartaSans = Plus_Jakarta_Sans({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+});
+
 
 interface Testimonial {
   id: number
@@ -114,8 +122,8 @@ export default function Testimonials() {
     <div className="py-8 md:mt-20">
       <div className="flex justify-between items-center mb-6">
         <div>
-          <h2 className="text-2xl font-bold">Testimonials</h2>
-          <p className="text-gray-600 mt-1">Most popular choices for travelers from India</p>
+          <h2 className="text-[36px] text-[#0B0907] font-bold">Testimonials</h2>
+          <p className="text-[#989892] mt-1">Most popular choices for travelers from India</p>
         </div>
         <div className="hidden md:flex gap-2">
           <button
@@ -139,7 +147,7 @@ export default function Testimonials() {
 
       <div 
         ref={scrollRef}
-        className="flex gap-6 overflow-x-auto snap-x snap-mandatory touch-pan-x p-6"
+        className="flex gap-6 overflow-x-auto snap-x snap-mandatory touch-pan-x p-8"
         style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
         onTouchStart={handleTouchStart}
         onTouchMove={handleTouchMove}
@@ -147,11 +155,17 @@ export default function Testimonials() {
         {testimonials.map((testimonial) => (
           <div
             key={testimonial.id}
-            className="min-w-[calc(100%-2rem)] md:min-w-[calc(50%-1rem)] lg:min-w-[calc(33.333%-1rem)] snap-start "
+            className=" snap-start h-[221px]  "
           >
-            <div className=" p-6 rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300">
-              <p className="text-gray-700 mb-6">{testimonial.content}</p>
-              <div className="flex items-center gap-3">
+            <div className=" p-6 rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300 w-[300px]">
+              <p className={`${plusJakartaSans.className} text-[#0B0907] text-[14px] mb-6`}>{testimonial.content}</p>
+              <div className="flex items-center gap-3 justify-between">
+               
+                <div>
+                  <h3 className="font- text-[#072130] mb-[5px]">{testimonial.author}</h3>
+                  <p className="text-[12px] text-[#4A6778]">{testimonial.role}</p>
+                </div>
+
                 <div className="relative w-12 h-12 rounded-full overflow-hidden">
                   <Image
                     src={testimonial.image || "/placeholder.svg"}
@@ -159,10 +173,6 @@ export default function Testimonials() {
                     fill
                     className="object-cover"
                   />
-                </div>
-                <div>
-                  <h3 className="font-semibold">{testimonial.author}</h3>
-                  <p className="text-sm text-gray-600">{testimonial.role}</p>
                 </div>
               </div>
             </div>

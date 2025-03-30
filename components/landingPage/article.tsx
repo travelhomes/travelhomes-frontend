@@ -25,6 +25,12 @@ const articles = [
     title: 'The ultimate guide to buying your first home',
     image: Article3,
     slug: 'home-buying-guide'
+  },
+  {
+    id: 4,
+    title: 'The ultimate guide to buying your first home',
+    image: Article3,
+    slug: 'home-buying-guide'
   }
 ]
 
@@ -74,29 +80,33 @@ export default function LatestArticles() {
           </Link>
         </div>
         
-        <div className="hidden md:grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="hidden md:grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 justify-items-center">
           {articles.map((article) => (
             <Link
               key={article.id}
               href={`/blog/${article.slug}`}
-              className="group relative aspect-[4/3] rounded-2xl overflow-hidden"
+              className="group w-full max-w-[305px]"
             >
-              <Image
-                src={article.image || "/placeholder.svg"}
-                alt={article.title}
-                fill
-                className="object-cover transition-transform duration-300 group-hover:scale-105"
-              />
-              <div className="absolute top-4 right-4">
-                <div className="p-2 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 opacity-0 scale-75 transition-all duration-300 group-hover:opacity-100 group-hover:scale-100">
-                  <ArrowUpRight className="w-4 h-4 text-white" />
+              <div className="flex flex-col">
+                <div className="relative w-full h-[204px] overflow-hidden rounded-[12px]">
+                  <Image
+                    src={article.image || "/placeholder.svg"}
+                    alt={article.title}
+                    fill
+                    className="object-cover transition-transform duration-300 group-hover:scale-105"
+                    sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, (max-width: 1280px) 33vw, 305px"
+                  />
+                  <div className="absolute top-4 right-4">
+                    <div className="p-2 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 opacity-0 scale-75 transition-all duration-300 group-hover:opacity-100 group-hover:scale-100">
+                      <ArrowUpRight className="w-4 h-4 text-white" />
+                    </div>
+                  </div>
                 </div>
-              </div>
-              <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent transition-opacity duration-300 group-hover:opacity-90" />
-              <div className="absolute bottom-0 left-0 right-0 p-6">
-                <h3 className="text-white text-lg font-medium leading-snug">
-                  {article.title}
-                </h3>
+                <div className="mt-3">
+                  <p className="text-[15px]  text-[#171717] leading-snug  px-2 py-1 inline-block">
+                    {article.title}
+                  </p>
+                </div>
               </div>
             </Link>
           ))}
@@ -113,24 +123,27 @@ export default function LatestArticles() {
             <Link
               key={article.id}
               href={`/blog/${article.slug}`}
-              className="group relative aspect-[4/3] min-w-[calc(100%-2rem)] snap-start rounded-2xl overflow-hidden"
+              className="group min-w-[calc(100%-2rem)] snap-start"
             >
-              <Image
-                src={article.image || "/placeholder.svg"}
-                alt={article.title}
-                fill
-                className="object-cover transition-transform duration-300 group-hover:scale-105"
-              />
-              <div className="absolute top-4 right-4">
-                <div className="p-2 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 opacity-0 scale-75 transition-all duration-300 group-hover:opacity-100 group-hover:scale-100">
-                  <ArrowUpRight className="w-4 h-4 text-white" />
+              <div className="flex flex-col">
+                <div className="relative aspect-[4/3] w-full overflow-hidden rounded-2xl">
+                  <Image
+                    src={article.image || "/placeholder.svg"}
+                    alt={article.title}
+                    fill
+                    className="object-cover transition-transform duration-300 group-hover:scale-105"
+                  />
+                  <div className="absolute top-4 right-4">
+                    <div className="p-2 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 opacity-0 scale-75 transition-all duration-300 group-hover:opacity-100 group-hover:scale-100">
+                      <ArrowUpRight className="w-4 h-4 text-white" />
+                    </div>
+                  </div>
                 </div>
-              </div>
-              <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent transition-opacity duration-300 group-hover:opacity-90" />
-              <div className="absolute bottom-0 left-0 right-0 p-6">
-                <h3 className="text-white text-lg font-medium leading-snug">
-                  {article.title}
-                </h3>
+                <div className="mt-3">
+                  <p className="text-[15px] text-[#171717] leading-snug bg-red-500 px-2 py-1 inline-block rounded">
+                    {article.title}
+                  </p>
+                </div>
               </div>
             </Link>
           ))}

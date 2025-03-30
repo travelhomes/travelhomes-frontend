@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { Plus_Jakarta_Sans } from "next/font/google";
 import { Eye, MousePointerClick, FileCheck, Clock, ChevronDown } from "lucide-react";
 import {
   AreaChart,
@@ -12,6 +11,8 @@ import {
   Tooltip,
   ResponsiveContainer,
 } from "recharts";
+import { Plus_Jakarta_Sans } from "next/font/google";
+
 
 const plusJakartaSans = Plus_Jakarta_Sans({
   subsets: ["latin"],
