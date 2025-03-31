@@ -70,8 +70,8 @@ export default function SearchFilter({ activeTab = 'campervan' }) {
   const calendarPopupRef = useRef<HTMLDivElement>(null);
   const activityPopupRef = useRef<HTMLDivElement>(null);
 
-  const [fromLocationInput, setFromLocationInput] = useState("Delhi");
-  const [toLocationInput, setToLocationInput] = useState("Mumbai");
+  const [fromLocationInput, setFromLocationInput] = useState("");
+  const [toLocationInput, setToLocationInput] = useState("c");
   const [fromSuggestions, setFromSuggestions] = useState<string[]>([]);
   const [toSuggestions, setToSuggestions] = useState<string[]>([]);
   const [isFromLocationSearchOpen, setFromLocationSearchOpen] = useState(false);
@@ -201,27 +201,17 @@ export default function SearchFilter({ activeTab = 'campervan' }) {
     return formattedDate;
   };
 
-  const handleTimeSelect = (timeWithPeriod: string) => {
+  const handleTimeSelect = (timeWithPeriod: string, type: 'checkIn' | 'checkOut') => {
     setDateTimeRange(prev => ({
       ...prev,
-      [timePickerType]: {
-        ...prev[timePickerType],
+      [type]: {
+        ...prev[type],
         time: timeWithPeriod
       }
     }));
     
-    // Close current time picker
-    setTimePickerOpen(false);
-    
-    // If check-in time was just set and check-out date exists but no time,
-    // automatically open the check-out time picker
-    if (timePickerType === 'checkIn' && dateTimeRange.checkOut?.date) {
-      // Use a slight delay to ensure the UI updates properly
-      setTimeout(() => {
-        setTimePickerType('checkOut');
-        setTimePickerOpen(true);
-      }, 100);
-    }
+    // We don't close the picker automatically now as users can set both times at once
+    // The picker will be closed when the user clicks "Done" button
   };
 
   const formatGuestCount = () => {
@@ -527,7 +517,8 @@ export default function SearchFilter({ activeTab = 'campervan' }) {
           className="absolute top-full left-1/2 -translate-x-1/2 mt-2 z-50"
         >
           <TimeSelector 
-            timePickerType={timePickerType}
+            checkInTime={dateTimeRange.checkIn?.time || null}
+            checkOutTime={dateTimeRange.checkOut?.time || null}
             onTimeSelect={handleTimeSelect}
             onClose={() => {
               setTimePickerOpen(false);

@@ -80,6 +80,18 @@ export function Calendar({ onDateSelect, className }: CalendarProps) {
     return selectedDates.some((selectedDate) => selectedDate.toDateString() === date.toDateString())
   }
 
+  const isStartDate = (date: Date) => {
+    if (selectedDates.length !== 2) return false
+    const [start] = selectedDates.sort((a, b) => a.getTime() - b.getTime())
+    return date.toDateString() === start.toDateString()
+  }
+
+  const isEndDate = (date: Date) => {
+    if (selectedDates.length !== 2) return false
+    const [, end] = selectedDates.sort((a, b) => a.getTime() - b.getTime())
+    return date.toDateString() === end.toDateString()
+  }
+
   const nextMonthDate = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 1)
 
   React.useEffect(() => {
@@ -114,35 +126,45 @@ export function Calendar({ onDateSelect, className }: CalendarProps) {
           </div>
           <div className="grid grid-cols-7 gap-1">
             {generateCalendarDays(currentDate).map((date, i) => (
-              <div key={i} className="aspect-square flex items-center justify-center">
+              <div key={i} className="aspect-square flex items-center justify-center relative">
                 {date && (
-                  <button
-                    onClick={() => {
-                      if (isDateDisabled(date)) return;
-                      setSelectedDates((prev) => {
-                        const dateString = date.toDateString()
-                        const isDateSelected = prev.some((selectedDate) => selectedDate.toDateString() === dateString)
-
-                        if (isDateSelected) {
-                          return prev.filter((selectedDate) => selectedDate.toDateString() !== dateString)
-                        } else {
-                          if (prev.length === 2) return [date]
-                          return [...prev, date]
-                        }
-                      })
-                    }}
-                    disabled={isDateDisabled(date)}
-                    className={cn(
-                      "w-8 h-8 rounded-full flex items-center justify-center text-sm transition-colors",
-                      isToday(date) && "bg-primary text-primary-foreground",
-                      isSelected(date) && "bg-black text-white",
-                      isInRange(date) && "bg-gray-100",
-                      isDateDisabled(date) && "text-gray-300 cursor-not-allowed",
-                      !isToday(date) && !isSelected(date) && !isDateDisabled(date) && "hover:bg-muted",
+                  <>
+                    {isInRange(date) && (
+                      <div className="absolute inset-0 bg-[#F0F0F0]" />
                     )}
-                  >
-                    {date.getDate()}
-                  </button>
+                    {isStartDate(date) && (
+                      <div className="absolute inset-0 bg-[#F0F0F0] right-0" />
+                    )}
+                    {isEndDate(date) && (
+                      <div className="absolute inset-0 bg-[#F0F0F0] left-0" />
+                    )}
+                    <button
+                      onClick={() => {
+                        if (isDateDisabled(date)) return;
+                        setSelectedDates((prev) => {
+                          const dateString = date.toDateString()
+                          const isDateSelected = prev.some((selectedDate) => selectedDate.toDateString() === dateString)
+
+                          if (isDateSelected) {
+                            return prev.filter((selectedDate) => selectedDate.toDateString() !== dateString)
+                          } else {
+                            if (prev.length === 2) return [date]
+                            return [...prev, date]
+                          }
+                        })
+                      }}
+                      disabled={isDateDisabled(date)}
+                      className={cn(
+                        "w-8 h-8 rounded-full flex items-center justify-center text-sm transition-colors z-10",
+                        isToday(date) && "bg-gray-100 text-black font-medium",
+                        isSelected(date) && "bg-black text-white font-medium",
+                        isDateDisabled(date) && "text-gray-300 cursor-not-allowed",
+                        !isToday(date) && !isSelected(date) && !isDateDisabled(date) && "hover:bg-gray-100",
+                      )}
+                    >
+                      {date.getDate()}
+                    </button>
+                  </>
                 )}
               </div>
             ))}
@@ -167,35 +189,45 @@ export function Calendar({ onDateSelect, className }: CalendarProps) {
           </div>
           <div className="grid grid-cols-7 gap-1">
             {generateCalendarDays(nextMonthDate).map((date, i) => (
-              <div key={i} className="aspect-square flex items-center justify-center">
+              <div key={i} className="aspect-square flex items-center justify-center relative">
                 {date && (
-                  <button
-                    onClick={() => {
-                      if (isDateDisabled(date)) return;
-                      setSelectedDates((prev) => {
-                        const dateString = date.toDateString()
-                        const isDateSelected = prev.some((selectedDate) => selectedDate.toDateString() === dateString)
-
-                        if (isDateSelected) {
-                          return prev.filter((selectedDate) => selectedDate.toDateString() !== dateString)
-                        } else {
-                          if (prev.length === 2) return [date]
-                          return [...prev, date]
-                        }
-                      })
-                    }}
-                    disabled={isDateDisabled(date)}
-                    className={cn(
-                      "w-8 h-8 rounded-full flex items-center justify-center text-sm transition-colors",
-                      isToday(date) && "bg-primary text-primary-foreground",
-                      isSelected(date) && "bg-black text-white",
-                      isInRange(date) && "bg-gray-100",
-                      isDateDisabled(date) && "text-gray-300 cursor-not-allowed",
-                      !isToday(date) && !isSelected(date) && !isDateDisabled(date) && "hover:bg-muted",
+                  <>
+                    {isInRange(date) && (
+                      <div className="absolute inset-0 bg-[#F0F0F0]" />
                     )}
-                  >
-                    {date.getDate()}
-                  </button>
+                    {isStartDate(date) && (
+                      <div className="absolute inset-0 bg-[#F0F0F0] right-0" />
+                    )}
+                    {isEndDate(date) && (
+                      <div className="absolute inset-0 bg-[#F0F0F0] left-0" />
+                    )}
+                    <button
+                      onClick={() => {
+                        if (isDateDisabled(date)) return;
+                        setSelectedDates((prev) => {
+                          const dateString = date.toDateString()
+                          const isDateSelected = prev.some((selectedDate) => selectedDate.toDateString() === dateString)
+
+                          if (isDateSelected) {
+                            return prev.filter((selectedDate) => selectedDate.toDateString() !== dateString)
+                          } else {
+                            if (prev.length === 2) return [date]
+                            return [...prev, date]
+                          }
+                        })
+                      }}
+                      disabled={isDateDisabled(date)}
+                      className={cn(
+                        "w-8 h-8 rounded-full flex items-center justify-center text-sm transition-colors z-10",
+                        isToday(date) && "bg-gray-100 text-black font-medium",
+                        isSelected(date) && "bg-black text-white font-medium",
+                        isDateDisabled(date) && "text-gray-300 cursor-not-allowed",
+                        !isToday(date) && !isSelected(date) && !isDateDisabled(date) && "hover:bg-gray-100",
+                      )}
+                    >
+                      {date.getDate()}
+                    </button>
+                  </>
                 )}
               </div>
             ))}
