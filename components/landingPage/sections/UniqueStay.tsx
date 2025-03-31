@@ -65,8 +65,8 @@ export default function UniqueStay() {
     <section className="py-12 px-4 mx-auto max-w-7xl">
       <div className="flex justify-between items-center mb-8">
         <div>
-          <h2 className="md:text-2xl text-[20px] font-bold mb-2 text-[#0B0907]">
-            UniqueStay at our top Camper Van
+          <h2 className="md:text-[36px] text-[20px] font-bold mb-2 text-[#191919]">
+            Unique Stay
           </h2>
           <p className="text-[#989892]">
             From castles and villas to boats and igloos, we have it all
@@ -79,7 +79,7 @@ export default function UniqueStay() {
         </Link>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 justify-items-center">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
         {campers.map((camper, index) => (
           //@ts-expect-error
           <CamperCard key={index} {...camper} />
@@ -121,33 +121,49 @@ function CamperCard({
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [isHovered, setIsHovered] = useState(false);
 
-  const isFirstImage = currentImageIndex === 0;
-  const isLastImage = currentImageIndex === images.length - 1;
+  // Create an extended array of images for infinite scrolling effect
+  const extendedImages = [...images, ...images, ...images]; // Triple the images
+  const totalImages = images.length;
 
   const handlePrevImage = (e: React.MouseEvent) => {
     e.preventDefault();
-    if (!isFirstImage) {
-      setCurrentImageIndex((prev) => prev - 1);
-    }
+    e.stopPropagation();
+    
+    setCurrentImageIndex((prev) => {
+      // When we reach the beginning of the middle set, jump to the end of the first set
+      if (prev === 0) {
+        return totalImages * 2 - 1;
+      }
+      return prev - 1;
+    });
   };
 
   const handleNextImage = (e: React.MouseEvent) => {
     e.preventDefault();
-    if (!isLastImage) {
-      setCurrentImageIndex((prev) => prev + 1);
-    }
+    e.stopPropagation();
+    
+    setCurrentImageIndex((prev) => {
+      // When we reach the end of the middle set, jump to the beginning of the last set
+      if (prev === totalImages * 2 - 1) {
+        return 0;
+      }
+      return prev + 1;
+    });
   };
+
+  // Calculate the actual image index to display in the dots
+  const displayImageIndex = currentImageIndex % totalImages;
 
   return (
     <Link href="/product">
-      <div className="flex flex-col w-[125%] h-full">
+      <div className="flex flex-col h-full">
         <div
           className="relative w-full h-[204px] overflow-hidden rounded-[12px]"
           onMouseEnter={() => setIsHovered(true)}
           onMouseLeave={() => setIsHovered(false)}
         >
           <div className="absolute inset-0">
-            {images.map((image, index) => (
+            {extendedImages.map((image, index) => (
               <div
                 key={index}
                 className="absolute inset-0 transition-transform duration-300 ease-in-out"
@@ -157,40 +173,30 @@ function CamperCard({
               >
                 <Image
                   src={image}
-                  alt={`${title} - Image ${index + 1}`}
+                  alt={`${title} - Image ${(index % totalImages) + 1}`}
                   fill
                   className="object-cover"
                   sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, (max-width: 1280px) 33vw, 305px"
-                  priority={index === 0}
+                  priority={index === currentImageIndex}
                 />
               </div>
             ))}
           </div>
 
-          {/* Carousel Navigation Arrows */}
+          {/* Carousel Navigation Arrows - Always enabled for infinite scrolling */}
           {isHovered && (
             <>
               <button
                 onClick={handlePrevImage}
-                className={`absolute left-3 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-white/90 flex items-center justify-center shadow-md transition-all hover:bg-white ${
-                  isFirstImage
-                    ? "opacity-50 cursor-not-allowed"
-                    : "hover:scale-105"
-                }`}
+                className="absolute left-3 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-white/90 flex items-center justify-center shadow-md transition-all hover:bg-white hover:scale-105"
                 aria-label="Previous image"
-                disabled={isFirstImage}
               >
                 <ChevronLeft className="w-4 h-4" />
               </button>
               <button
                 onClick={handleNextImage}
-                className={`absolute right-3 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-white/90 flex items-center justify-center shadow-md transition-all hover:bg-white z-20 ${
-                  isLastImage
-                    ? "opacity-50 cursor-not-allowed"
-                    : "hover:scale-105"
-                }`}
+                className="absolute right-3 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-white/90 flex items-center justify-center shadow-md transition-all hover:bg-white hover:scale-105 z-20"
                 aria-label="Next image"
-                disabled={isLastImage}
               >
                 <ChevronRight className="w-4 h-4" />
               </button>
@@ -204,7 +210,7 @@ function CamperCard({
               e.stopPropagation();
               setIsFavorite(!isFavorite);
             }}
-            className="absolute top-3 right-3 p-2 rounded-full"
+            className="absolute top-3 right-3 p-2 rounded-full z-10"
           >
             <Heart
               className={`w-5 h-5 ${
@@ -222,13 +228,13 @@ function CamperCard({
             </div>
           )}
 
-          {/* Carousel Dots */}
+          {/* Carousel Dots - Show based on the original image set */}
           <div className="absolute bottom-3 left-0 right-0 flex justify-center gap-1.5 z-10">
             {images.map((_, index) => (
               <div
                 key={index}
                 className={`w-1.5 h-1.5 rounded-full bg-white ${
-                  index === currentImageIndex ? "opacity-100" : "opacity-60"
+                  index === displayImageIndex ? "opacity-100" : "opacity-60"
                 }`}
               />
             ))}

@@ -19,7 +19,7 @@ export default function TrendingDestinations() {
   ];
 
   return (
-    <section className="py-8 px-4 md:px-6">
+    <section className="py-8 px-4 md:px-[5rem]">
       {/* Mobile heading and description */}
       <div className="lg:hidden mb-6">
         <h2 className="text-2xl font-bold mb-4">

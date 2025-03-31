@@ -22,7 +22,7 @@ export default function Hero() {
       {/* Only the title, no subtext, positioned for 520px height */}
       <div className="relative z-1 h-full flex flex-col items-center text-center text-white px-4 md:px-8 pt-[100px] md:pt-[120px]">
         <div className="max-w-[800px] mx-auto">
-          <h1 className="text-[40px] md:text-[60px] font-bold leading-tight">
+          <h1 className="text-[40px] md:text-[48px] font-bold leading-tight">
             Explore The Unexplored in The Caravan!
           </h1>
         </div>

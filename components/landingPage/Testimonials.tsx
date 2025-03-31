@@ -119,7 +119,7 @@ export default function Testimonials() {
   }
 
   return (
-    <div className="py-8 md:mt-20">
+    <div className="py-8 md:mt-20 md:px-[5rem]">
       <div className="flex justify-between items-center mb-6">
         <div>
           <h2 className="text-[36px] text-[#0B0907] font-bold">Testimonials</h2>
