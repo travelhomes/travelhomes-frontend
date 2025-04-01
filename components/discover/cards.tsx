@@ -180,94 +180,128 @@ function CamperCard({
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [isHovered, setIsHovered] = useState(false);
 
+  // Create an extended array of images for infinite scrolling effect
+  const extendedImages = [...images, ...images, ...images]; // Triple the images
+  const totalImages = images.length;
+
   const handlePrevImage = (e: React.MouseEvent) => {
     e.preventDefault();
-    setCurrentImageIndex((prev) => (prev === 0 ? images.length - 1 : prev - 1));
+    e.stopPropagation();
+    
+    setCurrentImageIndex((prev) => {
+      // When we reach the beginning of the middle set, jump to the end of the first set
+      if (prev === 0) {
+        return totalImages * 2 - 1;
+      }
+      return prev - 1;
+    });
   };
 
   const handleNextImage = (e: React.MouseEvent) => {
     e.preventDefault();
-    setCurrentImageIndex((prev) => (prev === images.length - 1 ? 0 : prev + 1));
+    e.stopPropagation();
+    
+    setCurrentImageIndex((prev) => {
+      // When we reach the end of the middle set, jump to the beginning of the last set
+      if (prev === totalImages * 2 - 1) {
+        return 0;
+      }
+      return prev + 1;
+    });
   };
 
+  // Calculate the actual image index to display in the dots
+  const displayImageIndex = currentImageIndex % totalImages;
+
   return (
-    <div className="relative rounded-xl w-full">
-      <div
-        className="relative aspect-[1] w-full"
-        onMouseEnter={() => setIsHovered(true)}
-        onMouseLeave={() => setIsHovered(false)}
-      >
-        <Image
-          src={images[currentImageIndex]}
-          alt={title}
-          fill
-          className="rounded-[12px] transition-all duration-300 hover:brightness-75"
-          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 60vw, 37vw"
-        />
-        
-        {/* Carousel Navigation Arrows */}
-        {isHovered && (
-          <>
-            {currentImageIndex > 0 && (
+    <Link href="/product">
+      <div className="relative rounded-xl w-full">
+        <div
+          className="relative w-full h-[204px] overflow-hidden rounded-[12px]"
+          onMouseEnter={() => setIsHovered(true)}
+          onMouseLeave={() => setIsHovered(false)}
+        >
+          <div className="absolute inset-0">
+            {extendedImages.map((image, index) => (
+              <div
+                key={index}
+                className="absolute inset-0 transition-transform duration-300 ease-in-out"
+                style={{
+                  transform: `translateX(${(index - currentImageIndex) * 100}%)`,
+                }}
+              >
+                <Image
+                  src={image}
+                  alt={`${title} - Image ${(index % totalImages) + 1}`}
+                  fill
+                  className="object-cover"
+                  sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, (max-width: 1280px) 33vw, 305px"
+                  priority={index === currentImageIndex}
+                />
+              </div>
+            ))}
+          </div>
+          
+          {/* Carousel Navigation Arrows - Always enabled for infinite scrolling */}
+          {isHovered && (
+            <>
               <button
                 onClick={handlePrevImage}
-                className="absolute left-3 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-white/90 flex items-center justify-center shadow-md transition-opacity hover:bg-white"
+                className="absolute left-3 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-white/90 flex items-center justify-center shadow-md transition-all hover:bg-white hover:scale-105"
                 aria-label="Previous image"
               >
                 <ChevronLeft className="w-4 h-4" />
               </button>
-            )}
-            {currentImageIndex < images.length - 1 && (
               <button
                 onClick={handleNextImage}
-                className="absolute right-3 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-white/90 flex items-center justify-center shadow-md transition-opacity hover:bg-white"
+                className="absolute right-3 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-white/90 flex items-center justify-center shadow-md transition-all hover:bg-white hover:scale-105 z-20"
                 aria-label="Next image"
               >
                 <ChevronRight className="w-4 h-4" />
               </button>
-            )}
-          </>
-        )}
+            </>
+          )}
 
-        {/* Favorite Button */}
-        <button
-          onClick={() => setIsFavorite(!isFavorite)}
-          className="absolute top-3 right-3 z-10 p-2 rounded-full"
-        >
-          <Heart
-            className={`w-5 h-5 ${
-              isFavorite
-                ? "fill-red-500 stroke-red-500"
-                : "stroke-white fill-gray-400"
-            }`}
-          />
-        </button>
-
-        {/* Favorite Text */}
-        <div
-          className={`absolute top-3 left-3 ${
-            favoriteText ? "bg-white/90" : ""
-          } px-3 py-1 rounded-[4px]`}
-        >
-          <span className="text-sm font-medium">{favoriteText}</span>
-        </div>
-
-        {/* Carousel Dots */}
-        <div className="absolute bottom-3 left-0 right-0 flex justify-center gap-1.5">
-          {images.map((_, index) => (
-            <div
-              key={index}
-              className={`w-1.5 h-1.5 rounded-full bg-white ${
-                index === currentImageIndex ? "opacity-100" : "opacity-60"
+          {/* Favorite Button */}
+          <button
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              setIsFavorite(!isFavorite);
+            }}
+            className="absolute top-3 right-3 p-2 rounded-full z-10"
+          >
+            <Heart
+              className={`w-5 h-5 ${
+                isFavorite
+                  ? "fill-red-500 stroke-red-500"
+                  : "stroke-white fill-gray-400"
               }`}
             />
-          ))}
-        </div>
-      </div>
+          </button>
 
-      <Link href="/product" className="w-full">
-        <div className="py-4 w-full">
-          <div className="flex justify-between items-start mb-2">
+          {/* Favorite Text */}
+          {favoriteText && (
+            <div className="absolute top-3 left-3 bg-white/90 px-3 py-1 rounded-[4px] z-10">
+              <span className="text-sm font-medium">{favoriteText}</span>
+            </div>
+          )}
+
+          {/* Carousel Dots - Show based on the original image set */}
+          <div className="absolute bottom-3 left-0 right-0 flex justify-center gap-1.5 z-10">
+            {images.map((_, index) => (
+              <div
+                key={index}
+                className={`w-1.5 h-1.5 rounded-full bg-white ${
+                  index === displayImageIndex ? "opacity-100" : "opacity-60"
+                }`}
+              />
+            ))}
+          </div>
+        </div>
+
+        <div className="py-3">
+          <div className="flex justify-between items-start">
             <h3
               className={`${plusJakartaSans.className} text-[15px] text-[#222222] font-semibold`}
             >
@@ -279,21 +313,21 @@ function CamperCard({
             </div>
           </div>
 
-          <p className="text-[#5E5E5E] text-[14px] mb-2">
+          <p className="text-[#5E5E5E] text-[14px] mb-1">
             {seats} Seats / {sleeps} Sleeps
           </p>
 
           <div className="flex justify-between items-center text-[14px]">
             <div>
               <span className="text-[#5E5E5E] line-through">₹{price}</span>
-              <span className="ml-2 text-lg font-bold text-[222222]">
+              <span className="ml-2 text-lg font-bold text-[#222222]">
                 ₹{price}
               </span>
               <span className="text-[#222222]">/{period}</span>
             </div>
           </div>
         </div>
-      </Link>
-    </div>
+      </div>
+    </Link>
   );
 }

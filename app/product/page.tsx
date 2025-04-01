@@ -1,6 +1,5 @@
 "use client";
 import { useEffect } from "react";
-import Appbar from "@/components/landingPage/appbar";
 import FAQ from "@/components/landingPage/faq";
 import Footer from "@/components/landingPage/footer";
 import TopRatedStays from "@/components/landingPage/sections/TopRatedStays";
@@ -15,7 +14,9 @@ import { Reviews } from "@/components/products/Reviews";
 import { StickyNav } from "@/components/products/StickyNav";
 import { StickyPrice } from "@/components/products/StickyPrice";
 import Link from "next/link";
+import { ArrowRightIcon } from "@/public/assets/CustomIcon"
 import Exclusions from "@/components/products/exclusions";
+
 export default function Product() {
   useEffect(() => {
     const handleScroll = () => {
@@ -42,14 +43,20 @@ export default function Product() {
   return (
     <div className="min-h-screen flex flex-col">
       {/* Header Section */}
+
       <div className="py-[1rem] px-[1rem] md:px-[2rem] lg:px-[5rem]">
-        <Appbar />
+        <button className=" rounded-full py-2 px-4"> 
+          <ArrowRightIcon />
+          back </button>
+      </div>
+
+      <div className="py-[1rem] px-[1rem] md:px-[2rem] lg:px-[5rem]">
         <Header />
         <ProductHero />
       </div>
 
       {/* Navigation - Sticky at top */}
-      <div className="sticky top-0 bg-white z-50 border-b">
+      <div className="sticky top-0 bg-white z-50">
         <div className="px-[1rem] md:px-[2rem] lg:px-[5rem]">
           <StickyNav />
         </div>

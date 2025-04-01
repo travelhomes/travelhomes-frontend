@@ -45,7 +45,7 @@ export default function Home() {
       </div>
       
       {/* Content sections */}
-      <div className="py-[1rem] px-[1rem] md:px-[5rem]">
+      <div className="py-[1rem]">
         <CamperListing />
         <UniqueStay />
         <BestActivity />

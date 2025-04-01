@@ -70,8 +70,8 @@ export default function SearchFilter({ activeTab = 'campervan' }) {
   const calendarPopupRef = useRef<HTMLDivElement>(null);
   const activityPopupRef = useRef<HTMLDivElement>(null);
 
-  const [fromLocationInput, setFromLocationInput] = useState("Delhi");
-  const [toLocationInput, setToLocationInput] = useState("Mumbai");
+  const [fromLocationInput, setFromLocationInput] = useState("");
+  const [toLocationInput, setToLocationInput] = useState("");
   const [fromSuggestions, setFromSuggestions] = useState<string[]>([]);
   const [toSuggestions, setToSuggestions] = useState<string[]>([]);
   const [isFromLocationSearchOpen, setFromLocationSearchOpen] = useState(false);
@@ -201,27 +201,17 @@ export default function SearchFilter({ activeTab = 'campervan' }) {
     return formattedDate;
   };
 
-  const handleTimeSelect = (timeWithPeriod: string) => {
+  const handleTimeSelect = (timeWithPeriod: string, type: 'checkIn' | 'checkOut') => {
     setDateTimeRange(prev => ({
       ...prev,
-      [timePickerType]: {
-        ...prev[timePickerType],
+      [type]: {
+        ...prev[type],
         time: timeWithPeriod
       }
     }));
     
-    // Close current time picker
-    setTimePickerOpen(false);
-    
-    // If check-in time was just set and check-out date exists but no time,
-    // automatically open the check-out time picker
-    if (timePickerType === 'checkIn' && dateTimeRange.checkOut?.date) {
-      // Use a slight delay to ensure the UI updates properly
-      setTimeout(() => {
-        setTimePickerType('checkOut');
-        setTimePickerOpen(true);
-      }, 100);
-    }
+    // We don't close the picker automatically now as users can set both times at once
+    // The picker will be closed when the user clicks "Done" button
   };
 
   const formatGuestCount = () => {
@@ -291,7 +281,7 @@ export default function SearchFilter({ activeTab = 'campervan' }) {
                   onChange={(e) => handleLocationSearch(e.target.value, 'from')}
                   onFocus={() => setFromLocationSearchOpen(true)}
                   placeholder="Enter location"
-                  className="bg-transparent text-gray-900 text-base font-medium focus:outline-none ml-2 w-full"
+                  className="bg-transparent text-[#211C16] text-[20px] font-medium focus:outline-none ml-2 w-full"
                 />
                 {isFromLocationSearchOpen && fromSuggestions.length > 0 && (
                   <div 
@@ -302,7 +292,7 @@ export default function SearchFilter({ activeTab = 'campervan' }) {
                       <button
                         key={location}
                         onClick={() => selectLocation(location, 'from')}
-                        className="w-full text-left px-4 py-2 hover:bg-gray-100"
+                        className="w-full  text-left px-4 py-2 hover:bg-gray-100"
                       >
                         {location}
                       </button>
@@ -326,7 +316,7 @@ export default function SearchFilter({ activeTab = 'campervan' }) {
                   onChange={(e) => handleLocationSearch(e.target.value, 'to')}
                   onFocus={() => setToLocationSearchOpen(true)}
                   placeholder="Enter location"
-                  className="bg-transparent text-gray-900 text-base font-medium focus:outline-none ml-2 w-full"
+                  className="bg-transparent text-[#211C16] text-[20px] font-medium focus:outline-none ml-2 w-full"
                 />
                 {isToLocationSearchOpen && toSuggestions.length > 0 && (
                   <div 
@@ -357,7 +347,7 @@ export default function SearchFilter({ activeTab = 'campervan' }) {
               <button 
                 ref={locationButtonRef}
                 onClick={toggleLocationSearch} 
-                className="bg-transparent text-gray-900 text-base font-medium focus:outline-none ml-2 text-left"
+                className="bg-transparent text-[#211C16] text-[20px] font-medium focus:outline-none ml-2 text-left"
               >
                 {selectedLocation}
               </button>
@@ -387,7 +377,7 @@ export default function SearchFilter({ activeTab = 'campervan' }) {
                 <button 
                   ref={checkInButtonRef}
                   onClick={toggleCalendar}
-                  className="bg-transparent text-gray-900 text-base font-medium focus:outline-none ml-1 text-left"
+                  className="bg-transparent text-[20px] font-medium focus:outline-none ml-1 text-left"
                 >
                   {dateTimeRange.checkIn?.date ? dateTimeRange.checkIn.date.toLocaleDateString() : "Add date"}
                 </button>
@@ -406,7 +396,7 @@ export default function SearchFilter({ activeTab = 'campervan' }) {
                   onChange={(e) => handleActivitySearch(e.target.value)}
                   onFocus={() => setActivitySearchOpen(true)}
                   placeholder="Enter activity"
-                  className="bg-transparent text-gray-900 text-base font-medium focus:outline-none ml-1 w-full"
+                  className="bg-transparent text-[#211C16] text-[20px] font-medium focus:outline-none ml-1 w-full"
                 />
                 {isActivitySearchOpen && activitySuggestions.length > 0 && (
                   <div 
@@ -436,7 +426,7 @@ export default function SearchFilter({ activeTab = 'campervan' }) {
                 <button 
                   ref={checkInButtonRef}
                   onClick={() => handleCheckInOutClick('checkIn')}
-                  className="bg-transparent text-gray-900 text-base font-medium focus:outline-none ml-1 text-left"
+                  className="bg-transparent text-[#211C16] text-[20px] font-medium focus:outline-none ml-1 text-left"
                 >
                   {formatDateTime(dateTimeRange.checkIn)}
                 </button>
@@ -452,7 +442,7 @@ export default function SearchFilter({ activeTab = 'campervan' }) {
                 <button 
                   ref={checkOutButtonRef}
                   onClick={() => handleCheckInOutClick('checkOut')}
-                  className="bg-transparent text-gray-900 text-base font-medium focus:outline-none ml-1 text-left"
+                  className="bg-transparent text-[#211C16] text-[20px] font-medium focus:outline-none ml-1 text-left"
                 >
                   {formatDateTime(dateTimeRange.checkOut)}
                 </button>
@@ -470,7 +460,7 @@ export default function SearchFilter({ activeTab = 'campervan' }) {
             <button 
               ref={guestButtonRef}
               onClick={toggleGuestCounter} 
-              className="bg-transparent text-left text-gray-900 text-base font-medium focus:outline-none ml-1"
+              className="bg-transparent text-left text-[#211C16] text-[20px] font-medium focus:outline-none ml-1"
             >
               {formatGuestCount()}
             </button>
@@ -527,11 +517,13 @@ export default function SearchFilter({ activeTab = 'campervan' }) {
           className="absolute top-full left-1/2 -translate-x-1/2 mt-2 z-50"
         >
           <TimeSelector 
-            timePickerType={timePickerType}
+            checkInTime={dateTimeRange.checkIn?.time || null}
+            checkOutTime={dateTimeRange.checkOut?.time || null}
             onTimeSelect={handleTimeSelect}
             onClose={() => {
               setTimePickerOpen(false);
             }}
+            timePickerType={timePickerType}
           />
         </div>
       )}

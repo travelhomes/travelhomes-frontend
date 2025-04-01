@@ -13,7 +13,7 @@ export function ProductHero() {
           alt="image 1" 
           width={500} 
           height={500} 
-          className="w-full h-[300px] md:h-full object-cover rounded-[12px] md:rounded-tl-[24px] md:rounded-bl-[24px]" 
+          className="w-full h-[300px] md:h-full object-cover  md:rounded-tl-[24px] md:rounded-bl-[24px]" 
         />
       </div>
       <div className="col-span-1 grid grid-rows-2 gap-4">
@@ -23,14 +23,14 @@ export function ProductHero() {
             alt="image 2" 
             width={500} 
             height={500} 
-            className="w-full h-[150px] md:h-full object-cover rounded-[12px] md:rounded-none" 
+            className="w-full h-[150px] md:h-full object-cover md:rounded-none" 
           />
           <Image 
             src={image3} 
             alt="image 3" 
             width={500} 
             height={500} 
-            className="w-full h-[150px] md:h-full object-cover rounded-[12px] md:rounded-tr-[24px]" 
+            className="w-full h-[150px] md:h-full object-cover  md:rounded-tr-[24px]" 
           />
         </div>
         <div className="relative">
@@ -39,7 +39,7 @@ export function ProductHero() {
             alt="image 4" 
             width={500} 
             height={500} 
-            className="w-full h-[150px] md:h-full object-cover rounded-[12px] md:rounded-br-[24px]" 
+            className="w-full h-[150px] md:h-full object-cover  md:rounded-br-[24px]" 
           />
           <button className="absolute bottom-4 right-4 px-[16px] md:px-[24px] py-[8px] md:py-[12px] bg-white text-black rounded-full shadow-md text-sm md:text-base">
             View all photos

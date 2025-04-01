@@ -49,7 +49,7 @@ export default function FAQ() {
   const [activeTagIndex, setActiveTagIndex] = useState(0)
 
   return (
-    <div className="py-8 md:py-12 px-4 sm:px-6 lg:px-8">
+    <div className="py-8 md:py-12 px-4 sm:px-6 lg:px-8 md:mx-[5rem]">
       <div className="flex flex-col lg:flex-row gap-8">
         <div className="lg:mb-8 text-center lg:text-center w-full lg:w-[450px] lg:pr-[56px]">
           <h2 className="text-2xl md:text-[36px] leading-10 font-bold mb-[25px]">Frequently<br />Asked Questions</h2>
