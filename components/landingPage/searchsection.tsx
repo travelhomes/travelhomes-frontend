@@ -377,7 +377,7 @@ export default function SearchFilter({ activeTab = 'campervan' }) {
                 <button 
                   ref={checkInButtonRef}
                   onClick={toggleCalendar}
-                  className="bg-transparent text-[#211C16] text-[20px] font-medium focus:outline-none ml-1 text-left"
+                  className="bg-transparent text-[20px] font-medium focus:outline-none ml-1 text-left"
                 >
                   {dateTimeRange.checkIn?.date ? dateTimeRange.checkIn.date.toLocaleDateString() : "Add date"}
                 </button>

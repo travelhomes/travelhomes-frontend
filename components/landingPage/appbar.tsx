@@ -20,7 +20,7 @@ export default function Appbar() {
   const firstName = user?.name ? user.name.split(" ")[0] : "";
 
   return (
-    <nav className="w-full border-gray-200 hidden md:block">
+    <nav className="w-full border-gray-200 hidden md:block pt-2">
       <div className="mx-auto">
         <div className="flex justify-between items-center h-16">
           {/* Logo area */}
@@ -81,7 +81,7 @@ export default function Appbar() {
                 </DropdownMenuContent>
               </DropdownMenu>
             ) : (
-              <Link href="/auth/register">
+              <Link href="/auth/login">
                 <button className="px-[20px] cursor-pointer py-[12px] text-sm font-medium text-black bg-white rounded-[60px]">
 Login
                 </button>

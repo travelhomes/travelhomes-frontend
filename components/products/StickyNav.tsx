@@ -28,8 +28,8 @@ export function StickyNav() {
             onClick={() => handleClick(item)}
             className={`${
               item === activeSection
-                ? " text-black"
-                : "text-gray-500 hover:text-black"
+                ? " text-black border-b-2 pb-2  border-[#131313]"
+                : "text-gray-500 hover:text-black "
             }`}
           >
             {item}
