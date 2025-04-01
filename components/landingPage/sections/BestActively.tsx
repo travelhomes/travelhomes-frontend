@@ -126,7 +126,6 @@ function CamperCard({
   // Create an extended array of images for infinite scrolling effect
   const extendedImages = [...images, ...images, ...images]; // Triple the images
   const totalImages = images.length;
-  const offset = totalImages; // Start from the middle set of images
 
   const handlePrevImage = (e: React.MouseEvent) => {
     e.preventDefault();

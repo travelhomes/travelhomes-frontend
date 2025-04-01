@@ -1,14 +1,22 @@
 "use client"
-import React from 'react';
+import React, { useState } from 'react';
 
 interface TimeSelectorProps {
+  checkInTime: string | null;
+  checkOutTime: string | null;
   onTimeSelect: (time: string, type: 'checkIn' | 'checkOut') => void;
   onClose: () => void;
-  checkInTime?: string | null;
-  checkOutTime?: string | null;
+  timePickerType: 'checkIn' | 'checkOut';
 }
 
-export function TimeSelector({ onTimeSelect, onClose, checkInTime, checkOutTime }: TimeSelectorProps) {
+export function TimeSelector({ 
+  checkInTime, 
+  checkOutTime, 
+  onTimeSelect, 
+  onClose,
+  timePickerType
+}: TimeSelectorProps) {
+  const [activeTab, setActiveTab] = useState<'checkIn' | 'checkOut'>(timePickerType);
   const hours = Array.from({ length: 12 }, (_, i) => i + 1);
   
   // Check-in time state
@@ -47,15 +55,19 @@ export function TimeSelector({ onTimeSelect, onClose, checkInTime, checkOutTime 
     if (type === 'checkIn' && selectedCheckInHour) {
       onTimeSelect(`${selectedCheckInHour} ${selectedCheckInPeriod}`, 'checkIn');
       
-      // If check-out time is already confirmed, close the popup
-      if (selectedCheckOutHour) {
+      // After confirming check-in time, switch to check-out tab if check-out is not set yet
+      if (!selectedCheckOutHour) {
+        setActiveTab('checkOut');
+      } else {
         onClose();
       }
     } else if (type === 'checkOut' && selectedCheckOutHour) {
       onTimeSelect(`${selectedCheckOutHour} ${selectedCheckOutPeriod}`, 'checkOut');
       
-      // If check-in time is already confirmed, close the popup
-      if (selectedCheckInHour) {
+      // After confirming check-out time, switch to check-in tab if check-in is not set yet
+      if (!selectedCheckInHour) {
+        setActiveTab('checkIn');
+      } else {
         onClose();
       }
     }
@@ -68,7 +80,28 @@ export function TimeSelector({ onTimeSelect, onClose, checkInTime, checkOutTime 
   return (
     <div className="bg-white rounded-lg shadow-lg p-6 w-[600px] max-w-full">
       <div className="flex justify-between items-center mb-6">
-        <h2 className="text-lg font-semibold">Select Times</h2>
+        <div className="flex space-x-4">
+          <button
+            onClick={() => setActiveTab('checkIn')}
+            className={`text-lg font-semibold pb-2 ${
+              activeTab === 'checkIn' 
+                ? 'border-b-2 border-black text-black' 
+                : 'text-gray-500'
+            }`}
+          >
+            Check-in
+          </button>
+          <button
+            onClick={() => setActiveTab('checkOut')}
+            className={`text-lg font-semibold pb-2 ${
+              activeTab === 'checkOut' 
+                ? 'border-b-2 border-black text-black' 
+                : 'text-gray-500'
+            }`}
+          >
+            Check-out
+          </button>
+        </div>
         <button 
           onClick={handleDone}
           className="text-sm text-gray-500 hover:text-gray-800"
@@ -79,7 +112,7 @@ export function TimeSelector({ onTimeSelect, onClose, checkInTime, checkOutTime 
       
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
         {/* Check-in Time Column */}
-        <div>
+        <div className={activeTab === 'checkIn' ? 'block' : 'hidden md:block'}>
           <h3 className="text-sm text-gray-500 mb-4 font-medium">Check-in Time</h3>
           <div className="grid grid-cols-4 gap-2 mb-4">
             {hours.map((hour) => (
@@ -131,7 +164,7 @@ export function TimeSelector({ onTimeSelect, onClose, checkInTime, checkOutTime 
         </div>
 
         {/* Check-out Time Column */}
-        <div>
+        <div className={activeTab === 'checkOut' ? 'block' : 'hidden md:block'}>
           <h3 className="text-sm text-gray-500 mb-4 font-medium">Check-out Time</h3>
           <div className="grid grid-cols-4 gap-2 mb-4">
             {hours.map((hour) => (

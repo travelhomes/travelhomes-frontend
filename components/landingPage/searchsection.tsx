@@ -523,6 +523,7 @@ export default function SearchFilter({ activeTab = 'campervan' }) {
             onClose={() => {
               setTimePickerOpen(false);
             }}
+            timePickerType={timePickerType}
           />
         </div>
       )}
