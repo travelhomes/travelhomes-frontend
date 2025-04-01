@@ -209,7 +209,7 @@ function CamperCard({
               e.stopPropagation();
               setIsFavorite(!isFavorite);
             }}
-            className="absolute top-3 right-3 p-2 rounded-full z-10"
+            className="absolute top-3 right-3 p-2 rounded-full"
           >
             <Heart
               className={`w-5 h-5 ${

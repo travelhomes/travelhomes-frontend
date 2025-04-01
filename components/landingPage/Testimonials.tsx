@@ -119,7 +119,7 @@ export default function Testimonials() {
   }
 
   return (
-    <div className="py-8 md:mt-20 md:px-[5rem]">
+    <div className="py-8 md:mt- md:px-[5rem]">
       <div className="flex justify-between items-center mb-6">
         <div>
           <h2 className="text-[36px] text-[#0B0907] font-bold">Testimonials</h2>
@@ -147,7 +147,7 @@ export default function Testimonials() {
 
       <div 
         ref={scrollRef}
-        className="flex gap-6 overflow-x-auto snap-x snap-mandatory touch-pan-x p-8"
+        className="flex gap-6 overflow-x-auto snap-x snap-mandatory touch-pan-x px-8"
         style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
         onTouchStart={handleTouchStart}
         onTouchMove={handleTouchMove}
@@ -157,7 +157,7 @@ export default function Testimonials() {
             key={testimonial.id}
             className=" snap-start h-[221px]  "
           >
-            <div className=" p-6 rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300 w-[300px]">
+            <div className=" p-6 rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300 w-[352px]">
               <p className={`${plusJakartaSans.className} text-[#0B0907] text-[14px] mb-6`}>{testimonial.content}</p>
               <div className="flex items-center gap-3 justify-between">
                
