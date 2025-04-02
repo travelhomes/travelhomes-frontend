@@ -5,11 +5,18 @@ import image4 from "@/public/assets/product/card4.png"
 import Image from "next/image";
 import { useState, useEffect } from "react";
 import { X } from "lucide-react";
+import { StaticImageData } from "next/image";
+
+// Define the type for image objects
+interface ImageData {
+  src: StaticImageData;
+  alt: string;
+}
 
 export function ProductHero() {
   const [showModal, setShowModal] = useState(false);
-  const [selectedImage, setSelectedImage] = useState<any>(null);
-  const [allImages, setAllImages] = useState<any[]>([]);
+  const [selectedImage, setSelectedImage] = useState<ImageData | null>(null);
+  const [allImages, setAllImages] = useState<ImageData[]>([]);
 
   useEffect(() => {
     // Collect all images for the gallery view
@@ -34,7 +41,7 @@ export function ProductHero() {
     };
   }, [showModal]);
 
-  const handleImageClick = (image: any, index: number) => {
+  const handleImageClick = (image: ImageData) => {
     setSelectedImage(image);
     setShowModal(true);
   };
@@ -61,7 +68,7 @@ export function ProductHero() {
         <div className="col-span-1">
           <div 
             className="cursor-pointer"
-            onClick={() => handleImageClick(allImages[0], 0)}
+            onClick={() => handleImageClick(allImages[0])}
           >
             <Image 
               src={image1} 
@@ -76,7 +83,7 @@ export function ProductHero() {
           <div className="grid grid-cols-2 gap-4">
             <div 
               className="cursor-pointer"
-              onClick={() => handleImageClick(allImages[1], 1)}
+              onClick={() => handleImageClick(allImages[1])}
             >
               <Image 
                 src={image2} 
@@ -88,7 +95,7 @@ export function ProductHero() {
             </div>
             <div 
               className="cursor-pointer"
-              onClick={() => handleImageClick(allImages[2], 2)}
+              onClick={() => handleImageClick(allImages[2])}
             >
               <Image 
                 src={image3} 
@@ -102,7 +109,7 @@ export function ProductHero() {
           <div className="relative">
             <div 
               className="cursor-pointer"
-              onClick={() => handleImageClick(allImages[3], 3)}
+              onClick={() => handleImageClick(allImages[3])}
             >
               <Image 
                 src={image4} 

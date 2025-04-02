@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { Star, X, Check, ArrowLeft, AlertCircle, Calendar as CalendarIcon, Users, MapPin, Save } from "lucide-react";
 import Image from "next/image";
 import CamperImage from "@/public/Rectangle 8.png"
-import { ArrowRightIcon, EditIcon } from "@/public/assets/CustomIcon"
+import { EditIcon } from "@/public/assets/CustomIcon"
 import { Calendar } from "@/components/landingPage/searchcomponents/calendar";
 import { GuestCounter } from "@/components/landingPage/searchcomponents/guest-counter";
 import { LocationSearch } from "@/components/landingPage/searchcomponents/location-search";
@@ -51,6 +51,11 @@ export default function Payment() {
   const [formError, setFormError] = useState("");
   const [touched, setTouched] = useState<Record<string, boolean>>({});
 
+  // Handle back navigation
+  const handleBack = () => {
+    router.back();
+  };
+
   // Toggle edit mode for booking details
   const toggleEditBooking = () => {
     setIsEditingBooking(!isEditingBooking);
@@ -61,14 +66,6 @@ export default function Payment() {
     setShowLocationSearch(false);
   };
   
-  // Handle changes to booking details
-  const handleBookingChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setBookingDetails(prev => ({
-      ...prev,
-      [name]: value
-    }));
-  };
   
   // Save booking details and exit edit mode
   const saveBookingDetails = () => {
@@ -262,10 +259,10 @@ export default function Payment() {
           <div className="flex-1">
             <div className="hidden lg:block">
               <button
-              onClick={() => router.back()}
+                onClick={handleBack}
                 className="inline-flex items-center text-sm text-semibold hover:text-primary mb-3"
               >
-                <ArrowRightIcon />
+                <ArrowLeft className="w-4 h-4" />
                 <span className="ml-2">Back</span>
               </button>
             </div>
@@ -519,7 +516,7 @@ export default function Payment() {
           <div className="w-full md:w-[370px] h-fit rounded-[12px] shadow-sw">
             <div className="md:hidden block">
               <button
-                onClick={() => router.back()}
+                onClick={handleBack}
                 className="inline-flex items-center text-sm text-semibold hover:text-primary mb-3"
               >
                 <ArrowLeft className="w-4 h-4" />{" "}

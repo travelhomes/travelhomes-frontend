@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Bed, Users, Umbrella, ShowerHead as Shower, Tv, Tent, RefrigeratorIcon, Music, Twitch as Kitchen, Wifi, ChevronFirst as FirstAid, Bath, X, Coffee, Utensils, Car, MapPin, Flame, Plug, ParkingCircle, Fan, Gamepad2, BatteryFull, Shield, PanelTop, ThermometerSun } from 'lucide-react';
+import { Bed, Users, Umbrella, ShowerHead as Shower, Tv, Tent, RefrigeratorIcon, Music, Twitch as Kitchen, Wifi, ChevronFirst as FirstAid, Bath, X, Coffee, Utensils, Car, MapPin, Flame, Plug, ParkingCircle, Fan, Gamepad2, BatteryFull, Shield, PanelTop } from 'lucide-react';
 
 export function Amenities() {
   const [showModal, setShowModal] = useState(false);

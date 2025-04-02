@@ -36,7 +36,7 @@ export function StickyPrice() {
 
   // Set default guest count only once on mount
   useEffect(() => {
-    if (isInitialMount.current) {
+    if (!isInitialMount.current) {
       isInitialMount.current = false;
       
       // No need to call handleGuestCountChange since we already set default values in useState
@@ -45,7 +45,7 @@ export function StickyPrice() {
         setTotalGuests(`${totalAdults} Adult${totalAdults !== 1 ? 's' : ''}`);
       }
     }
-  }, []);
+  }, [guestCounts.adults]);
 
   // Handle date selection
   const handleDateSelect = (dates: Date[]) => {
