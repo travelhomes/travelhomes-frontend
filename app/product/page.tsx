@@ -16,6 +16,7 @@ import { StickyPrice } from "@/components/products/StickyPrice";
 import Link from "next/link";
 import { ArrowRightIcon } from "@/public/assets/CustomIcon"
 import Exclusions from "@/components/products/exclusions";
+import PolicyRules from "@/components/products/PolicyRules";
 import { useRouter } from "next/navigation";
 
 export default function Product() {
@@ -96,6 +97,10 @@ export default function Product() {
               <Exclusions />
             </section>
             
+            <section id="policy&rules" className="pt-6">
+              <PolicyRules />
+            </section>
+            
             <section id="reviews" className="pt-6">
               <Reviews />
             </section>
@@ -109,21 +114,17 @@ export default function Product() {
 
           {/* Sticky Price Section */}
           <StickyPrice />
-
         </div>
 
         {/* Full Width Content After Grid */}
         <div className="mt-8 space-y-8">
-          <section id="policy&rules" className="pt-6">
-            <TopRatedStays />
-          </section>
+          <TopRatedStays />
           <Newslatter />
           <FAQ />
         </div>
       </div>
 
       <Footer />
-      <StickyPrice />
     </div>
   );
 }
