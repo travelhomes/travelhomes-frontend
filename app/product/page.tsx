@@ -1,23 +1,22 @@
 "use client";
 import { useEffect } from "react";
-import FAQ from "@/components/landingPage/faq";
+
 import Footer from "@/components/landingPage/footer";
-import TopRatedStays from "@/components/landingPage/sections/TopRatedStays";
 import { Amenities } from "@/components/products/Amenities";
 import { Header } from "@/components/products/header";
 import Inclusions from "@/components/products/Inclusions";
-import Newslatter from "@/components/products/newslatter";
 import Overview from "@/components/products/overview";
 import { OwnerDetails } from "@/components/products/OwnerDetails";
 import { ProductHero } from "@/components/products/ProductHero";
 import { Reviews } from "@/components/products/Reviews";
 import { StickyNav } from "@/components/products/StickyNav";
 import { StickyPrice } from "@/components/products/StickyPrice";
-import Link from "next/link";
 import { ArrowRightIcon } from "@/public/assets/CustomIcon"
 import Exclusions from "@/components/products/exclusions";
 import PolicyRules from "@/components/products/PolicyRules";
 import { useRouter } from "next/navigation";
+import TopRatedStays from "@/components/products/TopStayed";
+
 
 export default function Product() {
   const router = useRouter();
@@ -119,8 +118,7 @@ export default function Product() {
         {/* Full Width Content After Grid */}
         <div className="mt-8 space-y-8">
           <TopRatedStays />
-          <Newslatter />
-          <FAQ />
+          {/* <Newslatter /> */}
         </div>
       </div>
 
