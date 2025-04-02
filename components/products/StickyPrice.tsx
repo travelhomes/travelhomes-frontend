@@ -1,125 +1,290 @@
 "use client"
-
-import { EditIcon } from "@/public/assets/CustomIcon";
-import { useState } from "react";
-import { Dialog, DialogContent } from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import Link from "next/link";
+import { useState, useEffect, useRef } from "react";
+import { Calendar as CalendarIcon, ChevronDown, Users, X, AlertCircle } from "lucide-react";
+import { Calendar } from "@/components/landingPage/searchcomponents/calendar";
+import { GuestCounter } from "@/components/landingPage/searchcomponents/guest-counter";
 
 export function StickyPrice() {
-  const [isOpen, setIsOpen] = useState(false);
-  const [bookingData, setBookingData] = useState({
-    checkIn: "",
-    checkOut: "",
-    guests: "1",
+  // State for managing the dates
+  const [selectedDates, setSelectedDates] = useState<Date[]>([]);
+  const [formattedDates, setFormattedDates] = useState<{ start: string; end: string }>({
+    start: "",
+    end: "",
   });
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setBookingData(prev => ({
-      ...prev,
-      [name]: value
-    }));
+  // State for managing guests
+  const [guestCounts, setGuestCounts] = useState({
+    adults: 0,
+    children: 0,
+    infants: 0,
+  });
+  const [totalGuests, setTotalGuests] = useState("");
+
+  // State for toggling dropdowns
+  const [showCalendar, setShowCalendar] = useState(false);
+  const [showGuestCounter, setShowGuestCounter] = useState(false);
+  
+  // State for validation errors
+  const [errors, setErrors] = useState({
+    dates: "",
+    guests: ""
+  });
+
+  // Ref to prevent useEffect from running on initial render
+  const isInitialMount = useRef(true);
+
+  // Set default guest count only once on mount
+  useEffect(() => {
+    if (!isInitialMount.current) {
+      isInitialMount.current = false;
+      
+      // No need to call handleGuestCountChange since we already set default values in useState
+      const totalAdults = guestCounts.adults;
+      if (totalAdults > 0) {
+        setTotalGuests(`${totalAdults} Adult${totalAdults !== 1 ? 's' : ''}`);
+      }
+    }
+  }, [guestCounts.adults]);
+
+  // Handle date selection
+  const handleDateSelect = (dates: Date[]) => {
+    if (dates.length === 2) {
+      setSelectedDates(dates);
+      setFormattedDates({
+        start: formatDate(dates[0]),
+        end: formatDate(dates[1]),
+      });
+      setShowCalendar(false);
+      setErrors(prev => ({ ...prev, dates: "" }));
+    }
   };
 
-  const handleGuestsChange = (value: string) => {
-    setBookingData(prev => ({
-      ...prev,
-      guests: value
-    }));
+  // Handle guest count changes
+  const handleGuestCountChange = (counts: { adults: number; children: number; infants: number }) => {
+    setGuestCounts(counts);
+    
+    // Format the guest text
+    let guestText = "";
+    
+    if (counts.adults > 0) {
+      guestText += `${counts.adults} Adult${counts.adults !== 1 ? 's' : ''}`;
+    }
+    
+    if (counts.children > 0) {
+      guestText += guestText ? `, ${counts.children} Child${counts.children !== 1 ? 'ren' : ''}` : `${counts.children} Child${counts.children !== 1 ? 'ren' : ''}`;
+    }
+    
+    if (counts.infants > 0) {
+      guestText += guestText ? `, ${counts.infants} Infant${counts.infants !== 1 ? 's' : ''}` : `${counts.infants} Infant${counts.infants !== 1 ? 's' : ''}`;
+    }
+    
+    setTotalGuests(guestText || "Add guests");
+    
+    // Clear guest error if there are adults
+    if (counts.adults > 0) {
+      setErrors(prev => ({ ...prev, guests: "" }));
+    }
+  };
+
+  // Format date helper
+  const formatDate = (date: Date): string => {
+    return date.toLocaleDateString('en-US', {
+      day: '2-digit',
+      month: 'long',
+      year: 'numeric'
+    });
+  };
+
+  // Close dropdown when clicking outside
+  const handleClickOutside = () => {
+    if (showCalendar) setShowCalendar(false);
+    if (showGuestCounter) setShowGuestCounter(false);
+  };
+  
+  // Validate form before submission
+  const handleReserveClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+    const newErrors = {
+      dates: "",
+      guests: ""
+    };
+    
+    let hasErrors = false;
+    
+    // Validate dates
+    if (selectedDates.length < 2) {
+      newErrors.dates = "Please select check-in and check-out dates";
+      hasErrors = true;
+    }
+    
+    // Validate guests
+    if (guestCounts.adults === 0) {
+      newErrors.guests = "At least 1 adult is required";
+      hasErrors = true;
+    }
+    
+    setErrors(newErrors);
+    
+    if (hasErrors) {
+      e.preventDefault();
+    }
   };
 
   return (
     <>
-      <div className="fixed bottom-0 left-0 right-0 bg-white border-t shadow-lg p-4 lg:hidden">
-        <div className="container mx-auto flex items-center justify-between">
-          <div>
-            <div className="flex items-center gap-2">
-              <span className="text-2xl font-semibold">$440</span>
-              <span className="text-gray-600">/night</span>
+      <div className="hidden lg:block">
+        <div className="sticky top-[100px] transition-all duration-300 lg:col-span-1" id="sticky-price">
+          <div className="bg-white rounded-3xl shadow-md p-6 space-y-4">
+            {/* Date Card */}
+            <div className="bg-white border border-gray-200 rounded-2xl p-4 relative">
+              <div 
+                className="flex items-center justify-between mb-4 cursor-pointer"
+                onClick={() => {
+                  setShowCalendar(!showCalendar);
+                  setShowGuestCounter(false);
+                }}
+              >
+                <div className="flex items-center gap-2">
+                  <CalendarIcon className="text-gray-600" size={20} />
+                  <span className="text-gray-600 font-medium">Date</span>
+                </div>
+                <ChevronDown className={`text-gray-600 transition-transform ${showCalendar ? 'rotate-180' : ''}`} size={20} />
+              </div>
+              
+              <div className="flex items-center justify-between">
+                <span className="text-black font-medium">
+                  {formattedDates.start || "Add dates"}
+                </span>
+                {formattedDates.start && formattedDates.end && (
+                  <span className="text-gray-500 mx-2">→</span>
+                )}
+                <span className="text-black font-medium">
+                  {formattedDates.end || (formattedDates.start ? "Add end date" : "")}
+                </span>
+              </div>
+              
+              {errors.dates && (
+                <div className="flex items-center mt-2 text-red-500 text-sm">
+                  <AlertCircle size={14} className="mr-1" />
+                  {errors.dates}
+                </div>
+              )}
             </div>
-            <div className="flex items-center gap-2">
-              <div className="text-sm text-gray-500">19-20 Jan • Guest: 02</div>
-              <EditIcon />
+
+            {/* Guest Card */}
+            <div className="bg-white border border-gray-200 rounded-2xl p-4 relative">
+              <div 
+                className="flex items-center justify-between mb-4 cursor-pointer"
+                onClick={() => {
+                  setShowGuestCounter(!showGuestCounter);
+                  setShowCalendar(false);
+                }}
+              >
+                <div className="flex items-center gap-2">
+                  <Users className="text-gray-600" size={20} />
+                  <span className="text-gray-600 font-medium">Guest</span>
+                </div>
+                <ChevronDown className={`text-gray-600 transition-transform ${showGuestCounter ? 'rotate-180' : ''}`} size={20} />
+              </div>
+              
+              <div>
+                <span className="text-black font-medium">
+                  {totalGuests}
+                </span>
+              </div>
+              
+              {errors.guests && (
+                <div className="flex items-center mt-2 text-red-500 text-sm">
+                  <AlertCircle size={14} className="mr-1" />
+                  {errors.guests}
+                </div>
+              )}
             </div>
+
+            {/* Price Card */}
+            <div className="bg-white border border-gray-200 rounded-2xl p-4">
+              <div className="flex items-center justify-between">
+                <span className="text-gray-600">Pricing</span>
+                <div className="flex items-center">
+                  <span className="text-xl font-semibold">$440</span>
+                  <span className="text-gray-600 ml-1">/night</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Reserve Button */}
+            <Link href="/payment" className="block">
+              <button 
+                className="w-full bg-black text-white rounded-full py-4 text-lg font-medium hover:bg-gray-900 transition-colors"
+                onClick={handleReserveClick}
+              >
+                Reserve
+              </button>
+            </Link>
           </div>
-          <button 
-            onClick={() => setIsOpen(true)}
-            className="bg-black text-white rounded-full px-8 py-3 text-base font-medium"
-          >
-            Reserve
-          </button>
         </div>
       </div>
 
-      <Dialog open={isOpen} onOpenChange={setIsOpen}>
-        <DialogContent className="sm:max-w-md p-0 gap-0">
-          <div className="p-6 space-y-6">
-            <h2 className="text-xl font-semibold text-center">Edit Booking Details</h2>
-            
-            <div className="space-y-4">
-              {/* Check-in */}
-              <div>
-                <label className="text-sm font-medium text-[#334054] block mb-2">
-                  Check-in
-                </label>
-                <Input
-                  type="date"
-                  name="checkIn"
-                  value={bookingData.checkIn}
-                  onChange={handleInputChange}
-                  className="border-[#EAECF0] h-11 bg-white focus:ring-0 focus:border-[#B0B0B0]"
-                />
-              </div>
-
-              {/* Check-out */}
-              <div>
-                <label className="text-sm font-medium text-[#334054] block mb-2">
-                  Check-Out
-                </label>
-                <Input
-                  type="date"
-                  name="checkOut"
-                  value={bookingData.checkOut}
-                  onChange={handleInputChange}
-                  className="border-[#EAECF0] h-11 bg-white focus:ring-0 focus:border-[#B0B0B0]"
-                />
-              </div>
-
-              {/* Guest */}
-              <div>
-                <label className="text-sm font-medium text-[#334054] block mb-2">
-                  Guest
-                </label>
-                <Select
-                  value={bookingData.guests}
-                  onValueChange={handleGuestsChange}
-                >
-                  <SelectTrigger className="border-[#EAECF0] h-11 bg-white focus:ring-0 focus:border-[#B0B0B0]">
-                    <SelectValue placeholder="Select number of guests" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="1">1 Adult</SelectItem>
-                    <SelectItem value="2">2 Adults</SelectItem>
-                    <SelectItem value="3">3 Adults</SelectItem>
-                    <SelectItem value="4">4 Adults</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
+      {/* Dropdowns - Positioned fixed to avoid layout issues */}
+      {showCalendar && (
+        <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center z-[100]">
+          <div className="bg-white rounded-2xl shadow-xl max-w-[90vw] max-h-[90vh] overflow-y-auto p-4">
+            <div className="flex justify-between items-center mb-4">
+              <h3 className="text-lg font-medium">Select dates</h3>
+              <button 
+                className="p-1 rounded-full bg-gray-100 hover:bg-gray-200"
+                onClick={() => setShowCalendar(false)}
+              >
+                <X size={20} />
+              </button>
             </div>
+            <Calendar onDateSelect={handleDateSelect} />
           </div>
+        </div>
+      )}
 
-          <div className="p-6 border-t">
-            <Button 
-              onClick={() => setIsOpen(false)}
-              className="w-full bg-black text-white rounded-full py-3 text-base font-medium hover:bg-black/90"
-            >
-              Reserve
-            </Button>
+      {showGuestCounter && (
+        <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center z-[100]">
+          <div className="bg-white rounded-2xl shadow-xl max-w-[90vw] max-h-[90vh] overflow-y-auto p-4">
+            <div className="flex justify-between items-center mb-4">
+              <h3 className="text-lg font-medium">Select guests</h3>
+              <button 
+                className="p-1 rounded-full bg-gray-100 hover:bg-gray-200"
+                onClick={() => setShowGuestCounter(false)}
+              >
+                <X size={20} />
+              </button>
+            </div>
+            <GuestCounter onGuestCountChange={handleGuestCountChange} />
           </div>
-        </DialogContent>
-      </Dialog>
+        </div>
+      )}
+
+      {/* Mobile sticky price - displayed at the bottom of the screen on mobile */}
+      <div className="fixed bottom-0 left-0 right-0 bg-white border-t p-4 flex justify-between items-center z-50 lg:hidden">
+        <div>
+          <div className="flex items-baseline gap-1">
+            <span className="text-xl font-semibold">$440</span>
+            <span className="text-gray-600 text-sm">/night</span>
+          </div>
+        </div>
+        <Link href="/payment">
+          <button 
+            className="bg-black text-white rounded-full px-6 py-3 text-base font-medium"
+            onClick={handleReserveClick}
+          >
+            Reserve
+          </button>
+        </Link>
+      </div>
+      
+      {/* Click outside overlay */}
+      {(showCalendar || showGuestCounter) && (
+        <div 
+          className="fixed inset-0 bg-black bg-opacity-50 z-[50]" 
+          onClick={handleClickOutside}
+        />
+      )}
     </>
   );
 } 
