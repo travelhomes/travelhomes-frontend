@@ -65,6 +65,9 @@ export default function SearchFilter({ activeTab = 'campervan' }) {
   const [timePickerType, setTimePickerType] = useState<'checkIn' | 'checkOut'>('checkIn');
   const [editSelectionModal, setEditSelectionModal] = useState<EditSelectionModal>({ show: false, type: 'checkIn' });
   
+  // Added for selected dates storage
+  const [selectedDates, setSelectedDates] = useState<Date[]>([]);
+
   // Refs for the buttons and popups
   const guestButtonRef = useRef<HTMLButtonElement>(null);
   const locationButtonRef = useRef<HTMLButtonElement>(null);
@@ -188,24 +191,10 @@ export default function SearchFilter({ activeTab = 'campervan' }) {
   };
 
   const handleCheckInOutClick = (type: 'checkIn' | 'checkOut') => {
-    // If there's no date selected, open calendar first
-    if (!dateTimeRange[type]?.date) {
-      setTimePickerType(type);
-      setCalendarOpen(true);
-      return;
-    }
-    
-    // If date is selected but no time, open time picker
-    if (dateTimeRange[type]?.date && !dateTimeRange[type]?.time) {
-      setTimePickerType(type);
-      setTimePickerOpen(true);
-      return;
-    }
-    
-    // If both date and time are selected, open the edit selection modal
+    // If no dates or times are selected yet, or we want to start fresh, open the time picker
     closeAllPopups();
     setTimePickerType(type);
-    setEditSelectionModal({ show: true, type });
+    setTimePickerOpen(true);
   };
 
   const formatDateTime = (dateTime?: { date: Date; time?: string }) => {
@@ -311,7 +300,7 @@ export default function SearchFilter({ activeTab = 'campervan' }) {
                   onChange={(e) => handleLocationSearch(e.target.value, 'from')}
                   onFocus={() => setFromLocationSearchOpen(true)}
                   placeholder="Enter location"
-                  className="bg-transparent text-[#211C16] text-[20px] font-medium focus:outline-none ml-2 w-full"
+                  className="bg-transparent text-[#211C16] text-[18px] font-medium focus:outline-none ml-2 w-full"
                 />
                 {isFromLocationSearchOpen && fromSuggestions.length > 0 && (
                   <div 
@@ -346,7 +335,7 @@ export default function SearchFilter({ activeTab = 'campervan' }) {
                   onChange={(e) => handleLocationSearch(e.target.value, 'to')}
                   onFocus={() => setToLocationSearchOpen(true)}
                   placeholder="Enter location"
-                  className="bg-transparent text-[#211C16] text-[20px] font-medium focus:outline-none ml-2 w-full"
+                  className="bg-transparent text-[#211C16] text-[18px] font-medium focus:outline-none ml-2 w-full"
                 />
                 {isToLocationSearchOpen && toSuggestions.length > 0 && (
                   <div 
@@ -377,7 +366,7 @@ export default function SearchFilter({ activeTab = 'campervan' }) {
               <button 
                 ref={locationButtonRef}
                 onClick={toggleLocationSearch} 
-                className="bg-transparent text-[#211C16] text-[20px] font-medium focus:outline-none ml-2 text-left"
+                className="bg-transparent text-[#211C16] text-[18px] font-medium focus:outline-none ml-2 text-left"
               >
                 {selectedLocation}
               </button>
@@ -407,7 +396,7 @@ export default function SearchFilter({ activeTab = 'campervan' }) {
                 <button 
                   ref={checkInButtonRef}
                   onClick={toggleCalendar}
-                  className="bg-transparent text-[20px] font-medium focus:outline-none ml-1 text-left"
+                  className="bg-transparent text-[18px] font-medium focus:outline-none ml-1 text-left"
                 >
                   {dateTimeRange.checkIn?.date ? dateTimeRange.checkIn.date.toLocaleDateString() : "Add date"}
                 </button>
@@ -426,7 +415,7 @@ export default function SearchFilter({ activeTab = 'campervan' }) {
                   onChange={(e) => handleActivitySearch(e.target.value)}
                   onFocus={() => setActivitySearchOpen(true)}
                   placeholder="Enter activity"
-                  className="bg-transparent text-[#211C16] text-[20px] font-medium focus:outline-none ml-1 w-full"
+                  className="bg-transparent text-[#211C16] text-[18px] font-medium focus:outline-none ml-1 w-full"
                 />
                 {isActivitySearchOpen && activitySuggestions.length > 0 && (
                   <div 
@@ -456,7 +445,7 @@ export default function SearchFilter({ activeTab = 'campervan' }) {
                 <button 
                   ref={checkInButtonRef}
                   onClick={() => handleCheckInOutClick('checkIn')}
-                  className="bg-transparent text-[#211C16] text-[20px] font-medium focus:outline-none ml-1 text-left"
+                  className="bg-transparent text-[#211C16] text-[18px] font-medium focus:outline-none ml-1 text-left"
                 >
                   {formatDateTime(dateTimeRange.checkIn)}
                 </button>
@@ -472,7 +461,7 @@ export default function SearchFilter({ activeTab = 'campervan' }) {
                 <button 
                   ref={checkOutButtonRef}
                   onClick={() => handleCheckInOutClick('checkOut')}
-                  className="bg-transparent text-[#211C16] text-[20px] font-medium focus:outline-none ml-1 text-left"
+                  className="bg-transparent text-[#211C16] text-[18px] font-medium focus:outline-none ml-1 text-left"
                 >
                   {formatDateTime(dateTimeRange.checkOut)}
                 </button>
@@ -490,7 +479,7 @@ export default function SearchFilter({ activeTab = 'campervan' }) {
             <button 
               ref={guestButtonRef}
               onClick={toggleGuestCounter} 
-              className="bg-transparent text-left text-[#211C16] text-[20px] font-medium focus:outline-none ml-1"
+              className="bg-transparent text-left text-[#211C16] text-[18px] font-medium focus:outline-none ml-1"
             >
               {formatGuestCount()}
             </button>
@@ -554,6 +543,14 @@ export default function SearchFilter({ activeTab = 'campervan' }) {
               setTimePickerOpen(false);
             }}
             timePickerType={timePickerType}
+            onDateSelect={(dates) => {
+              setSelectedDates(dates);
+              setDateTimeRange({
+                checkIn: { date: dates[0] },
+                checkOut: { date: dates[1] }
+              });
+            }}
+            initialDates={selectedDates}
           />
         </div>
       )}
