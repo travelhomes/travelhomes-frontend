@@ -5,6 +5,8 @@ import { GuestCounter } from './searchcomponents/guest-counter';
 import { LocationSearch } from './searchcomponents/location-search';
 import { Calendar } from './searchcomponents/calendar';
 import { TimeSelector } from './searchcomponents/time-selector';
+import { useRouter } from 'next/navigation';
+import { AlertCircle } from 'lucide-react';
 
 interface DateTimeRange {
   checkIn?: {
@@ -57,6 +59,7 @@ const dummyActivities = [
 ];
 
 export default function SearchFilter({ activeTab = 'campervan' }) {
+  const router = useRouter();
   const [isGuestCounterOpen, setGuestCounterOpen] = useState(false);
   const [isLocationSearchOpen, setLocationSearchOpen] = useState(false);
   const [isCalendarOpen, setCalendarOpen] = useState(false);
@@ -101,6 +104,18 @@ export default function SearchFilter({ activeTab = 'campervan' }) {
 
   const [activityInput, setActivityInput] = useState("Trekking");
   const [activitySuggestions, setActivitySuggestions] = useState<string[]>([]);
+
+  // Add state for validation errors
+  const [validationErrors, setValidationErrors] = useState<{
+    location?: string;
+    fromLocation?: string;
+    toLocation?: string;
+    dates?: string;
+    checkIn?: string;
+    checkOut?: string;
+    guests?: string;
+    activity?: string;
+  }>({});
 
   // Close all popups
   const closeAllPopups = () => {
@@ -281,6 +296,104 @@ export default function SearchFilter({ activeTab = 'campervan' }) {
     }
   };
 
+  // Validate all required fields before search
+  const validateSearch = () => {
+    const errors: {
+      location?: string;
+      fromLocation?: string;
+      toLocation?: string;
+      dates?: string;
+      checkIn?: string;
+      checkOut?: string;
+      guests?: string;
+      activity?: string;
+    } = {};
+    
+    let isValid = true;
+    
+    if (activeTab === 'campervan') {
+      // Validate from and to locations
+      if (!fromLocationInput.trim()) {
+        errors.fromLocation = 'Please enter departure location';
+        isValid = false;
+      }
+      
+      if (!toLocationInput.trim()) {
+        errors.toLocation = 'Please enter destination location';
+        isValid = false;
+      }
+      
+      // Validate check-in and check-out dates and times
+      if (!dateTimeRange.checkIn?.date) {
+        errors.checkIn = 'Please select check-in date and time';
+        isValid = false;
+      } else if (!dateTimeRange.checkIn?.time) {
+        errors.checkIn = 'Please select check-in time';
+        isValid = false;
+      }
+      
+      if (!dateTimeRange.checkOut?.date) {
+        errors.checkOut = 'Please select check-out date and time';
+        isValid = false;
+      } else if (!dateTimeRange.checkOut?.time) {
+        errors.checkOut = 'Please select check-out time';
+        isValid = false;
+      }
+    } else if (activeTab === 'uniquestay') {
+      // Validate location
+      if (!selectedLocation || selectedLocation === "Thailand") {
+        errors.location = 'Please select a location';
+        isValid = false;
+      }
+      
+      // Validate check-in and check-out dates
+      if (!dateTimeRange.checkIn?.date) {
+        errors.checkIn = 'Please select check-in date';
+        isValid = false;
+      }
+      
+      if (!dateTimeRange.checkOut?.date) {
+        errors.checkOut = 'Please select check-out date';
+        isValid = false;
+      }
+    } else if (activeTab === 'activity') {
+      // Validate location
+      if (!selectedLocation || selectedLocation === "Thailand") {
+        errors.location = 'Please select a location';
+        isValid = false;
+      }
+      
+      // Validate date
+      if (!dateTimeRange.checkIn?.date) {
+        errors.dates = 'Please select a date';
+        isValid = false;
+      }
+      
+      // Validate activity
+      if (!activityInput.trim()) {
+        errors.activity = 'Please select an activity';
+        isValid = false;
+      }
+    }
+    
+    // Validate guests for all tabs
+    const totalGuests = guestCount.adults + guestCount.children + guestCount.infants;
+    if (totalGuests === 0) {
+      errors.guests = 'Please select at least one guest';
+      isValid = false;
+    }
+    
+    setValidationErrors(errors);
+    return isValid;
+  };
+
+  // Handle search button click
+  const handleSearchClick = () => {
+    if (validateSearch()) {
+      router.push('/discover');
+    }
+  };
+
   return (
     <div className="hidden md:block relative">
       <div className="flex h-[100px] items-center gap-2 bg-[#F6F6F6] px-[2rem] py-[18px] rounded-[20px]">
@@ -302,6 +415,14 @@ export default function SearchFilter({ activeTab = 'campervan' }) {
                   placeholder="Enter location"
                   className="bg-transparent text-[#211C16] text-[18px] font-medium focus:outline-none ml-2 w-full"
                 />
+                {validationErrors.fromLocation && (
+                  <div className="absolute top-full left-0 text-red-500 text-xs font-medium mt-1 ml-2">
+                    <span className="flex items-center">
+                      <AlertCircle className="h-3 w-3 mr-1 inline-flex" />
+                      {validationErrors.fromLocation}
+                    </span>
+                  </div>
+                )}
                 {isFromLocationSearchOpen && fromSuggestions.length > 0 && (
                   <div 
                     ref={fromLocationPopupRef}
@@ -337,6 +458,14 @@ export default function SearchFilter({ activeTab = 'campervan' }) {
                   placeholder="Enter location"
                   className="bg-transparent text-[#211C16] text-[18px] font-medium focus:outline-none ml-2 w-full"
                 />
+                {validationErrors.toLocation && (
+                  <div className="absolute top-full left-0 text-red-500 text-xs font-medium mt-1 ml-2">
+                    <span className="flex items-center">
+                      <AlertCircle className="h-3 w-3 mr-1 inline-flex" />
+                      {validationErrors.toLocation}
+                    </span>
+                  </div>
+                )}
                 {isToLocationSearchOpen && toSuggestions.length > 0 && (
                   <div 
                     ref={toLocationPopupRef}
@@ -370,6 +499,14 @@ export default function SearchFilter({ activeTab = 'campervan' }) {
               >
                 {selectedLocation}
               </button>
+              {validationErrors.location && (
+                <div className="absolute top-full left-0 text-red-500 text-xs font-medium mt-1 ml-2">
+                  <span className="flex items-center">
+                    <AlertCircle className="h-3 w-3 mr-1 inline-flex" />
+                    {validationErrors.location}
+                  </span>
+                </div>
+              )}
               {isLocationSearchOpen && (
                 <div 
                   ref={locationPopupRef}
@@ -400,6 +537,14 @@ export default function SearchFilter({ activeTab = 'campervan' }) {
                 >
                   {dateTimeRange.checkIn?.date ? dateTimeRange.checkIn.date.toLocaleDateString() : "Add date"}
                 </button>
+                {validationErrors.dates && (
+                  <div className="absolute top-full left-0 text-red-500 text-xs font-medium mt-1 ml-1">
+                    <span className="flex items-center">
+                      <AlertCircle className="h-3 w-3 mr-1 inline-flex" />
+                      {validationErrors.dates}
+                    </span>
+                  </div>
+                )}
               </div>
 
               <div className="w-px h-12 bg-[#D6D6D6]" />
@@ -417,6 +562,14 @@ export default function SearchFilter({ activeTab = 'campervan' }) {
                   placeholder="Enter activity"
                   className="bg-transparent text-[#211C16] text-[18px] font-medium focus:outline-none ml-1 w-full"
                 />
+                {validationErrors.activity && (
+                  <div className="absolute top-full left-0 text-red-500 text-xs font-medium mt-1 ml-1">
+                    <span className="flex items-center">
+                      <AlertCircle className="h-3 w-3 mr-1 inline-flex" />
+                      {validationErrors.activity}
+                    </span>
+                  </div>
+                )}
                 {isActivitySearchOpen && activitySuggestions.length > 0 && (
                   <div 
                     ref={activityPopupRef}
@@ -449,11 +602,19 @@ export default function SearchFilter({ activeTab = 'campervan' }) {
                 >
                   {formatDateTime(dateTimeRange.checkIn)}
                 </button>
+                {validationErrors.checkIn && (
+                  <div className="absolute top-full left-0 text-red-500 text-xs font-medium mt-1 ml-1">
+                    <span className="flex items-center">
+                      <AlertCircle className="h-3 w-3 mr-1 inline-flex" />
+                      {validationErrors.checkIn}
+                    </span>
+                  </div>
+                )}
               </div>
 
               <div className="w-px h-12 bg-[#D6D6D6]" />
 
-              <div className="flex flex-col flex-1 ml-[20px]">
+              <div className="flex flex-col flex-1 ml-[20px] relative">
                 <label className="text-sm text-gray-500 mb-1 flex items-center gap-2">
                   <CheckOutIcon />
                   Check out
@@ -465,6 +626,14 @@ export default function SearchFilter({ activeTab = 'campervan' }) {
                 >
                   {formatDateTime(dateTimeRange.checkOut)}
                 </button>
+                {validationErrors.checkOut && (
+                  <div className="absolute top-full left-0 text-red-500 text-xs font-medium mt-1 ml-1">
+                    <span className="flex items-center">
+                      <AlertCircle className="h-3 w-3 mr-1 inline-flex" />
+                      {validationErrors.checkOut}
+                    </span>
+                  </div>
+                )}
               </div>
             </>
           )}
@@ -483,6 +652,14 @@ export default function SearchFilter({ activeTab = 'campervan' }) {
             >
               {formatGuestCount()}
             </button>
+            {validationErrors.guests && (
+              <div className="absolute top-full left-0 text-red-500 text-xs font-medium mt-1 ml-1">
+                <span className="flex items-center">
+                  <AlertCircle className="h-3 w-3 mr-1 inline-flex" />
+                  {validationErrors.guests}
+                </span>
+              </div>
+            )}
             {isGuestCounterOpen && (
               <div 
                 ref={guestPopupRef}
@@ -499,7 +676,10 @@ export default function SearchFilter({ activeTab = 'campervan' }) {
           </div>
         </div>
 
-        <button className="bg-black text-white p-4 rounded-full hover:bg-gray-800 transition-colors">
+        <button 
+          onClick={handleSearchClick}
+          className="bg-black text-white p-4 rounded-full hover:bg-gray-800 transition-colors"
+        >
           <SearchIcon />
         </button>
       </div>
