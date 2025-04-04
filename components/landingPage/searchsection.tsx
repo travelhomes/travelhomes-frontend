@@ -19,6 +19,12 @@ interface DateTimeRange {
   };
 }
 
+// Add this interface for the edit selection modal
+interface EditSelectionModal {
+  show: boolean;
+  type: 'checkIn' | 'checkOut';
+}
+
 const dummyLocations = [
   "Bangkok",
   "Phuket",
@@ -57,6 +63,7 @@ export default function SearchFilter({ activeTab = 'campervan' }) {
   const [isActivitySearchOpen, setActivitySearchOpen] = useState(false);
   const [isTimePickerOpen, setTimePickerOpen] = useState(false);
   const [timePickerType, setTimePickerType] = useState<'checkIn' | 'checkOut'>('checkIn');
+  const [editSelectionModal, setEditSelectionModal] = useState<EditSelectionModal>({ show: false, type: 'checkIn' });
   
   // Refs for the buttons and popups
   const guestButtonRef = useRef<HTMLButtonElement>(null);
@@ -69,6 +76,7 @@ export default function SearchFilter({ activeTab = 'campervan' }) {
   const locationPopupRef = useRef<HTMLDivElement>(null);
   const calendarPopupRef = useRef<HTMLDivElement>(null);
   const activityPopupRef = useRef<HTMLDivElement>(null);
+  const editSelectionModalRef = useRef<HTMLDivElement>(null);
 
   const [fromLocationInput, setFromLocationInput] = useState("");
   const [toLocationInput, setToLocationInput] = useState("");
@@ -100,6 +108,7 @@ export default function SearchFilter({ activeTab = 'campervan' }) {
     setCalendarOpen(false);
     setActivitySearchOpen(false);
     setTimePickerOpen(false);
+    setEditSelectionModal({ show: false, type: 'checkIn' });
   };
 
   // Handle click outside
@@ -140,6 +149,12 @@ export default function SearchFilter({ activeTab = 'campervan' }) {
         setTimePickerOpen(false);
       }
 
+      // Edit selection modal
+      if (editSelectionModal.show && 
+          !editSelectionModalRef.current?.contains(event.target as Node)) {
+        setEditSelectionModal({ show: false, type: 'checkIn' });
+      }
+
       // From Location Search popup
       if (isFromLocationSearchOpen && 
           !fromLocationPopupRef.current?.contains(event.target as Node)) {
@@ -155,7 +170,7 @@ export default function SearchFilter({ activeTab = 'campervan' }) {
 
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, [isFromLocationSearchOpen, isToLocationSearchOpen, isGuestCounterOpen, isCalendarOpen, isActivitySearchOpen, isTimePickerOpen, isLocationSearchOpen]);
+  }, [isFromLocationSearchOpen, isToLocationSearchOpen, isGuestCounterOpen, isCalendarOpen, isActivitySearchOpen, isTimePickerOpen, isLocationSearchOpen, editSelectionModal.show]);
 
   const toggleGuestCounter = () => {
     closeAllPopups();
@@ -187,9 +202,10 @@ export default function SearchFilter({ activeTab = 'campervan' }) {
       return;
     }
     
-    // If both date and time are selected, open calendar for editing
+    // If both date and time are selected, open the edit selection modal
+    closeAllPopups();
     setTimePickerType(type);
-    setCalendarOpen(true);
+    setEditSelectionModal({ show: true, type });
   };
 
   const formatDateTime = (dateTime?: { date: Date; time?: string }) => {
@@ -212,6 +228,20 @@ export default function SearchFilter({ activeTab = 'campervan' }) {
     
     // We don't close the picker automatically now as users can set both times at once
     // The picker will be closed when the user clicks "Done" button
+  };
+
+  // Handler for when user wants to edit date
+  const handleEditDate = (type: 'checkIn' | 'checkOut') => {
+    setEditSelectionModal({ show: false, type: 'checkIn' });
+    setTimePickerType(type);
+    setCalendarOpen(true);
+  };
+
+  // Handler for when user wants to edit time
+  const handleEditTime = (type: 'checkIn' | 'checkOut') => {
+    setEditSelectionModal({ show: false, type: 'checkIn' });
+    setTimePickerType(type);
+    setTimePickerOpen(true);
   };
 
   const formatGuestCount = () => {
@@ -525,6 +555,49 @@ export default function SearchFilter({ activeTab = 'campervan' }) {
             }}
             timePickerType={timePickerType}
           />
+        </div>
+      )}
+
+      {/* Edit Selection Modal */}
+      {editSelectionModal.show && (
+        <div 
+          ref={editSelectionModalRef}
+          className="fixed inset-0 z-[100] flex items-center justify-center"
+        >
+          <div className="absolute inset-0 bg-black bg-opacity-50" onClick={() => setEditSelectionModal({ show: false, type: 'checkIn' })}></div>
+          <div className="bg-white rounded-xl shadow-lg p-6 max-w-md w-full mx-4 relative z-10">
+            <h3 className="text-xl font-medium mb-4 text-center">
+              Edit {editSelectionModal.type === 'checkIn' ? 'Check-in' : 'Check-out'}
+            </h3>
+            <div className="flex flex-col gap-3">
+              <button 
+                onClick={() => handleEditDate(editSelectionModal.type)}
+                className="w-full py-3 px-4 bg-[#F6F6F6] rounded-lg text-left hover:bg-gray-200 transition-colors"
+              >
+                <span className="font-medium">Edit Date</span>
+                <p className="text-sm text-gray-500 mt-1">
+                  {dateTimeRange[editSelectionModal.type]?.date?.toLocaleDateString()}
+                </p>
+              </button>
+              
+              <button 
+                onClick={() => handleEditTime(editSelectionModal.type)}
+                className="w-full py-3 px-4 bg-[#F6F6F6] rounded-lg text-left hover:bg-gray-200 transition-colors"
+              >
+                <span className="font-medium">Edit Time</span>
+                <p className="text-sm text-gray-500 mt-1">
+                  {dateTimeRange[editSelectionModal.type]?.time || 'No time selected'}
+                </p>
+              </button>
+              
+              <button 
+                onClick={() => setEditSelectionModal({ show: false, type: 'checkIn' })}
+                className="w-full py-3 bg-black text-white rounded-lg mt-2 hover:bg-gray-800 transition-colors"
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
         </div>
       )}
     </div>
