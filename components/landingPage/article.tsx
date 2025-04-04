@@ -64,11 +64,11 @@ export default function LatestArticles() {
   }
 
   return (
-    <section className="px-4 md:py-12 md:px-6 lg:px-8">
+    <section className="px-4 md:py-12 md:px-6 lg:px-8 max-w-7xl mx-auto">
       <div className="max-w-7xl mx-auto">
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
           <div>
-            <h2 className="text-2xl font-bold mb-2">Latest Articles</h2>
+            <h2 className="md:text-[36px] text-[20px] font-bold mb-1">Latest Articles</h2>
             <p className="text-gray-600">Find popular content for travelers worldwide</p>
           </div>
           <Link 

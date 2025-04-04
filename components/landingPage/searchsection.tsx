@@ -376,10 +376,9 @@ export default function SearchFilter({ activeTab = 'campervan' }) {
       }
     }
     
-    // Validate guests for all tabs
-    const totalGuests = guestCount.adults + guestCount.children + guestCount.infants;
-    if (totalGuests === 0) {
-      errors.guests = 'Please select at least one guest';
+    // Validate guests - require at least one adult, not just any guest
+    if (guestCount.adults === 0) {
+      errors.guests = 'Please select at least one adult';
       isValid = false;
     }
     
@@ -395,7 +394,7 @@ export default function SearchFilter({ activeTab = 'campervan' }) {
   };
 
   return (
-    <div className="hidden md:block relative">
+    <div className="hidden md:block relative max-w-7xl mx-auto">
       <div className="flex h-[100px] items-center gap-2 bg-[#F6F6F6] px-[2rem] py-[18px] rounded-[20px]">
         <div className="flex items-center gap-2 flex-1">
           {activeTab === 'campervan' ? (

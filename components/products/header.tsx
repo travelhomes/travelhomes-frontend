@@ -3,7 +3,7 @@ import { Share, Heart, MapPin } from "lucide-react";
 
 export function Header() {
   return (
-    <div className="pt-[2rem]">
+    <div className="pt-[2rem] ">
       <h1 className="text-[28px] md:text-[36px] text-[#0B0907] font-bold mb-2">
         My Rolling Homes
       </h1>

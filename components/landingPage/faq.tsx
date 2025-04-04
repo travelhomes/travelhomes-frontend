@@ -49,7 +49,7 @@ export default function FAQ() {
   const [activeTagIndex, setActiveTagIndex] = useState(0)
 
   return (
-    <div className="py-8 md:py-12 px-4 sm:px-6 lg:px-8 md:mx-[5rem]">
+    <div className="py-8 md:py-12 px-4 sm:px-6 lg:px-8  max-w-7xl mx-auto">
       <div className="flex flex-col lg:flex-row gap-8">
         <div className="lg:mb-8 text-center lg:text-center w-full lg:w-[450px] lg:pr-[56px]">
           <h2 className="text-2xl md:text-[36px] leading-10 font-bold mb-[25px]">Frequently<br />Asked Questions</h2>
@@ -79,7 +79,7 @@ export default function FAQ() {
             >
               <button
                 onClick={() => setOpenId(openId === faq.id ? null : faq.id)}
-                className={`flex justify-between items-center w-full p-3 sm:p-6 text-left ${
+                className={`flex justify-between items-center w-full p-3 sm:p-6  text-left ${
                   openId === faq.id ? 'bg-[#F6F6F6]' : 'hover:bg-gray-50'
                 }`}
                 aria-expanded={openId === faq.id}
@@ -104,7 +104,7 @@ export default function FAQ() {
                   ${openId === faq.id ? 'bg-[#F6F6F6]' : ''}
                 `}
               >
-                <div className={`${plusJakartaSans.className} p-3 sm:p-4 pt-0 text-[#535353] text-sm sm:text-base`}>
+                <div className={`${plusJakartaSans.className} p-5 sm:p-6 sm:pt-0 pt-0 text-[#535353] text-sm sm:text-base`}>
                   {faq.answer}
                 </div>
               </div>

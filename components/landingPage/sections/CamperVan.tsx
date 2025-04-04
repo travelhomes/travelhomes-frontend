@@ -63,20 +63,24 @@ const campers = [
 export default function CamperListing() {
   return (
     <section className="px-4 mt-[3rem] lg:mx-auto max-w-7xl">
-      <div className="flex justify-between items-center mb-8">
-        <div>
-          <h2 className="md:text-[36px] text-[20px] font-bold mb-2 text-[#0B0907]">
+      <div className="flex justify-between items-center mb-4">
+        <div className="w-full">
+          <p className="md:text-[36px] text-[20px] font-bold mb-1 text-[#0B0907]">
             Stay at our top Camper Van
-          </h2>
+          </p>
+          <div className="flex items-center justify-between">
           <p className="text-[#989892]">
             From castles and villas to boats and igloos, we have it all
           </p>
-        </div>
-        <Link href="/discover"> 
+
+          <Link href="/discover"> 
         <button className="hidden md:block text-gray-900 font-medium hover:underline">
           Discover more
         </button>
         </Link>
+        </div>
+        </div>
+       
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 ">

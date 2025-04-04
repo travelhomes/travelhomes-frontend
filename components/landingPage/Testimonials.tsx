@@ -119,8 +119,8 @@ export default function Testimonials() {
   }
 
   return (
-    <div className="py-8 md:mt- md:px-[5rem]">
-      <div className="flex justify-between items-center mb-6">
+    <div className="pt-8 md:pt-16 max-w-7xl mx-auto">
+      <div className="flex justify-between items-center mb-8 px-4 md:px-0">
         <div>
           <h2 className="text-[36px] text-[#0B0907] font-bold">Testimonials</h2>
           <p className="text-[#989892] mt-1">Most popular choices for travelers from India</p>
@@ -129,7 +129,7 @@ export default function Testimonials() {
           <button
             onClick={() => scroll('left')}
             disabled={currentIndex === 0}
-            className=" disabled:cursor-not-allowed"
+            className="p-2 rounded-full border border-gray-200 hover:bg-gray-100 disabled:cursor-not-allowed disabled:opacity-50"
             aria-label="Previous testimonial"
           >
             <Testimoleft />
@@ -137,7 +137,7 @@ export default function Testimonials() {
           <button
             onClick={() => scroll('right')}
             disabled={currentIndex === testimonials.length - 1}
-            className="disabled:cursor-not-allowed"
+            className="p-2 rounded-full border border-gray-200 hover:bg-gray-100 disabled:cursor-not-allowed disabled:opacity-50"
             aria-label="Next testimonial"
           >
             <Testmoright />
@@ -147,26 +147,29 @@ export default function Testimonials() {
 
       <div 
         ref={scrollRef}
-        className="flex gap-6 overflow-x-auto snap-x snap-mandatory touch-pan-x px-8"
-        style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+        className="flex gap-6 overflow-x-auto snap-x snap-mandatory touch-pan-x px-4 md:px-0 scrollbar-hide pb-4"
+        style={{ 
+          scrollbarWidth: 'none', 
+          msOverflowStyle: 'none',
+          WebkitOverflowScrolling: 'touch'
+        }}
         onTouchStart={handleTouchStart}
         onTouchMove={handleTouchMove}
       >
         {testimonials.map((testimonial) => (
           <div
             key={testimonial.id}
-            className=" snap-start h-[221px]  "
+            className="snap-start flex-shrink-0"
           >
-            <div className=" p-6 rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300 w-[352px]">
-              <p className={`${plusJakartaSans.className} text-[#0B0907] text-[14px] mb-6`}>{testimonial.content}</p>
-              <div className="flex items-center gap-3 justify-between">
-               
+            <div className="p-6 rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300 w-[280px] sm:w-[320px] md:w-[352px] flex flex-col min-h-[240px]">
+              <p className={`${plusJakartaSans.className} text-[#0B0907] text-[14px] mb-6 flex-grow`}>{testimonial.content}</p>
+              <div className="flex items-center gap-3 justify-between mt-auto">
                 <div>
-                  <h3 className="font- text-[#072130] mb-[5px]">{testimonial.author}</h3>
+                  <h3 className="font-medium text-[#072130] mb-[5px]">{testimonial.author}</h3>
                   <p className="text-[12px] text-[#4A6778]">{testimonial.role}</p>
                 </div>
 
-                <div className="relative w-12 h-12 rounded-full overflow-hidden">
+                <div className="relative w-12 h-12 rounded-full overflow-hidden flex-shrink-0">
                   <Image
                     src={testimonial.image || "/placeholder.svg"}
                     alt={testimonial.author}
@@ -192,7 +195,7 @@ export default function Testimonials() {
         <button
           onClick={() => scroll('right')}
           disabled={currentIndex === testimonials.length - 1}
-          className="  hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+          className="p-2 rounded-full border border-gray-200 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
           aria-label="Next testimonial"
         >
           <Testmoright />
