@@ -255,7 +255,7 @@ export function StickyPrice() {
                 <X size={20} />
               </button>
             </div>
-            <GuestCounter onGuestCountChange={handleGuestCountChange} />
+            <GuestCounter onGuestCountChange={handleGuestCountChange} activeTab="campervan" />
           </div>
         </div>
       )}

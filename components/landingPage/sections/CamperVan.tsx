@@ -222,7 +222,7 @@ function CamperCard({
 
           {/* Favorite Text */}
           {favoriteText && (
-            <div className="absolute top-3 left-3 bg-white/90 px-3 py-1 rounded-[4px] z-10">
+            <div className="absolute top-3 left-3 bg-white/90 px-3 py-1 rounded-[4px]">
               <span className="text-sm font-medium">{favoriteText}</span>
             </div>
           )}

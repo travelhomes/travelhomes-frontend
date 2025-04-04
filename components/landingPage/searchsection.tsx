@@ -492,6 +492,7 @@ export default function SearchFilter({ activeTab = 'campervan' }) {
                   onGuestCountChange={(counts) => {
                     setGuestCount(counts);
                   }}
+                  activeTab={activeTab}
                 />
               </div>
             )}
