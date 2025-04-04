@@ -20,7 +20,7 @@ export default function Appbar() {
   const firstName = user?.name ? user.name.split(" ")[0] : "";
 
   return (
-    <nav className="w-full border-gray-200 hidden md:block pt-2">
+    <nav className="w-full border-gray-200 hidden md:block pt-2 max-w-7xl mx-auto">
       <div className="mx-auto">
         <div className="flex justify-between items-center h-16">
           {/* Logo area */}

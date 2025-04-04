@@ -630,7 +630,7 @@ export default function Payment() {
                 <X size={20} />
               </button>
             </div>
-            <GuestCounter onGuestCountChange={handleGuestCountChange} />
+            <GuestCounter onGuestCountChange={handleGuestCountChange} activeTab="campervan" />
             <div className="mt-4 flex justify-end">
               <button 
                 onClick={() => setShowGuestCounter(false)}

@@ -256,7 +256,7 @@ function CamperCard({
             </div>
           </div>
 
-          <p className="text-[#5E5E5E] text-[14px] mb-1">
+          <p className="text-[#5E5E5E] text-[14px]">
             {seats} Seats / {sleeps} Sleeps
           </p>
 
