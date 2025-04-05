@@ -1,9 +1,9 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 "use client";
-import Image1 from "@/public/assets/Camper Van/Image 1.png";
-import Image2 from "@/public/assets/Camper Van/image 2.png";
-import Image3 from "@/public/assets/Camper Van/image 3.png";
-import Image4 from "@/public/assets/Camper Van/image 4.png";
+import Image1 from "@/public/assets/top rated/image1.png";
+import Image2 from "@/public/assets/top rated/image2.png";
+import Image3 from "@/public/assets/top rated/image3.png";
+import Image4 from "@/public/assets/top rated/image4.png";
 import { Plus_Jakarta_Sans } from "next/font/google"; // Corrected import path
 import { Heart, ChevronLeft, ChevronRight } from "lucide-react";
 import Image from "next/image";
@@ -60,37 +60,34 @@ const campers = [
   },
 ];
 
-export default function CamperListing() {
+
+
+export default function TopRatedStays() {
+
   return (
-    <section className="px-4 mt-[3rem] lg:mx-auto max-w-7xl">
-      <div className="flex justify-between items-center mb-4">
-        <div className="w-full">
-          <p className="md:text-[36px] text-[20px] font-bold mb-1 text-[#0B0907]">
-            Stay at our top Camper Van
-          </p>
-          <div className="flex items-center justify-between">
-          <p className="text-[#989892]">
+    <section className="py-12 px-4 lg:mx-auto max-w-7xl">
+      <div className="flex justify-between items-center mb-8">
+        <div>
+          <h2 className="md:text-[36px] text-[20px] font-bold mb-2 text-[#191919]">
+            Top Rated Stays
+          </h2>
+          <p className="text-[#989892] text-[16px]    ">
             From castles and villas to boats and igloos, we have it all
           </p>
+        </div>
 
-          <Link href="/discover"> 
-        <button className="hidden md:block text-gray-900 font-medium hover:underline">
-          Discover more
-        </button>
-        </Link>
-        </div>
-        </div>
-       
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 ">
+     
+
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
         {campers.map((camper, index) => (
           //@ts-expect-error
           <CamperCard key={index} {...camper} />
         ))}
       </div>
-      
-      <Link href="/discover"> 
+
+<Link href="/discover"> 
       <button className="px-[20px] py-[12px] text-sm font-medium text-gray-700 border border-gray-300 rounded-[60px] text-center m-auto block md:hidden mt-6">
         Discover more
       </button>
@@ -180,6 +177,7 @@ function CamperCard({
                   alt={`${title} - Image ${(index % totalImages) + 1}`}
                   fill
                   className="object-cover"
+                  sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, (max-width: 1280px) 33vw, 305px"
                   priority={index === currentImageIndex}
                 />
               </div>
@@ -213,7 +211,7 @@ function CamperCard({
               e.stopPropagation();
               setIsFavorite(!isFavorite);
             }}
-            className="absolute top-3 right-3 p-2 rounded-full"
+            className="absolute top-3 right-3 p-2 rounded-full z-10"
           >
             <Heart
               className={`w-5 h-5 ${
@@ -226,7 +224,7 @@ function CamperCard({
 
           {/* Favorite Text */}
           {favoriteText && (
-            <div className="absolute top-3 left-3 bg-white/90 px-3 py-1 rounded-[4px]">
+            <div className="absolute top-3 left-3 bg-white/90 px-3 py-1 rounded-[4px] z-10">
               <span className="text-sm font-medium">{favoriteText}</span>
             </div>
           )}

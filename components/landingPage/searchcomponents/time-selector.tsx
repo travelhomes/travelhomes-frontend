@@ -1,5 +1,6 @@
 "use client"
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { Calendar } from './calendar';
 
 interface TimeSelectorProps {
   checkInTime: string | null;
@@ -7,6 +8,8 @@ interface TimeSelectorProps {
   onTimeSelect: (time: string, type: 'checkIn' | 'checkOut') => void;
   onClose: () => void;
   timePickerType: 'checkIn' | 'checkOut';
+  onDateSelect?: (dates: Date[]) => void;
+  initialDates?: Date[];
 }
 
 export function TimeSelector({ 
@@ -14,207 +17,259 @@ export function TimeSelector({
   checkOutTime, 
   onTimeSelect, 
   onClose,
-  timePickerType
+  timePickerType: initialTabType,
+  onDateSelect,
+  initialDates
 }: TimeSelectorProps) {
-  const [activeTab, setActiveTab] = useState<'checkIn' | 'checkOut'>(timePickerType);
+  // Use initialTabType to determine if we should start in time tab when a particular time is being edited
+  const startInTimeTab = Boolean(initialDates && initialDates.length === 2);
+  const [activeTab, setActiveTab] = useState<'date' | 'time'>(startInTimeTab ? 'time' : 'date');
+  
+  // Use initialTabType to focus on either check-in or check-out times initially
+  const [activeTimeField, setActiveTimeField] = useState<'checkIn' | 'checkOut'>(initialTabType);
   const hours = Array.from({ length: 12 }, (_, i) => i + 1);
   
-  // Check-in time state
+  // Check-in time state - initialize period to null to require explicit selection
   const [selectedCheckInHour, setSelectedCheckInHour] = React.useState<number | null>(
     checkInTime ? parseInt(checkInTime.split(' ')[0]) : null
   );
-  const [selectedCheckInPeriod, setSelectedCheckInPeriod] = React.useState<'AM' | 'PM'>(
-    checkInTime?.includes('PM') ? 'PM' : 'AM'
+  const [selectedCheckInPeriod, setSelectedCheckInPeriod] = React.useState<'AM' | 'PM' | null>(
+    checkInTime?.includes('PM') ? 'PM' : checkInTime?.includes('AM') ? 'AM' : null
   );
 
-  // Check-out time state
+  // Check-out time state - initialize period to null to require explicit selection
   const [selectedCheckOutHour, setSelectedCheckOutHour] = React.useState<number | null>(
     checkOutTime ? parseInt(checkOutTime.split(' ')[0]) : null
   );
-  const [selectedCheckOutPeriod, setSelectedCheckOutPeriod] = React.useState<'AM' | 'PM'>(
-    checkOutTime?.includes('PM') ? 'PM' : 'AM'
+  const [selectedCheckOutPeriod, setSelectedCheckOutPeriod] = React.useState<'AM' | 'PM' | null>(
+    checkOutTime?.includes('PM') ? 'PM' : checkOutTime?.includes('AM') ? 'AM' : null
   );
+
+  // State to track if we should close the modal
+  const [shouldClose, setShouldClose] = useState(false);
+
+  // Use initial dates if provided
+  useEffect(() => {
+    if (initialDates && initialDates.length === 2) {
+      // If dates are already selected, start on the time tab
+      setActiveTab('time');
+    }
+  }, [initialDates]);
+
+  // Effect to track if both times are selected to automatically close
+  useEffect(() => {
+    if (
+      selectedCheckInHour && selectedCheckInPeriod && 
+      selectedCheckOutHour && selectedCheckOutPeriod && 
+      shouldClose
+    ) {
+      onClose();
+    }
+  }, [
+    selectedCheckInHour, selectedCheckInPeriod, 
+    selectedCheckOutHour, selectedCheckOutPeriod, 
+    shouldClose, onClose
+  ]);
 
   const handleHourSelect = (hour: number, type: 'checkIn' | 'checkOut') => {
     if (type === 'checkIn') {
       setSelectedCheckInHour(hour);
+      
+      // Only dispatch time select if both hour and period are selected
+      if (selectedCheckInPeriod) {
+        onTimeSelect(`${hour} ${selectedCheckInPeriod}`, 'checkIn');
+        
+        // If check-out time is already completely selected, set the flag to close
+        if (selectedCheckOutHour && selectedCheckOutPeriod) {
+          setShouldClose(true);
+        }
+      }
     } else {
       setSelectedCheckOutHour(hour);
+      
+      // Only dispatch time select if both hour and period are selected
+      if (selectedCheckOutPeriod) {
+        onTimeSelect(`${hour} ${selectedCheckOutPeriod}`, 'checkOut');
+        
+        // If check-in time is already completely selected, set the flag to close
+        if (selectedCheckInHour && selectedCheckInPeriod) {
+          setShouldClose(true);
+        }
+      }
     }
   };
 
   const handlePeriodSelect = (period: 'AM' | 'PM', type: 'checkIn' | 'checkOut') => {
     if (type === 'checkIn') {
       setSelectedCheckInPeriod(period);
+      
+      // Only dispatch time select if both hour and period are selected
+      if (selectedCheckInHour) {
+        onTimeSelect(`${selectedCheckInHour} ${period}`, 'checkIn');
+        
+        // If check-out time is already completely selected, set the flag to close
+        if (selectedCheckOutHour && selectedCheckOutPeriod) {
+          setShouldClose(true);
+        }
+      }
     } else {
       setSelectedCheckOutPeriod(period);
-    }
-  };
-
-  const handleConfirm = (type: 'checkIn' | 'checkOut') => {
-    if (type === 'checkIn' && selectedCheckInHour) {
-      onTimeSelect(`${selectedCheckInHour} ${selectedCheckInPeriod}`, 'checkIn');
       
-      // After confirming check-in time, switch to check-out tab if check-out is not set yet
-      if (!selectedCheckOutHour) {
-        setActiveTab('checkOut');
-      } else {
-        onClose();
-      }
-    } else if (type === 'checkOut' && selectedCheckOutHour) {
-      onTimeSelect(`${selectedCheckOutHour} ${selectedCheckOutPeriod}`, 'checkOut');
-      
-      // After confirming check-out time, switch to check-in tab if check-in is not set yet
-      if (!selectedCheckInHour) {
-        setActiveTab('checkIn');
-      } else {
-        onClose();
+      // Only dispatch time select if both hour and period are selected
+      if (selectedCheckOutHour) {
+        onTimeSelect(`${selectedCheckOutHour} ${period}`, 'checkOut');
+        
+        // If check-in time is already completely selected, set the flag to close
+        if (selectedCheckInHour && selectedCheckInPeriod) {
+          setShouldClose(true);
+        }
       }
     }
   };
 
-  const handleDone = () => {
-    onClose();
+  const handleCalendarDateSelect = (dates: Date[]) => {
+    if (dates.length === 2 && onDateSelect) {
+      onDateSelect(dates);
+      setActiveTab('time');
+    }
   };
 
   return (
     <div className="bg-white rounded-lg shadow-lg p-6 w-[600px] max-w-full">
-      <div className="flex justify-between items-center mb-6">
-        <div className="flex space-x-4">
+      <div className="flex items-center mb-6">
+        <div className="flex space-x-4 w-full">
           <button
-            onClick={() => setActiveTab('checkIn')}
+            onClick={() => setActiveTab('date')}
             className={`text-lg font-semibold pb-2 ${
-              activeTab === 'checkIn' 
+              activeTab === 'date' 
                 ? 'border-b-2 border-black text-black' 
                 : 'text-gray-500'
             }`}
           >
-            Check-in
+            Date
           </button>
           <button
-            onClick={() => setActiveTab('checkOut')}
+            onClick={() => setActiveTab('time')}
             className={`text-lg font-semibold pb-2 ${
-              activeTab === 'checkOut' 
+              activeTab === 'time' 
                 ? 'border-b-2 border-black text-black' 
                 : 'text-gray-500'
             }`}
           >
-            Check-out
+            Time
           </button>
         </div>
-        <button 
-          onClick={handleDone}
-          className="text-sm text-gray-500 hover:text-gray-800"
-        >
-          Done
-        </button>
       </div>
       
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-        {/* Check-in Time Column */}
-        <div className={activeTab === 'checkIn' ? 'block' : 'hidden md:block'}>
-          <h3 className="text-sm text-gray-500 mb-4 font-medium">Check-in Time</h3>
-          <div className="grid grid-cols-4 gap-2 mb-4">
-            {hours.map((hour) => (
-              <button
-                key={`checkin-${hour}`}
-                onClick={() => handleHourSelect(hour, 'checkIn')}
-                className={`p-2 rounded-lg text-center hover:bg-gray-100 ${
-                  selectedCheckInHour === hour ? 'bg-black text-white' : ''
-                }`}
-              >
-                {hour}
-              </button>
-            ))}
-          </div>
-          <div className="flex gap-2 mb-4">
-            <button
-              onClick={() => handlePeriodSelect('AM', 'checkIn')}
-              className={`flex-1 p-2 rounded-lg ${
-                selectedCheckInPeriod === 'AM' ? 'bg-black text-white' : 'bg-gray-100'
-              }`}
-            >
-              AM
-            </button>
-            <button
-              onClick={() => handlePeriodSelect('PM', 'checkIn')}
-              className={`flex-1 p-2 rounded-lg ${
-                selectedCheckInPeriod === 'PM' ? 'bg-black text-white' : 'bg-gray-100'
-              }`}
-            >
-              PM
-            </button>
-          </div>
-          <div className="flex justify-between items-center">
-            <div className="text-sm text-gray-500">
-              {selectedCheckInHour ? `${selectedCheckInHour} ${selectedCheckInPeriod}` : 'Select hour and period'}
-            </div>
-            <button 
-              onClick={() => handleConfirm('checkIn')}
-              disabled={!selectedCheckInHour}
-              className={`px-4 py-2 rounded-lg text-sm ${
-                selectedCheckInHour 
-                  ? 'bg-black text-white hover:bg-gray-800' 
-                  : 'bg-gray-200 text-gray-500 cursor-not-allowed'
-              }`}
-            >
-              Confirm
-            </button>
-          </div>
+      {activeTab === 'date' && (
+        <div>
+          <Calendar onDateSelect={handleCalendarDateSelect} />
         </div>
+      )}
 
-        {/* Check-out Time Column */}
-        <div className={activeTab === 'checkOut' ? 'block' : 'hidden md:block'}>
-          <h3 className="text-sm text-gray-500 mb-4 font-medium">Check-out Time</h3>
-          <div className="grid grid-cols-4 gap-2 mb-4">
-            {hours.map((hour) => (
+      {activeTab === 'time' && (
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          {/* Check-in Time Column */}
+          <div className={activeTimeField === 'checkIn' ? 'bg-gray-50 p-4 rounded-lg' : 'p-4'}>
+            <h3 className="text-lg font-medium mb-4">
+              <button 
+                onClick={() => setActiveTimeField('checkIn')}
+                className={`focus:outline-none ${activeTimeField === 'checkIn' ? 'text-black' : 'text-gray-500'}`}
+              >
+                Check-in Time
+              </button>
+            </h3>
+            <div className="grid grid-cols-4 gap-2 mb-4">
+              {hours.map((hour) => (
+                <button
+                  key={`checkin-${hour}`}
+                  onClick={() => handleHourSelect(hour, 'checkIn')}
+                  className={`p-2 rounded-lg text-center hover:bg-gray-100 ${
+                    selectedCheckInHour === hour ? 'bg-black text-white' : ''
+                  }`}
+                >
+                  {hour}
+                </button>
+              ))}
+            </div>
+            <div className="flex gap-2 mb-4">
               <button
-                key={`checkout-${hour}`}
-                onClick={() => handleHourSelect(hour, 'checkOut')}
-                className={`p-2 rounded-lg text-center hover:bg-gray-100 ${
-                  selectedCheckOutHour === hour ? 'bg-black text-white' : ''
+                onClick={() => handlePeriodSelect('AM', 'checkIn')}
+                className={`flex-1 p-2 rounded-lg ${
+                  selectedCheckInPeriod === 'AM' ? 'bg-black text-white' : 'bg-gray-100'
                 }`}
               >
-                {hour}
+                AM
               </button>
-            ))}
-          </div>
-          <div className="flex gap-2 mb-4">
-            <button
-              onClick={() => handlePeriodSelect('AM', 'checkOut')}
-              className={`flex-1 p-2 rounded-lg ${
-                selectedCheckOutPeriod === 'AM' ? 'bg-black text-white' : 'bg-gray-100'
-              }`}
-            >
-              AM
-            </button>
-            <button
-              onClick={() => handlePeriodSelect('PM', 'checkOut')}
-              className={`flex-1 p-2 rounded-lg ${
-                selectedCheckOutPeriod === 'PM' ? 'bg-black text-white' : 'bg-gray-100'
-              }`}
-            >
-              PM
-            </button>
-          </div>
-          <div className="flex justify-between items-center">
-            <div className="text-sm text-gray-500">
-              {selectedCheckOutHour ? `${selectedCheckOutHour} ${selectedCheckOutPeriod}` : 'Select hour and period'}
+              <button
+                onClick={() => handlePeriodSelect('PM', 'checkIn')}
+                className={`flex-1 p-2 rounded-lg ${
+                  selectedCheckInPeriod === 'PM' ? 'bg-black text-white' : 'bg-gray-100'
+                }`}
+              >
+                PM
+              </button>
             </div>
-            <button 
-              onClick={() => handleConfirm('checkOut')}
-              disabled={!selectedCheckOutHour}
-              className={`px-4 py-2 rounded-lg text-sm ${
-                selectedCheckOutHour 
-                  ? 'bg-black text-white hover:bg-gray-800' 
-                  : 'bg-gray-200 text-gray-500 cursor-not-allowed'
-              }`}
-            >
-              Confirm
-            </button>
+            <div className="text-center text-lg mt-2">
+              {selectedCheckInHour && selectedCheckInPeriod 
+                ? `${selectedCheckInHour} ${selectedCheckInPeriod}` 
+                : selectedCheckInHour 
+                  ? `${selectedCheckInHour} (select AM/PM)` 
+                  : 'Select time'}
+            </div>
+          </div>
+
+          {/* Check-out Time Column */}
+          <div className={activeTimeField === 'checkOut' ? 'bg-gray-50 p-4 rounded-lg' : 'p-4'}>
+            <h3 className="text-lg font-medium mb-4">
+              <button 
+                onClick={() => setActiveTimeField('checkOut')}
+                className={`focus:outline-none ${activeTimeField === 'checkOut' ? 'text-black' : 'text-gray-500'}`}
+              >
+                Check-out Time
+              </button>
+            </h3>
+            <div className="grid grid-cols-4 gap-2 mb-4">
+              {hours.map((hour) => (
+                <button
+                  key={`checkout-${hour}`}
+                  onClick={() => handleHourSelect(hour, 'checkOut')}
+                  className={`p-2 rounded-lg text-center hover:bg-gray-100 ${
+                    selectedCheckOutHour === hour ? 'bg-black text-white' : ''
+                  }`}
+                >
+                  {hour}
+                </button>
+              ))}
+            </div>
+            <div className="flex gap-2 mb-4">
+              <button
+                onClick={() => handlePeriodSelect('AM', 'checkOut')}
+                className={`flex-1 p-2 rounded-lg ${
+                  selectedCheckOutPeriod === 'AM' ? 'bg-black text-white' : 'bg-gray-100'
+                }`}
+              >
+                AM
+              </button>
+              <button
+                onClick={() => handlePeriodSelect('PM', 'checkOut')}
+                className={`flex-1 p-2 rounded-lg ${
+                  selectedCheckOutPeriod === 'PM' ? 'bg-black text-white' : 'bg-gray-100'
+                }`}
+              >
+                PM
+              </button>
+            </div>
+            <div className="text-center text-lg mt-2">
+              {selectedCheckOutHour && selectedCheckOutPeriod 
+                ? `${selectedCheckOutHour} ${selectedCheckOutPeriod}` 
+                : selectedCheckOutHour 
+                  ? `${selectedCheckOutHour} (select AM/PM)` 
+                  : 'Select time'}
+            </div>
           </div>
         </div>
-      </div>
+      )}
     </div>
   );
 } 

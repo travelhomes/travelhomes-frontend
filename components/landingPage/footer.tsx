@@ -19,7 +19,7 @@ const supportLinks = [
 
 export default function Footer() {
   return (
-    <footer className="bg-black text-white w-full">
+    <footer className="bg-black text-white w-full ">
       <div className="container mx-auto max-w-[1440px] px-4 md:px-8 lg:px-[4rem] py-8 md:py-10 min-h-[319px] flex flex-col justify-between">
         {/* Main content with flex layout */}
         <div className="flex flex-col md:flex-row gap-8 md:gap-6 lg:gap-8">

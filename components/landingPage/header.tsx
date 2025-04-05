@@ -104,7 +104,7 @@ export function Header({ onTabChange }: HeaderProps) {
   };
 
   return (
-    <div className="hidden md:block">
+    <div className="hidden md:block max-w-7xl mx-auto">
       <div className="flex items-center justify-start mt-[2.5rem] mb-[1rem]">
         <div className="flex items-center space-x-4">
           {loading ? (

@@ -2,26 +2,31 @@
 import { useState, useEffect } from "react";
 import { X } from "lucide-react";
 
-export default function Exclusions() {
+export default function PolicyRules() {
   const [showModal, setShowModal] = useState(false);
 
-  // Main exclusions shown on the page
-  const featuredExclusions = [
-    "Toilet will have consumables like toothpaste, soap, shampoo, air freshener, etc.",
-    "Blankets, bed sheets, and pillows for everyone.",
+  // Main policies shown on the page
+  const featuredPolicies = [
+    "No cancellation is allowed",
+    "Fuel Cost Extra",
+    "State Border Tax Extra",
   ];
   
-  // All exclusions including additional ones
-  const allExclusions = [
-    ...featuredExclusions,
-    "The kitchen will have an LPG cylinder, basic spices, salt, oil, tea, sugar, basic kitchen utensils, and crockeries.",
-    "However, customers have to bring their groceries for the kitchen or heat and eat packed food items can be provided at MRP if requested by customers before the journey begins.",
-    "Personal travel insurance is not included in the package price.",
-    "External camping equipment beyond what's provided in the van.",
-    "Special dietary requirements or specific food preferences.",
-    "Optional activities and excursions not mentioned in the itinerary.",
-    "Additional driver fees if more than one person will be driving.",
-    "Pet cleaning fees (if pets are allowed).",
+  // All policies including additional ones
+  const allPolicies = [
+    ...featuredPolicies,
+    "Toll Extra",
+    "No smoking inside the van at any time.",
+    "Security deposit of ₹10,000 is required at the time of pickup.",
+    "Late return fees apply at ₹500 per hour.",
+    "Pets are allowed with an additional cleaning fee of ₹1,500.",
+    "The driver must be at least 25 years old with a valid driver's license.",
+    "Maximum occupancy is 5 people including the driver.",
+    "Unlimited mileage within the agreed-upon travel radius.",
+    "The vehicle must be returned with the same fuel level as at pickup.",
+    "All personal belongings must be removed upon return.",
+    "Damages beyond normal wear and tear will be charged accordingly.",
+    "Off-road driving is strictly prohibited unless explicitly permitted.",
   ];
 
   // Disable body scroll when modal is open
@@ -44,11 +49,11 @@ export default function Exclusions() {
   };
 
   return (
-    <div className="p-4 border-b w-full md:w-[65%]">
-      <div className="mb-8" id="exclusions">
-        <h2 className="text-xl font-bold mb-4">Exclusions</h2>
+    <div className="p-4 border-b w-full md:w-[65%]" id="policy&rules">
+      <div className="mb-8">
+        <h2 className="text-xl font-bold mb-4">Policy & Rules</h2>
         <ul className="space-y-2">
-          {featuredExclusions.map((item, index) => (
+          {featuredPolicies.map((item, index) => (
             <li key={index} className="flex items-start gap-2">
               <span className="text-gray-400">•</span>
               <span>{item}</span>
@@ -57,7 +62,7 @@ export default function Exclusions() {
           <li className="flex items-start gap-2">
             <span className="text-gray-400">•</span>
             <span>
-              The kitchen will have an LPG cylinder, basic spices, salt, oil, tea, sugar...
+              Toll Extra, No smoking inside the van at any time...
               <button 
                 onClick={() => setShowModal(true)}
                 className="ml-1 font-medium text-black hover:underline"
@@ -69,7 +74,7 @@ export default function Exclusions() {
         </ul>
       </div>
 
-      {/* Exclusions Modal */}
+      {/* Policy & Rules Modal */}
       {showModal && (
         <div 
           className="fixed inset-0 bg-black bg-opacity-50 z-[9999] flex items-center justify-center p-4"
@@ -84,10 +89,10 @@ export default function Exclusions() {
               <X size={24} />
             </button>
             
-            <h3 className="text-2xl font-bold mb-6">All Exclusions</h3>
+            <h3 className="text-2xl font-bold mb-6">All Policies & Rules</h3>
             
             <ul className="space-y-4">
-              {allExclusions.map((item, index) => (
+              {allPolicies.map((item, index) => (
                 <li key={index} className="flex items-start gap-3">
                   <span className="text-gray-400 font-bold">•</span>
                   <span className="text-gray-700">{item}</span>
@@ -99,6 +104,4 @@ export default function Exclusions() {
       )}
     </div>
   );
-}
-  
-  
+} 
