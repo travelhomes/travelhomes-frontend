@@ -68,12 +68,14 @@ export default function CamperListing() {
             imageUrl={camper.imageUrl}
             title={camper.property.title}
             rating={camper.property.avg_rating}
-            seats={camper.property.seat_cap}
-            sleeps={camper.property.sleep_cap}
-            price={parseInt(camper.property.discount_price)}
+            seat_cap={camper.property.seat_cap}
+            sleep_cap={camper.property.sleep_cap}
+            regular_price={parseInt(camper.property.regular_price)}
+            discount_price={parseInt(camper.property.discount_price)}
             period="night" // You can adjust this based on your data
             favoriteText={camper.property.rule || ""}
             images={camper.images}
+            city={camper.property.city}
           />
         ))}
       </div>
@@ -91,23 +93,27 @@ interface CamperCardProps {
   imageUrl: string;
   title: string;
   rating: number;
-  seats: number;
-  sleeps: number;
-  price: number;
+  seat_cap: number;
+  sleep_cap: number;
+  regular_price: number;
+  discount_price: number;
   period: string;
   favoriteText: string;
   images: string[];
+  city: string;
 }
 
 function CamperCard({
   title,
   rating,
-  seats,
-  sleeps,
-  price,
+  seat_cap,
+  sleep_cap,
+  regular_price,
+  discount_price,
   period,
   favoriteText,
   images,
+  city,
 }: CamperCardProps) {
   const [isFavorite, setIsFavorite] = useState(false);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
@@ -215,7 +221,7 @@ function CamperCard({
             <h3
               className={`${plusJakartaSans.className} text-[15px] text-[#222222] font-semibold`}
             >
-              {title}
+              {title} {city && ` , ${city}`}
             </h3>
             <div className="flex text-[14px] items-center gap-1">
               <span>★</span>
@@ -224,13 +230,13 @@ function CamperCard({
           </div>
 
           <p className="text-[#5E5E5E] text-[14px] mb-1">
-            {seats} Seats / {sleeps} Sleeps
+            {seat_cap} Seats / {sleep_cap} Sleeps
           </p>
 
           <div className="flex justify-between items-center text-[14px]">
             <div>
-              <span className="text-[#5E5E5E] line-through">₹{price}</span>
-              <span className="ml-2 text-lg font-bold text-[#222222]">₹{price}</span>
+              <span className="text-[#5E5E5E] line-through">₹{discount_price}</span>
+              <span className="ml-2 text-lg font-bold text-[#222222]">₹{regular_price}</span>
               <span className="text-[#222222]">/{period}</span>
             </div>
           </div>
