@@ -1,13 +1,10 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 "use client";
-import Image1 from "@/public/assets/Camper Van/Image 1.png";
-import Image2 from "@/public/assets/Camper Van/image 2.png";
-import Image3 from "@/public/assets/Camper Van/image 3.png";
-import Image4 from "@/public/assets/Camper Van/image 4.png";
-import { Plus_Jakarta_Sans } from "next/font/google"; // Corrected import path
-import { Heart, ChevronLeft, ChevronRight } from "lucide-react";
+import { useState, useEffect } from "react";
+import axios from "axios";
 import Image from "next/image";
-import { useState } from "react";
+import { Plus_Jakarta_Sans } from "next/font/google";
+import { Heart, ChevronLeft, ChevronRight } from "lucide-react";
 import Link from "next/link";
 
 const plusJakartaSans = Plus_Jakarta_Sans({
@@ -15,52 +12,34 @@ const plusJakartaSans = Plus_Jakarta_Sans({
   weight: ["400", "500", "600", "700"],
 });
 
-const campers = [
-  {
-    imageUrl: Image1,
-    title: "New Camper Van, Jaipur",
-    rating: 4.91,
-    seats: 4,
-    sleeps: 2,
-    favoriteText: "Guest Favourite",
-    price: 2890,
-    period: "day",
-    images: [Image1, Image2, Image3, Image4], // Specific images for this camper
-  },
-  {
-    imageUrl: Image2,
-    title: "New Camper Van, Jaipur",
-    rating: 4.91,
-    seats: 4,
-    sleeps: 2,
-    price: 2890,
-    period: "night",
-    images: [Image3, Image4, Image1, Image2], // Specific images for this camper
-  },
-  {
-    imageUrl: Image3,
-    title: "New Camper Van, Jaipur",
-    rating: 4.91,
-    seats: 4,
-    sleeps: 2,
-    price: 2890,
-    period: "night",
-    images: [Image2, Image3, Image4, Image1], // Specific images for this camper
-  },
-  {
-    imageUrl: Image4,
-    title: "New Camper Van, Jaipur",
-    rating: 4.91,
-    seats: 4,
-    sleeps: 2,
-    favoriteText: "Guest Favourite",
-    price: 2890,
-    period: "night",
-    images: [Image1, Image4, Image3, Image2], // Specific images for this camper
-  },
-];
-
 export default function CamperListing() {
+  const [campers, setCampers] = useState<any[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+
+  // Fetch camper data from the API
+  useEffect(() => {
+    async function fetchCampers() {
+      try {
+        const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL || "http://3.7.52.212:5000";
+        const response = await axios.get(`${BACKEND_URL}/api/properties/by-category/1`);
+      
+        if (response.data.success) {
+          setCampers(response.data.data);
+        }
+      } catch (error) {
+        console.error("Error fetching campers:", error);
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    fetchCampers();
+  }, []);
+
+  if (loading) {
+    return <div>Loading...</div>; // You can show a loading spinner here
+  }
+
   return (
     <section className="px-4 mt-[3rem] lg:mx-auto max-w-7xl">
       <div className="flex justify-between items-center mb-4">
@@ -69,31 +48,40 @@ export default function CamperListing() {
             Stay at our top Camper Van
           </p>
           <div className="flex items-center justify-between">
-          <p className="text-[#989892]">
-            From castles and villas to boats and igloos, we have it all
-          </p>
+            <p className="text-[#989892]">
+              From castles and villas to boats and igloos, we have it all
+            </p>
 
-          <Link href="/discover"> 
-        <button className="hidden md:block text-gray-900 font-medium hover:underline">
-          Discover more
-        </button>
-        </Link>
+            <Link href="/discover">
+              <button className="hidden md:block text-gray-900 font-medium hover:underline">
+                Discover more
+              </button>
+            </Link>
+          </div>
         </div>
-        </div>
-       
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 ">
         {campers.map((camper, index) => (
-          //@ts-expect-error
-          <CamperCard key={index} {...camper} />
+          <CamperCard
+            key={index}
+            imageUrl={camper.imageUrl}
+            title={camper.property.title}
+            rating={camper.property.avg_rating}
+            seats={camper.property.seat_cap}
+            sleeps={camper.property.sleep_cap}
+            price={parseInt(camper.property.discount_price)}
+            period="night" // You can adjust this based on your data
+            favoriteText={camper.property.rule || ""}
+            images={camper.images}
+          />
         ))}
       </div>
-      
-      <Link href="/discover"> 
-      <button className="px-[20px] py-[12px] text-sm font-medium text-gray-700 border border-gray-300 rounded-[60px] text-center m-auto block md:hidden mt-6">
-        Discover more
-      </button>
+
+      <Link href="/discover">
+        <button className="px-[20px] py-[12px] text-sm font-medium text-gray-700 border border-gray-300 rounded-[60px] text-center m-auto block md:hidden mt-6">
+          Discover more
+        </button>
       </Link>
     </section>
   );
@@ -108,7 +96,7 @@ interface CamperCardProps {
   price: number;
   period: string;
   favoriteText: string;
-  images: string[]; // Added images prop
+  images: string[];
 }
 
 function CamperCard({
@@ -125,37 +113,21 @@ function CamperCard({
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [isHovered, setIsHovered] = useState(false);
 
-  // Create an extended array of images for infinite scrolling effect
-  const extendedImages = [...images, ...images, ...images]; // Triple the images
   const totalImages = images.length;
+  const extendedImages = [...images, ...images, ...images]; // Infinite scrolling effect
 
   const handlePrevImage = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
-    
-    setCurrentImageIndex((prev) => {
-      // When we reach the beginning of the middle set, jump to the end of the first set
-      if (prev === 0) {
-        return totalImages * 2 - 1;
-      }
-      return prev - 1;
-    });
+    setCurrentImageIndex((prev) => (prev === 0 ? totalImages * 2 - 1 : prev - 1));
   };
 
   const handleNextImage = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
-    
-    setCurrentImageIndex((prev) => {
-      // When we reach the end of the middle set, jump to the beginning of the last set
-      if (prev === totalImages * 2 - 1) {
-        return 0;
-      }
-      return prev + 1;
-    });
+    setCurrentImageIndex((prev) => (prev === totalImages * 2 - 1 ? 0 : prev + 1));
   };
 
-  // Calculate the actual image index to display in the dots
   const displayImageIndex = currentImageIndex % totalImages;
 
   return (
@@ -186,7 +158,6 @@ function CamperCard({
             ))}
           </div>
 
-          {/* Carousel Navigation Arrows - Always enabled for infinite scrolling */}
           {isHovered && (
             <>
               <button
@@ -206,7 +177,6 @@ function CamperCard({
             </>
           )}
 
-          {/* Favorite Button */}
           <button
             onClick={(e) => {
               e.preventDefault();
@@ -217,21 +187,17 @@ function CamperCard({
           >
             <Heart
               className={`w-5 h-5 ${
-                isFavorite
-                  ? "fill-red-500 stroke-red-500"
-                  : "stroke-white fill-gray-400"
+                isFavorite ? "fill-red-500 stroke-red-500" : "stroke-white fill-gray-400"
               }`}
             />
           </button>
 
-          {/* Favorite Text */}
           {favoriteText && (
             <div className="absolute top-3 left-3 bg-white/90 px-3 py-1 rounded-[4px]">
               <span className="text-sm font-medium">{favoriteText}</span>
             </div>
           )}
 
-          {/* Carousel Dots - Show based on the original image set */}
           <div className="absolute bottom-3 left-0 right-0 flex justify-center gap-1.5 z-10">
             {images.map((_, index) => (
               <div
@@ -264,9 +230,7 @@ function CamperCard({
           <div className="flex justify-between items-center text-[14px]">
             <div>
               <span className="text-[#5E5E5E] line-through">₹{price}</span>
-              <span className="ml-2 text-lg font-bold text-[#222222]">
-                ₹{price}
-              </span>
+              <span className="ml-2 text-lg font-bold text-[#222222]">₹{price}</span>
               <span className="text-[#222222]">/{period}</span>
             </div>
           </div>
