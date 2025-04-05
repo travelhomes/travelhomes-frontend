@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/ban-ts-comment */
 "use client";
 import { useState, useEffect } from "react";
 import axios from "axios";
@@ -12,8 +11,25 @@ const plusJakartaSans = Plus_Jakarta_Sans({
   weight: ["400", "500", "600", "700"],
 });
 
+interface PropertyData {
+  title: string;
+  avg_rating: number;
+  seat_cap: number;
+  sleep_cap: number;
+  regular_price: string;
+  discount_price: string;
+  rule?: string;
+  city: string;
+}
+
+interface CamperData {
+  imageUrl: string;
+  images: string[];
+  property: PropertyData;
+}
+
 export default function CamperListing() {
-  const [campers, setCampers] = useState<any[]>([]);
+  const [campers, setCampers] = useState<CamperData[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
 
   // Fetch camper data from the API
