@@ -45,6 +45,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const login = async (email: string, password: string) => {
     try {
+      const BASE_URL = process.env.NEXT_PUBLIC_BACKEND_URL || "http://3.7.52.212:5000";
       const response = await axios.post(`${BASE_URL}/api/auth/login`, {
         username: email,
         password: password
