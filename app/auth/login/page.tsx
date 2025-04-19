@@ -9,6 +9,7 @@ import { useState } from "react";
 import { useAuth } from "@/context/AuthContext";
 import { useRouter } from "next/navigation";
 import axios, { AxiosError } from "axios";
+import { ArrowLeft } from "lucide-react";
 
 export default function LoginPage() {
 
@@ -89,6 +90,14 @@ export default function LoginPage() {
               {errors.general}
             </div>
           )}
+
+          <Link
+            href="/"
+            className="inline-flex items-center text-sm text-muted-foreground hover:text-primary"
+          >
+            <ArrowLeft className="mr-2 h-4 w-4" />
+            Back
+          </Link>
 
           <div className="space-y-2">
             <h1 className="text-2xl font-semibold tracking-tight">Sign In</h1>

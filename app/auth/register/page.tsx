@@ -11,6 +11,7 @@ import { useAuth } from "@/context/AuthContext"
 import { useRouter, useSearchParams } from "next/navigation"
 import { BASE_URL } from "@/config/config"
 import axios, { type AxiosError } from "axios"
+import { ArrowLeft } from "lucide-react";
 
 import registerImage from "@/public/register.png"
 
@@ -209,6 +210,14 @@ function RegisterContent() {
       <div className="flex mt-[2rem] p-6 flex-1">
         <div className=" w-[570px] space-y-6">
           {errors.general && <div className="p-3 text-sm text-red-500 bg-red-50 rounded-lg">{errors.general}</div>}
+
+          <Link
+            href="/"
+            className="inline-flex items-center text-sm text-muted-foreground hover:text-primary"
+          >
+            <ArrowLeft className="mr-2 h-4 w-4" />
+            Back
+          </Link>
 
           {step === 1 ? (
             <>
