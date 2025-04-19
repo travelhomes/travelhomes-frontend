@@ -12,18 +12,18 @@ import { BASE_URL } from "@/config/config"
 
 export default function ForgotPassword() {
   const [email, setEmail] = useState("")
-  const [error, setError] = useState("")
+  const [errors, setErrors] = useState<{ email?: string; general?: string }>({});
   const [isLoading, setIsLoading] = useState(false)
   const router = useRouter()
 
   const handleSubmit = async () => {
     if (!email) {
-      setError("Please enter your email")
-      return
+      setErrors({ email: "Please enter your email" });
+      return;
     }
 
-    setIsLoading(true)
-    setError("")
+    setIsLoading(true);
+    setErrors({});
 
     try {
       const response = await axios.post(`${BASE_URL}/api/auth/forgot-password`, {
@@ -36,17 +36,17 @@ export default function ForgotPassword() {
       }
     } catch (err) {
       if (axios.isAxiosError(err)) {
-        const error = err as AxiosError<{ message: string }>
+        const error = err as AxiosError<{ message: string }>;
         if (error.response?.data?.message) {
-          setError(error.response.data.message)
+          setErrors({ general: error.response.data.message });
         } else {
-          setError("Failed to process request. Please try again.")
+          setErrors({ general: "Failed to process request. Please try again." });
         }
       } else {
-        setError("An unexpected error occurred")
+        setErrors({ general: "An unexpected error occurred" });
       }
     } finally {
-      setIsLoading(false)
+      setIsLoading(false);
     }
   }
 
@@ -74,7 +74,9 @@ export default function ForgotPassword() {
             Back to login
           </Link>
 
-          {error && <div className="p-3 text-sm text-red-500 bg-red-50 rounded-lg">{error}</div>}
+          {errors.general && (
+            <div className="p-3 text-sm text-red-500 bg-red-50 rounded-lg">{errors.general}</div>
+          )}
 
           <div className="space-y-2">
             <h1 className="text-2xl font-semibold tracking-tight">Email ID</h1>
@@ -84,16 +86,21 @@ export default function ForgotPassword() {
           </div>
 
           <div className="space-y-4">
-            <input
-              type="email"
-              value={email}
-              onChange={(e) => {
-                setEmail(e.target.value)
-                if (error) setError("")
-              }}
-              placeholder="Enter your email ID"
-              className="px-4 py-2 w-full border border-[#B0B0B0] rounded-[8px]"
-            />
+            <div>
+              <input
+                type="email"
+                value={email}
+                onChange={(e) => {
+                  setEmail(e.target.value);
+                  if (errors.email || errors.general) setErrors({});
+                }}
+                placeholder="Enter your email ID"
+                className="px-4 py-2 w-full border border-[#B0B0B0] rounded-[8px]"
+              />
+              {errors.email && (
+                <div className="text-xs text-red-500 mt-1">{errors.email}</div>
+              )}
+            </div>
 
             <Button
               className="w-full rounded-[60px] py-[12px] px-[32px]"

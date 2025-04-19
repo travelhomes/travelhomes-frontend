@@ -13,7 +13,6 @@ import { BASE_URL } from "@/config/config"
 import axios, { type AxiosError } from "axios"
 
 import registerImage from "@/public/register.png"
-;
 
 interface FormData {
   email: string
@@ -46,7 +45,18 @@ function RegisterContent() {
     state: "",
     city: "",
   })
-  const [error, setError] = useState("")
+  const [errors, setErrors] = useState<{
+    email?: string
+    phone?: string
+    password?: string
+    confirmPassword?: string
+    firstName?: string
+    lastName?: string
+    dob?: string
+    state?: string
+    city?: string
+    general?: string
+  }>({})
   const [isLoading, setIsLoading] = useState(false)
   const [userId, setUserId] = useState<number | null>(null)
   const [token, setToken] = useState<string | null>(null)
@@ -73,8 +83,8 @@ function RegisterContent() {
       ...prev,
       [name]: value,
     }))
-    // Clear error when user starts typing
-    if (error) setError("")
+    // Clear field-specific error when user starts typing
+    setErrors(prev => ({ ...prev, [name]: undefined, general: undefined }))
   }
 
   const handleSelectChange = (name: string) => (value: string) => {
@@ -82,21 +92,25 @@ function RegisterContent() {
       ...prev,
       [name]: value,
     }))
-    if (error) setError("")
+    setErrors(prev => ({ ...prev, [name]: undefined, general: undefined }))
   }
 
   const handleStep1Submit = async () => {
-    if (!formData.email || !formData.phone || !formData.password || !formData.confirmPassword) {
-      setError("Please fill in all fields")
-      return
+    let newErrors: typeof errors = {}
+    if (!formData.email) newErrors.email = "Email is required"
+    if (!formData.phone) newErrors.phone = "Phone is required"
+    if (!formData.password) newErrors.password = "Password is required"
+    if (!formData.confirmPassword) newErrors.confirmPassword = "Confirm password is required"
+    if (formData.password && formData.confirmPassword && formData.password !== formData.confirmPassword) {
+      newErrors.confirmPassword = "Passwords do not match"
     }
-    if (formData.password !== formData.confirmPassword) {
-      setError("Passwords do not match")
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors)
       return
     }
 
     setIsLoading(true)
-    setError("")
+    setErrors({})
 
     try {
       const response = await register({
@@ -111,14 +125,14 @@ function RegisterContent() {
       if (axios.isAxiosError(err)) {
         const error = err as AxiosError<{ message: string }>
         if (error.response?.status === 409) {
-          setError("Email already exists")
+          setErrors({ general: "Email already exists" })
         } else if (error.response?.data?.message) {
-          setError(error.response.data.message)
+          setErrors({ general: error.response.data.message })
         } else {
-          setError("Registration failed. Please try again.")
+          setErrors({ general: "Registration failed. Please try again." })
         }
       } else {
-        setError("An unexpected error occurred")
+        setErrors({ general: "An unexpected error occurred" })
       }
     } finally {
       setIsLoading(false)
@@ -126,18 +140,24 @@ function RegisterContent() {
   }
 
   const handleStep2Submit = async () => {
-    if (!formData.firstName || !formData.lastName || !formData.dob || !formData.state || !formData.city) {
-      setError("Please fill in all fields")
+    let newErrors: typeof errors = {}
+    if (!formData.firstName) newErrors.firstName = "First name is required"
+    if (!formData.lastName) newErrors.lastName = "Last name is required"
+    if (!formData.dob) newErrors.dob = "Date of birth is required"
+    if (!formData.state) newErrors.state = "State is required"
+    if (!formData.city) newErrors.city = "City is required"
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors)
       return
     }
 
     if (!userId || !token) {
-      setError("Missing authentication details. Please try again.")
+      setErrors({ general: "Missing authentication details. Please try again." })
       return
     }
 
     setIsLoading(true)
-    setError("")
+    setErrors({})
 
     try {
       const response = await axios.put(`${BASE_URL}/api/auth/updatePersonalDetails/${userId}`, {
@@ -160,12 +180,12 @@ function RegisterContent() {
       if (axios.isAxiosError(err)) {
         const error = err as AxiosError<{ message: string }>
         if (error.response?.data?.message) {
-          setError(error.response.data.message)
+          setErrors({ general: error.response.data.message })
         } else {
-          setError("Failed to update personal details. Please try again.")
+          setErrors({ general: "Failed to update personal details. Please try again." })
         }
       } else {
-        setError("An unexpected error occurred")
+        setErrors({ general: "An unexpected error occurred" })
       }
     } finally {
       setIsLoading(false)
@@ -188,7 +208,7 @@ function RegisterContent() {
 
       <div className="flex mt-[2rem] p-6 flex-1">
         <div className=" w-[570px] space-y-6">
-          {error && <div className="p-3 text-sm text-red-500 bg-red-50 rounded-lg">{error}</div>}
+          {errors.general && <div className="p-3 text-sm text-red-500 bg-red-50 rounded-lg">{errors.general}</div>}
 
           {step === 1 ? (
             <>
@@ -200,14 +220,17 @@ function RegisterContent() {
               </div>
 
               <div className="space-y-4">
-                <input
-                  type="email"
-                  name="email"
-                  value={formData.email}
-                  onChange={handleInputChange}
-                  placeholder="Email ID"
-                  className="px-4 py-2  w-full border border-[#B0B0B0] rounded-[8px]"
-                />
+                <div>
+                  <input
+                    type="email"
+                    name="email"
+                    value={formData.email}
+                    onChange={handleInputChange}
+                    placeholder="Email ID"
+                    className="px-4 py-2  w-full border border-[#B0B0B0] rounded-[8px]"
+                  />
+                  {errors.email && <div className="text-xs text-red-500 mt-1">{errors.email}</div>}
+                </div>
 
                 <div className="flex space-x-2">
                   <Select defaultValue="+91">
@@ -220,6 +243,7 @@ function RegisterContent() {
                       <SelectItem value="+44">+44</SelectItem>
                     </SelectContent>
                   </Select>
+                  <div className="w-full">
                   <input
                     type="tel"
                     name="phone"
@@ -228,8 +252,11 @@ function RegisterContent() {
                     placeholder="Mobile Number"
                     className="px-4 py-2  w-full border border-[#B0B0B0] rounded-[8px]"
                   />
+                  {errors.phone && <div className="text-xs text-red-500 mt-1">{errors.phone}</div>}
+                  </div>
                 </div>
 
+                <div>
                 <input
                   type="password"
                   name="password"
@@ -238,7 +265,10 @@ function RegisterContent() {
                   placeholder="Create Password"
                   className="px-4 py-2  w-full border border-[#B0B0B0] rounded-[8px]"
                 />
+                {errors.password && <div className="text-xs text-red-500 mt-1">{errors.password}</div>}
+                </div>
 
+                <div>
                 <input
                   type="password"
                   name="confirmPassword"
@@ -247,6 +277,8 @@ function RegisterContent() {
                   placeholder="Confirm Password"
                   className="px-4 py-2 w-full border border-[#B0B0B0] rounded-[8px]"
                 />
+                {errors.confirmPassword && <div className="text-xs text-red-500 mt-1">{errors.confirmPassword}</div>}
+                </div>
 
                 <Button
                   className="w-full rounded-[60px] py-[12px] px-[32px]"
@@ -303,6 +335,7 @@ function RegisterContent() {
 
               <div className="space-y-4">
                 <div className="flex space-x-2">
+                  <div className="w-full">
                   <input
                     type="text"
                     name="firstName"
@@ -311,7 +344,10 @@ function RegisterContent() {
                     placeholder="First Name"
                     className="px-4 py-2  w-full border border-[#B0B0B0] rounded-[8px]"
                   />
+                  {errors.firstName && <div className="text-xs text-red-500 mt-1">{errors.firstName}</div>}
+                  </div>
 
+                  <div className="w-full">
                   <input
                     type="text"
                     name="lastName"
@@ -320,8 +356,11 @@ function RegisterContent() {
                     placeholder="Last Name"
                     className="px-4 py-2  w-full border border-[#B0B0B0] rounded-[8px]"
                   />
+                  {errors.lastName && <div className="text-xs text-red-500 mt-1">{errors.lastName}</div>}
+                  </div>
                 </div>
 
+                <div>
                 <input
                   type="date"
                   name="dob"
@@ -330,8 +369,11 @@ function RegisterContent() {
                   placeholder="Date of Birth"
                   className="px-4 py-2 w-full border border-[#B0B0B0] rounded-[8px]"
                 />
+                {errors.dob && <div className="text-xs text-red-500 mt-1">{errors.dob}</div>}
+                </div>
 
-                <Select name="state" onValueChange={handleSelectChange("state")}>
+                <div>
+                <Select name="state" onValueChange={handleSelectChange("state")}> 
                   <SelectTrigger className="w-full">
                     <SelectValue placeholder="State" />
                   </SelectTrigger>
@@ -341,8 +383,11 @@ function RegisterContent() {
                     <SelectItem value="Chennai">Chennai</SelectItem>
                   </SelectContent>
                 </Select>
+                {errors.state && <div className="text-xs text-red-500 mt-1">{errors.state}</div>}
+                </div>
 
-                <Select name="city" onValueChange={handleSelectChange("city")}>
+                <div>
+                <Select name="city" onValueChange={handleSelectChange("city")}> 
                   <SelectTrigger className="w-full">
                     <SelectValue placeholder="City" />
                   </SelectTrigger>
@@ -352,6 +397,8 @@ function RegisterContent() {
                     <SelectItem value="Chennai">Chennai</SelectItem>
                   </SelectContent>
                 </Select>
+                {errors.city && <div className="text-xs text-red-500 mt-1">{errors.city}</div>}
+                </div>
 
                 <Button
                   className="w-full rounded-[60px] py-[12px] px-[32px]"
@@ -377,4 +424,3 @@ export default function RegisterPage() {
     </Suspense>
   )
 }
-
