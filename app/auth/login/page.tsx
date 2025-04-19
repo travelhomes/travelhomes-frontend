@@ -101,7 +101,7 @@ export default function LoginPage() {
               value={formData.email}
               onChange={handleInputChange}
               placeholder="Email"
-              className="px-[12px] py-[14px] w-full border border-[#B0B0B0] rounded-[8px]"
+              className="px-4 py-2  w-full border border-[#B0B0B0] rounded-[8px]"
             />
 
             <input
@@ -110,7 +110,7 @@ export default function LoginPage() {
               value={formData.password}
               onChange={handleInputChange}
               placeholder="Password"
-              className="px-[12px] py-[14px] w-full border border-[#B0B0B0] rounded-[8px]"
+              className="px-4 py-2  w-full border border-[#B0B0B0] rounded-[8px]"
             />
 
             <div className="flex justify-between">

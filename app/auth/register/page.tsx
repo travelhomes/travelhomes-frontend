@@ -206,7 +206,7 @@ function RegisterContent() {
                   value={formData.email}
                   onChange={handleInputChange}
                   placeholder="Email ID"
-                  className="px-[12px] py-[14px] w-full border border-[#B0B0B0] rounded-[8px]"
+                  className="px-4 py-2  w-full border border-[#B0B0B0] rounded-[8px]"
                 />
 
                 <div className="flex space-x-2">
@@ -226,7 +226,7 @@ function RegisterContent() {
                     value={formData.phone}
                     onChange={handleInputChange}
                     placeholder="Mobile Number"
-                    className="px-[12px] py-[14px] w-full border border-[#B0B0B0] rounded-[8px]"
+                    className="px-4 py-2  w-full border border-[#B0B0B0] rounded-[8px]"
                   />
                 </div>
 
@@ -236,7 +236,7 @@ function RegisterContent() {
                   value={formData.password}
                   onChange={handleInputChange}
                   placeholder="Create Password"
-                  className="px-[12px] py-[14px] w-full border border-[#B0B0B0] rounded-[8px]"
+                  className="px-4 py-2  w-full border border-[#B0B0B0] rounded-[8px]"
                 />
 
                 <input
@@ -245,7 +245,7 @@ function RegisterContent() {
                   value={formData.confirmPassword}
                   onChange={handleInputChange}
                   placeholder="Confirm Password"
-                  className="px-[12px] py-[14px] w-full border border-[#B0B0B0] rounded-[8px]"
+                  className="px-4 py-2 w-full border border-[#B0B0B0] rounded-[8px]"
                 />
 
                 <Button
@@ -309,7 +309,7 @@ function RegisterContent() {
                     value={formData.firstName}
                     onChange={handleInputChange}
                     placeholder="First Name"
-                    className="px-[12px] py-[14px] w-full border border-[#B0B0B0] rounded-[8px]"
+                    className="px-4 py-2  w-full border border-[#B0B0B0] rounded-[8px]"
                   />
 
                   <input
@@ -318,7 +318,7 @@ function RegisterContent() {
                     value={formData.lastName}
                     onChange={handleInputChange}
                     placeholder="Last Name"
-                    className="px-[12px] py-[14px] w-full border border-[#B0B0B0] rounded-[8px]"
+                    className="px-4 py-2  w-full border border-[#B0B0B0] rounded-[8px]"
                   />
                 </div>
 
@@ -328,7 +328,7 @@ function RegisterContent() {
                   value={formData.dob}
                   onChange={handleInputChange}
                   placeholder="Date of Birth"
-                  className="px-[12px] py-[14px] w-full border border-[#B0B0B0] rounded-[8px]"
+                  className="px-4 py-2 w-full border border-[#B0B0B0] rounded-[8px]"
                 />
 
                 <Select name="state" onValueChange={handleSelectChange("state")}>

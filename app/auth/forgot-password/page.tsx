@@ -92,7 +92,7 @@ export default function ForgotPassword() {
                 if (error) setError("")
               }}
               placeholder="Enter your email ID"
-              className="px-[12px] py-[14px] w-full border border-[#B0B0B0] rounded-[8px]"
+              className="px-4 py-2 w-full border border-[#B0B0B0] rounded-[8px]"
             />
 
             <Button
