@@ -28,8 +28,9 @@ export default function Step1({ onNext, onBack, currentStep, totalSteps }: Step1
   const [formData, setFormData] = useState({
     name: "",
     description: "",
-    rules: "",
   });
+
+  const [rulesArray, setRulesArray] = useState<string[]>(['']);
 
   const [images, setImages] = useState<{ [key: string]: string }>({
     cover: "",
@@ -59,6 +60,18 @@ export default function Step1({ onNext, onBack, currentStep, totalSteps }: Step1
       ...prev,
       [name]: value
     }));
+  };
+
+  // Handle rules input changes
+  const handleRuleChange = (index: number, value: string) => {
+    const updatedRules = [...rulesArray];
+    updatedRules[index] = value;
+    setRulesArray(updatedRules);
+  };
+
+  // Add a new rule field
+  const addRuleField = () => {
+    setRulesArray([...rulesArray, '']);
   };
 
   const handleImageClick = (position: string) => {
@@ -158,19 +171,23 @@ export default function Step1({ onNext, onBack, currentStep, totalSteps }: Step1
                     Rules & Regulation
                   </label>
                 </div>
-                <Textarea
-                  name="rules"
-                  value={formData.rules}
-                  onChange={handleInputChange}
-                  placeholder="Write here..."
-                  className="border-[#EAECF0] min-h-[120px] bg-white focus:ring-0 focus:border-[#B0B0B0] resize-none"
-                />
-                   <Button
-                    variant="ghost"
-                    className="text-[#131313] text-[12px] absolute right-0 mt-2 hover:text-black hover:bg-transparent p-0 h-auto text-sm"
-                  >
-                    + Add More
-                  </Button>
+                {rulesArray.map((rule, index) => (
+                  <div key={index} className="mb-4">
+                    <Input
+                      value={rule}
+                      onChange={(e) => handleRuleChange(index, e.target.value)}
+                      placeholder="Write here..."
+                      className="border-[#EAECF0] h-11 bg-white focus:ring-0 focus:border-[#B0B0B0] w-full"
+                    />
+                  </div>
+                ))}
+                <Button
+                  variant="ghost"
+                  onClick={addRuleField}
+                  className="text-[#131313] text-[12px] absolute right-0 mt-2 hover:text-black hover:bg-transparent p-0 h-auto text-sm"
+                >
+                  + Add More
+                </Button>
               </div>
 
               {/* Upload Photos */}
