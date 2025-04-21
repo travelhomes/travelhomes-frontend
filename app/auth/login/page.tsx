@@ -33,7 +33,7 @@ export default function LoginPage() {
   };
 
   const handleLogin = async () => {
-    let newErrors: { email?: string; password?: string } = {};
+    const newErrors: { email?: string; password?: string } = {};
     if (!formData.email) newErrors.email = "Email is required";
     if (!formData.password) newErrors.password = "Password is required";
     if (Object.keys(newErrors).length > 0) {

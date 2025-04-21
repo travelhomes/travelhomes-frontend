@@ -52,7 +52,7 @@ function VerifyCodeContent() {
   }
 
   const handleVerify = async () => {
-    let newErrors: { otp?: string } = {}
+    const newErrors: { otp?: string } = {}
     if (otp.some((digit) => !digit)) {
       newErrors.otp = "Please enter all 6 digits"
     }

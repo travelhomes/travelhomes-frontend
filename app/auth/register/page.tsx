@@ -97,7 +97,7 @@ function RegisterContent() {
   }
 
   const handleStep1Submit = async () => {
-    let newErrors: typeof errors = {}
+    const newErrors: typeof errors = {}
     if (!formData.email) newErrors.email = "Email is required"
     if (!formData.phone) newErrors.phone = "Phone is required"
     if (!formData.password) newErrors.password = "Password is required"
@@ -141,7 +141,7 @@ function RegisterContent() {
   }
 
   const handleStep2Submit = async () => {
-    let newErrors: typeof errors = {}
+    const newErrors: typeof errors = {}
     if (!formData.firstName) newErrors.firstName = "First name is required"
     if (!formData.lastName) newErrors.lastName = "Last name is required"
     if (!formData.dob) newErrors.dob = "Date of birth is required"
