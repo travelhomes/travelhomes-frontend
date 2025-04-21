@@ -45,6 +45,16 @@ export default function Step1({ onNext, onBack, currentStep, totalSteps }: Step1
   // Handle form input changes
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
+    
+    // Apply character limits based on field name
+    if (name === "name" && value.length > 50) {
+      return; // Prevent input if name exceeds 50 characters
+    }
+    
+    if (name === "description" && value.length > 200) {
+      return; // Prevent input if description exceeds 200 characters
+    }
+    
     setFormData(prev => ({
       ...prev,
       [name]: value
@@ -117,7 +127,7 @@ export default function Step1({ onNext, onBack, currentStep, totalSteps }: Step1
                   value={formData.name}
                   onChange={handleInputChange}
                   placeholder="Name"
-                  className="border-[#EAECF0] text-[#EAECF0] h-11 outline-none focus:ring-0 focus:border-[#B0B0B0]"
+                  className="border-[#EAECF0]  h-11 outline-none focus:ring-0 focus:border-[#B0B0B0]"
                 />
                 <div className="text-right text-xs text-[#334054] mt-1">
                   {formData.name.length}/50
