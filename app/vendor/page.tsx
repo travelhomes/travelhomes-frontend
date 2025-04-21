@@ -9,8 +9,8 @@ import { Label } from "@/components/ui/label"
 import { cn } from "@/lib/utils"
 import { ArrowRightIcon, BusIcon, StayIcon, ActiveIcon } from "@/public/assets/CustomIcon"
 import Image from "next/image"
-import VendorServiceIllustration from "@/public/Vendor.png"
-import Treehouse from "@/public/Tree_House.png"
+import VendorServiceIllustration from "@/public/van.png"
+import Treehouse from "@/public/stay.png"
 import Activity from "@/public/activity.png"
 
 
