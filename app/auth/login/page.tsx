@@ -9,6 +9,7 @@ import { useState } from "react";
 import { useAuth } from "@/context/AuthContext";
 import { useRouter } from "next/navigation";
 import axios, { AxiosError } from "axios";
+import { ArrowLeft } from "lucide-react";
 
 export default function LoginPage() {
 
@@ -16,7 +17,7 @@ export default function LoginPage() {
     email: "",
     password: "",
   });
-  const [error, setError] = useState("");
+  const [errors, setErrors] = useState<{ email?: string; password?: string; general?: string }>({});
   const [isLoading, setIsLoading] = useState(false);
   const { login } = useAuth();
   const router = useRouter();
@@ -27,38 +28,41 @@ export default function LoginPage() {
       ...prev,
       [name]: value
     }));
-    // Clear error when user starts typing
-    if (error) setError("");
+    // Clear field-specific error when user starts typing in that field
+    setErrors(prev => ({ ...prev, [name]: undefined, general: undefined }));
   };
 
   const handleLogin = async () => {
-    if (!formData.email || !formData.password) {
-      setError("Please fill in all fields");
+    const newErrors: { email?: string; password?: string } = {};
+    if (!formData.email) newErrors.email = "Email is required";
+    if (!formData.password) newErrors.password = "Password is required";
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
       return;
     }
 
     setIsLoading(true);
-    setError("");
+    setErrors({});
 
     try {
       const success = await login(formData.email, formData.password);
       if (success) {
         router.push("/"); // Redirect to home page after successful login
       } else {
-        setError("Invalid credentials. Please try again.");
+        setErrors({ general: "Invalid credentials. Please try again." });
       }
     } catch (err) {
       if (axios.isAxiosError(err)) {
         const error = err as AxiosError;
         if (error.response?.status === 401) {
-          setError("Invalid email or password");
+          setErrors({ general: "Invalid email or password" });
         } else if (error.response?.status === 404) {
-          setError("User not found");
+          setErrors({ general: "User not found" });
         } else {
-          setError("An error occurred. Please try again later.");
+          setErrors({ general: "An error occurred. Please try again later." });
         }
       } else {
-        setError("An unexpected error occurred");
+        setErrors({ general: "An unexpected error occurred" });
       }
     } finally {
       setIsLoading(false);
@@ -81,11 +85,19 @@ export default function LoginPage() {
 
       <div className="flex mt-[2rem] p-6 flex-1">
         <div className=" w-[570px] space-y-6">
-          {error && (
+          {errors.general && (
             <div className="p-3 text-sm text-red-500 bg-red-50 rounded-lg">
-              {error}
+              {errors.general}
             </div>
           )}
+
+          <Link
+            href="/"
+            className="inline-flex items-center text-sm text-muted-foreground hover:text-primary"
+          >
+            <ArrowLeft className="mr-2 h-4 w-4" />
+            Back
+          </Link>
 
           <div className="space-y-2">
             <h1 className="text-2xl font-semibold tracking-tight">Sign In</h1>
@@ -95,23 +107,33 @@ export default function LoginPage() {
           </div>
 
           <div className="space-y-4">
-            <input
-              type="email"
-              name="email"
-              value={formData.email}
-              onChange={handleInputChange}
-              placeholder="Email"
-              className="px-[12px] py-[14px] w-full border border-[#B0B0B0] rounded-[8px]"
-            />
+            <div>
+              <input
+                type="email"
+                name="email"
+                value={formData.email}
+                onChange={handleInputChange}
+                placeholder="Email"
+                className="px-4 py-2  w-full border border-[#B0B0B0] rounded-[8px]"
+              />
+              {errors.email && (
+                <div className="text-xs text-red-500 mt-1">{errors.email}</div>
+              )}
+            </div>
 
-            <input
-              type="password"
-              name="password"
-              value={formData.password}
-              onChange={handleInputChange}
-              placeholder="Password"
-              className="px-[12px] py-[14px] w-full border border-[#B0B0B0] rounded-[8px]"
-            />
+            <div>
+              <input
+                type="password"
+                name="password"
+                value={formData.password}
+                onChange={handleInputChange}
+                placeholder="Password"
+                className="px-4 py-2  w-full border border-[#B0B0B0] rounded-[8px]"
+              />
+              {errors.password && (
+                <div className="text-xs text-red-500 mt-1">{errors.password}</div>
+              )}
+            </div>
 
             <div className="flex justify-between">
               <div className="flex space-x-2">

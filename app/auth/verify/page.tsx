@@ -15,7 +15,7 @@ function VerifyCodeContent() {
   const [otp, setOtp] = useState<string[]>(Array(6).fill(""))
   const inputRefs = useRef<Array<HTMLInputElement | null>>([])
   const [isLoading, setIsLoading] = useState(false)
-  const [error, setError] = useState("")
+  const [errors, setErrors] = useState<{ otp?: string; general?: string }>({})
   const router = useRouter()
   const searchParams = useSearchParams()
   const email = searchParams.get('email')
@@ -36,6 +36,7 @@ function VerifyCodeContent() {
     // Only take the last character if multiple characters are pasted
     newOtp[index] = value.slice(-1)
     setOtp(newOtp)
+    setErrors(prev => ({ ...prev, otp: undefined, general: undefined }))
 
     // Move to next input if value is entered
     if (value && index < 5) {
@@ -51,8 +52,16 @@ function VerifyCodeContent() {
   }
 
   const handleVerify = async () => {
+    const newErrors: { otp?: string } = {}
+    if (otp.some((digit) => !digit)) {
+      newErrors.otp = "Please enter all 6 digits"
+    }
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors)
+      return
+    }
     setIsLoading(true)
-    setError("")
+    setErrors({})
 
     try {
       const verificationCode = otp.join("")
@@ -74,12 +83,12 @@ function VerifyCodeContent() {
       if (axios.isAxiosError(err)) {
         const error = err as AxiosError<{ message: string }>
         if (error.response?.data?.message) {
-          setError(error.response.data.message)
+          setErrors({ general: error.response.data.message })
         } else {
-          setError("Invalid verification code. Please try again.")
+          setErrors({ otp: "Invalid verification code. Please try again." })
         }
       } else {
-        setError("An unexpected error occurred")
+        setErrors({ general: "An unexpected error occurred" })
       }
     } finally {
       setIsLoading(false)
@@ -100,7 +109,7 @@ function VerifyCodeContent() {
       // Show success message or toast
     } catch (err) {
       console.log(err)
-      setError("Failed to resend code. Please try again.")
+      setErrors({ general: "Failed to resend code. Please try again." })
     }
   }
 
@@ -133,7 +142,7 @@ function VerifyCodeContent() {
             <p className="text-sm text-muted-foreground">An authentication code has been sent to your email</p>
           </div>
 
-          {error && <div className="p-3 text-sm text-red-500 bg-red-50 rounded-lg">{error}</div>}
+          {errors.general && <div className="p-3 text-sm text-red-500 bg-red-50 rounded-lg">{errors.general}</div>}
 
           <p className="mt-[25px] text-sm"> Enter Code</p>
 
@@ -156,6 +165,7 @@ function VerifyCodeContent() {
               />
             ))}
           </div>
+          {errors.otp && <div className="text-xs text-red-500 mt-1">{errors.otp}</div>}
 
           <div className="text-center">
             <button onClick={handleResend} className="text-sm text-primary hover:underline">
@@ -184,4 +194,3 @@ export default function VerifyCode() {
     </Suspense>
   )
 }
-

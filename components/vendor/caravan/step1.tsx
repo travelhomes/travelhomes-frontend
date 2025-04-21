@@ -28,8 +28,15 @@ export default function Step1({ onNext, onBack, currentStep, totalSteps }: Step1
   const [formData, setFormData] = useState({
     name: "",
     description: "",
-    rules: "",
   });
+
+  const [rulesArray, setRulesArray] = useState<string[]>(['']);
+  const [errors, setErrors] = useState<{
+    name?: string;
+    description?: string;
+    rules?: string;
+    images?: string;
+  }>({});
 
   const [images, setImages] = useState<{ [key: string]: string }>({
     cover: "",
@@ -45,10 +52,32 @@ export default function Step1({ onNext, onBack, currentStep, totalSteps }: Step1
   // Handle form input changes
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
+    
+    // Apply character limits based on field name
+    if (name === "name" && value.length > 50) {
+      return; // Prevent input if name exceeds 50 characters
+    }
+    
+    if (name === "description" && value.length > 200) {
+      return; // Prevent input if description exceeds 200 characters
+    }
+    
     setFormData(prev => ({
       ...prev,
       [name]: value
     }));
+  };
+
+  // Handle rules input changes
+  const handleRuleChange = (index: number, value: string) => {
+    const updatedRules = [...rulesArray];
+    updatedRules[index] = value;
+    setRulesArray(updatedRules);
+  };
+
+  // Add a new rule field
+  const addRuleField = () => {
+    setRulesArray([...rulesArray, '']);
   };
 
   const handleImageClick = (position: string) => {
@@ -71,6 +100,71 @@ export default function Step1({ onNext, onBack, currentStep, totalSteps }: Step1
       };
 
       reader.readAsDataURL(file);
+    }
+  };
+
+  // Validate form
+  const validateForm = () => {
+    const newErrors: {
+      name?: string;
+      description?: string;
+      rules?: string;
+      images?: string;
+    } = {};
+    
+    // Check name
+    if (!formData.name.trim()) {
+      newErrors.name = "Name is required";
+    }
+    
+    // Check description
+    if (!formData.description.trim()) {
+      newErrors.description = "Description is required";
+    }
+    
+    // Check rules
+    const hasRules = rulesArray.some(rule => rule.trim() !== '');
+    if (!hasRules) {
+      newErrors.rules = "At least one rule is required";
+    }
+    
+    // Check images
+    // Count valid images (non-empty strings)
+    const validImageCount = Object.values(images).filter(img => img !== "").length;
+    if (validImageCount < 2) {
+      newErrors.images = "At least 2 photos are required";
+    } else if (!images.cover) {
+      newErrors.images = "Cover photo is required";
+    }
+    
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
+  // Handle form submission
+  const handleSubmit = () => {
+    if (validateForm()) {
+      // Combine all rules into a single string or pass as array
+      const allRules = rulesArray.filter(rule => rule.trim() !== '');
+      
+      // Save form data and rules to localStorage or state management
+      const formDataWithRules = {
+        ...formData,
+        rules: allRules,
+        images: images
+      };
+      
+      // You can save to localStorage or pass to parent component
+      localStorage.setItem('caravanFormStep1', JSON.stringify(formDataWithRules));
+      
+      // Proceed to next step
+      onNext();
+    } else {
+      // Scroll to the first error
+      const firstError = document.querySelector('.border-red-500');
+      if (firstError) {
+        firstError.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
     }
   };
 
@@ -117,10 +211,13 @@ export default function Step1({ onNext, onBack, currentStep, totalSteps }: Step1
                   value={formData.name}
                   onChange={handleInputChange}
                   placeholder="Name"
-                  className="border-[#EAECF0] text-[#EAECF0] h-11 outline-none focus:ring-0 focus:border-[#B0B0B0]"
+                  className={`border-[#EAECF0] h-11 outline-none focus:ring-0 focus:border-[#B0B0B0] ${errors.name ? 'border-red-500' : ''}`}
                 />
-                <div className="text-right text-xs text-[#334054] mt-1">
-                  {formData.name.length}/50
+                <div className="flex justify-between mt-1">
+                  <span className="text-xs text-red-500">{errors.name || ''}</span>
+                  <span className="text-right text-xs text-[#334054]">
+                    {formData.name.length}/50
+                  </span>
                 </div>
               </div>
 
@@ -134,10 +231,13 @@ export default function Step1({ onNext, onBack, currentStep, totalSteps }: Step1
                   value={formData.description}
                   onChange={handleInputChange}
                   placeholder="Write here..."
-                  className="border-[#EAECF0] min-h-[120px] bg-white focus:ring-0 focus:border-[#B0B0B0] resize-none"
+                  className={`border-[#EAECF0] min-h-[120px] bg-white focus:ring-0 focus:border-[#B0B0B0] resize-none ${errors.description ? 'border-red-500' : ''}`}
                 />
-                <div className="text-right text-xs text-[#334054] mt-1">
-                  {formData.description.length}/200
+                <div className="flex justify-between mt-1">
+                  <span className="text-xs text-red-500">{errors.description || ''}</span>
+                  <span className="text-right text-xs text-[#334054]">
+                    {formData.description.length}/200
+                  </span>
                 </div>
               </div>
 
@@ -148,19 +248,24 @@ export default function Step1({ onNext, onBack, currentStep, totalSteps }: Step1
                     Rules & Regulation
                   </label>
                 </div>
-                <Textarea
-                  name="rules"
-                  value={formData.rules}
-                  onChange={handleInputChange}
-                  placeholder="Write here..."
-                  className="border-[#EAECF0] min-h-[120px] bg-white focus:ring-0 focus:border-[#B0B0B0] resize-none"
-                />
-                   <Button
-                    variant="ghost"
-                    className="text-[#131313] text-[12px] absolute right-0 mt-2 hover:text-black hover:bg-transparent p-0 h-auto text-sm"
-                  >
-                    + Add More
-                  </Button>
+                {rulesArray.map((rule, index) => (
+                  <div key={index} className="mb-4">
+                    <Input
+                      value={rule}
+                      onChange={(e) => handleRuleChange(index, e.target.value)}
+                      placeholder="Write here..."
+                      className={`border-[#EAECF0] h-11 bg-white focus:ring-0 focus:border-[#B0B0B0] w-full ${errors.rules && index === 0 ? 'border-red-500' : ''}`}
+                    />
+                  </div>
+                ))}
+                {errors.rules && <div className="text-xs text-red-500 mb-2">{errors.rules}</div>}
+                <Button
+                  variant="ghost"
+                  onClick={addRuleField}
+                  className="text-[#131313] text-[12px] absolute right-0 mt-2 hover:text-black hover:bg-transparent p-0 h-auto text-sm"
+                >
+                  + Add More
+                </Button>
               </div>
 
               {/* Upload Photos */}
@@ -271,6 +376,7 @@ export default function Step1({ onNext, onBack, currentStep, totalSteps }: Step1
                 <p className="text-right mt-2 text-[14px] text-[#667085]">
                   (Minimum 5 photo required)
                 </p>
+                {errors.images && <div className="text-xs text-red-500 mt-1">{errors.images}</div>}
               </div>
             </div>
           </div>
@@ -280,7 +386,7 @@ export default function Step1({ onNext, onBack, currentStep, totalSteps }: Step1
       {/* Mobile: Full width Next button - fixed at bottom */}
       <div className="md:hidden fixed bottom-0 left-0 right-0 bg-white px-4 py-4 shadow-[0_-4px_10px_rgba(0,0,0,0.05)]">
         <Button
-          onClick={onNext}
+          onClick={handleSubmit}
           className="w-full bg-black text-white hover:bg-black/90 rounded-[60px] py-[14px] px-[32px]"
         >
           Next
@@ -294,10 +400,10 @@ export default function Step1({ onNext, onBack, currentStep, totalSteps }: Step1
           totalSteps={totalSteps} 
         />
         <StepNavigation 
-          onNext={onNext}
+          onNext={handleSubmit}
           onBack={onBack}
           isFirstStep={currentStep === 1}
-          isNextDisabled={false} // Disabled validation check for testing
+          isNextDisabled={false} // We'll handle validation in handleSubmit
         />
       </div>
     </div>

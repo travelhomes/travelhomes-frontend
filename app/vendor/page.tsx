@@ -9,8 +9,8 @@ import { Label } from "@/components/ui/label"
 import { cn } from "@/lib/utils"
 import { ArrowRightIcon, BusIcon, StayIcon, ActiveIcon } from "@/public/assets/CustomIcon"
 import Image from "next/image"
-import VendorServiceIllustration from "@/public/Vendor.png"
-import Treehouse from "@/public/Tree_House.png"
+import VendorServiceIllustration from "@/public/van.png"
+import Treehouse from "@/public/stay.png"
 import Activity from "@/public/activity.png"
 
 
@@ -61,25 +61,15 @@ export default function ServiceSelection() {
                   <Label
                     htmlFor="caravan"
                     className={cn(
-                      "flex items-center rounded-lg border p-3 cursor-pointer relative transition-all h-[110px] mb-[4px]",
+                      "flex items-center rounded-lg border-2 p-3 cursor-pointer relative transition-all h-[110px] mb-[4px]",
                       selectedService === "caravan" 
                         ? "border-black bg-[#FDFDFD]" 
                         : "border-[#E7E8E9] bg-[#FDFDFD] hover:border-gray-300"
                     )}
                   >
-                    <div className="flex items-center gap-3 flex-1">
-                      <div className="flex-shrink-0 mr-[20px]">
-                        <BusIcon />
-                      </div>
-                      <div>
-                        <div className="font-medium mb-[8px] text-[20px] text-[#112211]">Caravan Rental</div>
-                        <p className="text-[16px] text-[#112211] opacity-75 mt-1">Lorem Ipsum text for better user experience</p>
-                      </div>
-                    </div>
-                  
                     <div
                       className={cn(
-                        "flex-shrink-0 h-5 w-5 rounded-full border",
+                        "absolute top-3 right-3 h-5 w-5 rounded-full border",
                         selectedService === "caravan" 
                           ? "border-black flex items-center justify-center"
                           : "border-[#717171]"
@@ -89,6 +79,15 @@ export default function ServiceSelection() {
                         <div className="h-3 w-3 rounded-full bg-black"></div>
                       )}
                     </div>
+                    <div className="flex items-center gap-3 flex-1">
+                      <div className="flex-shrink-0 mr-[20px]">
+                        <BusIcon />
+                      </div>
+                      <div>
+                        <div className="font-medium mb-[8px] text-[20px] text-[#112211]">Caravan Rental</div>
+                        <p className="text-[16px] text-[#112211] opacity-75 mt-1">Lorem Ipsum text for better user experience</p>
+                      </div>
+                    </div>
                   </Label>
                 </div>
 
@@ -97,24 +96,15 @@ export default function ServiceSelection() {
                   <Label
                     htmlFor="stays"
                     className={cn(
-                      "flex items-center gap-4 rounded-lg border p-3 cursor-pointer relative transition-all h-[110px] mb-[4px]",
+                      "flex items-center gap-4 rounded-lg border-2 p-3 cursor-pointer relative transition-all h-[110px] mb-[4px]",
                       selectedService === "stays" 
                         ? "border-black bg-[#FDFDFD]" 
                         : "border-[#E7E8E9] bg-[#FDFDFD] hover:border-gray-300"
                     )}
                   >
-                    <div className="flex items-center gap-3 flex-1">
-                      <div className="flex-shrink-0 mr-[20px]">
-                        <StayIcon />
-                      </div>
-                      <div>
-                        <div className="font-medium mb-[8px] text-[20px] text-[#112211]">Stays</div>
-                        <p className="text-[16px] text-[#112211] opacity-75 mt-1">Lorem Ipsum text for better user experience</p>
-                      </div>
-                    </div>
                     <div
                       className={cn(
-                        "flex-shrink-0 h-5 w-5 rounded-full border",
+                        "absolute top-3 right-3 h-5 w-5 rounded-full border",
                         selectedService === "stays" 
                           ? "border-black flex items-center justify-center"
                           : "border-[#717171]"
@@ -124,6 +114,15 @@ export default function ServiceSelection() {
                         <div className="h-3 w-3 rounded-full bg-black"></div>
                       )}
                     </div>
+                    <div className="flex items-center gap-3 flex-1">
+                      <div className="flex-shrink-0 mr-[20px]">
+                        <StayIcon />
+                      </div>
+                      <div>
+                        <div className="font-medium mb-[8px] text-[20px] text-[#112211]">Stays</div>
+                        <p className="text-[16px] text-[#112211] opacity-75 mt-1">Lorem Ipsum text for better user experience</p>
+                      </div>
+                    </div>
                   </Label>
                 </div>
 
@@ -132,24 +131,15 @@ export default function ServiceSelection() {
                   <Label
                     htmlFor="activity"
                     className={cn(
-                      "flex items-center gap-4 rounded-lg border p-3 cursor-pointer relative transition-all h-[110px]",
+                      "flex items-center gap-4 rounded-lg border-2 p-3 cursor-pointer relative transition-all h-[110px]",
                       selectedService === "activity" 
                         ? "border-black bg-[#FDFDFD]" 
                         : "border-[#E7E8E9] bg-[#FDFDFD] hover:border-gray-300"
                     )}
                   >
-                    <div className="flex items-center gap-3 flex-1">
-                      <div className="flex-shrink-0 mr-[20px]">
-                        <ActiveIcon />
-                      </div>
-                      <div>
-                        <div className="font-medium text-[20px] mb-[8px] text-[#112211]">Activity</div>
-                        <p className="text-[16px] text-[#112211] opacity-75 mt-1">Lorem Ipsum text for better user experience</p>
-                      </div>
-                    </div>
                     <div
                       className={cn(
-                        "flex-shrink-0 h-5 w-5 rounded-full border",
+                        "absolute top-3 right-3 h-5 w-5 rounded-full border",
                         selectedService === "activity" 
                           ? "border-black flex items-center justify-center"
                           : "border-[#717171]"
@@ -158,6 +148,15 @@ export default function ServiceSelection() {
                       {selectedService === "activity" && (
                         <div className="h-3 w-3 rounded-full bg-black"></div>
                       )}
+                    </div>
+                    <div className="flex items-center gap-3 flex-1">
+                      <div className="flex-shrink-0 mr-[20px]">
+                        <ActiveIcon />
+                      </div>
+                      <div>
+                        <div className="font-medium text-[20px] mb-[8px] text-[#112211]">Activity</div>
+                        <p className="text-[16px] text-[#112211] opacity-75 mt-1">Lorem Ipsum text for better user experience</p>
+                      </div>
                     </div>
                   </Label>
                 </div>
@@ -194,4 +193,3 @@ export default function ServiceSelection() {
     </div>
   )
 }
-
