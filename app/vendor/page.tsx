@@ -61,7 +61,7 @@ export default function ServiceSelection() {
                   <Label
                     htmlFor="caravan"
                     className={cn(
-                      "flex items-center rounded-lg border p-3 cursor-pointer relative transition-all h-[110px] mb-[4px]",
+                      "flex items-center rounded-lg border-2 p-3 cursor-pointer relative transition-all h-[110px] mb-[4px]",
                       selectedService === "caravan" 
                         ? "border-black bg-[#FDFDFD]" 
                         : "border-[#E7E8E9] bg-[#FDFDFD] hover:border-gray-300"
@@ -96,7 +96,7 @@ export default function ServiceSelection() {
                   <Label
                     htmlFor="stays"
                     className={cn(
-                      "flex items-center gap-4 rounded-lg border p-3 cursor-pointer relative transition-all h-[110px] mb-[4px]",
+                      "flex items-center gap-4 rounded-lg border-2 p-3 cursor-pointer relative transition-all h-[110px] mb-[4px]",
                       selectedService === "stays" 
                         ? "border-black bg-[#FDFDFD]" 
                         : "border-[#E7E8E9] bg-[#FDFDFD] hover:border-gray-300"
@@ -131,7 +131,7 @@ export default function ServiceSelection() {
                   <Label
                     htmlFor="activity"
                     className={cn(
-                      "flex items-center gap-4 rounded-lg border p-3 cursor-pointer relative transition-all h-[110px]",
+                      "flex items-center gap-4 rounded-lg border-2 p-3 cursor-pointer relative transition-all h-[110px]",
                       selectedService === "activity" 
                         ? "border-black bg-[#FDFDFD]" 
                         : "border-[#E7E8E9] bg-[#FDFDFD] hover:border-gray-300"
