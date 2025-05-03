@@ -187,6 +187,18 @@ function CamperCard({
 
   const displayImageIndex = currentImageIndex % totalImages;
 
+  useEffect(() => {
+    if (!isHovered) {
+      const interval = setInterval(() => {
+        setCurrentImageIndex((prev) =>
+          prev === totalImages * 2 - 1 ? 0 : prev + 1
+        );
+      }, 3000); // Change image every 3 seconds
+
+      return () => clearInterval(interval);
+    }
+  }, [isHovered, totalImages]);
+
   return (
     <Link href="/product">
       <div className="flex flex-col h-full">
