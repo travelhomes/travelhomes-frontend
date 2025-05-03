@@ -32,13 +32,12 @@ export default function CamperListing() {
   const [campers, setCampers] = useState<CamperData[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
 
-  // Fetch camper data from the API
   useEffect(() => {
     async function fetchCampers() {
       try {
         const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL || "http://3.7.52.212:5000";
         const response = await axios.get(`${BACKEND_URL}/api/properties/by-category/1`);
-      
+
         if (response.data.success) {
           setCampers(response.data.data);
         }
@@ -53,7 +52,22 @@ export default function CamperListing() {
   }, []);
 
   if (loading) {
-    return <div>Loading...</div>; // You can show a loading spinner here
+    return (
+      <section className="px-4 mt-[3rem] lg:mx-auto max-w-7xl animate-pulse">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+          {[...Array(4)].map((_, index) => (
+            <div key={index} className="flex flex-col h-full">
+              <div className="w-full h-[204px] bg-gray-300 rounded-[12px]" />
+              <div className="py-3 space-y-2">
+                <div className="h-4 bg-gray-300 rounded w-3/4"></div>
+                <div className="h-3 bg-gray-200 rounded w-1/2"></div>
+                <div className="h-5 bg-gray-300 rounded w-2/3 mt-2"></div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+    );
   }
 
   return (
@@ -88,7 +102,7 @@ export default function CamperListing() {
             sleep_cap={camper.property.sleep_cap}
             regular_price={parseInt(camper.property.regular_price)}
             discount_price={parseInt(camper.property.discount_price)}
-            period="night" // You can adjust this based on your data
+            period="night"
             favoriteText={camper.property.rule || ""}
             images={camper.images}
             city={camper.property.city}
@@ -136,7 +150,7 @@ function CamperCard({
   const [isHovered, setIsHovered] = useState(false);
 
   const totalImages = images.length;
-  const extendedImages = [...images, ...images, ...images]; // Infinite scrolling effect
+  const extendedImages = [...images, ...images, ...images];
 
   const handlePrevImage = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -208,9 +222,8 @@ function CamperCard({
             className="absolute top-3 right-3 p-2 rounded-full"
           >
             <Heart
-              className={`w-5 h-5 ${
-                isFavorite ? "fill-red-500 stroke-red-500" : "stroke-white fill-gray-400"
-              }`}
+              className={`w-5 h-5 ${isFavorite ? "fill-red-500 stroke-red-500" : "stroke-white fill-gray-400"
+                }`}
             />
           </button>
 
@@ -224,9 +237,8 @@ function CamperCard({
             {images.map((_, index) => (
               <div
                 key={index}
-                className={`w-1.5 h-1.5 rounded-full bg-white ${
-                  index === displayImageIndex ? "opacity-100" : "opacity-60"
-                }`}
+                className={`w-1.5 h-1.5 rounded-full bg-white ${index === displayImageIndex ? "opacity-100" : "opacity-60"
+                  }`}
               />
             ))}
           </div>
