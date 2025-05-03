@@ -47,8 +47,9 @@ export default function Home() {
       {/* Content sections */}
       <div className="py-[1rem]">
         <CamperListing />
-        <UniqueStay />
-        <BestActivity />
+        {/* TODO */}
+        {/* <UniqueStay /> */}
+        {/* <BestActivity /> */}
         {/* Destinations */}
         <TrendingDestinations />
         <ServiceListing />
