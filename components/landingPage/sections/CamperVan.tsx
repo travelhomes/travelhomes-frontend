@@ -37,7 +37,6 @@ export default function CamperListing() {
       try {
         const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL || "http://3.7.52.212:5000";
         const response = await axios.get(`${BACKEND_URL}/api/properties/by-category/1`);
-
         if (response.data.success) {
           setCampers(response.data.data);
         }
@@ -47,7 +46,6 @@ export default function CamperListing() {
         setLoading(false);
       }
     }
-
     fetchCampers();
   }, []);
 
@@ -81,7 +79,6 @@ export default function CamperListing() {
             <p className="text-[#989892]">
               From castles and villas to boats and igloos, we have it all
             </p>
-
             <Link href="/discover">
               <button className="hidden md:block text-gray-900 font-medium hover:underline">
                 Discover more
@@ -91,24 +88,48 @@ export default function CamperListing() {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 ">
-        {campers.map((camper, index) => (
-          <CamperCard
-            key={index}
-            imageUrl={camper.imageUrl}
-            title={camper.property.title}
-            rating={camper.property.avg_rating}
-            seat_cap={camper.property.seat_cap}
-            sleep_cap={camper.property.sleep_cap}
-            regular_price={parseInt(camper.property.regular_price)}
-            discount_price={parseInt(camper.property.discount_price)}
-            period="night"
-            favoriteText={camper.property.rule || ""}
-            images={camper.images}
-            city={camper.property.city}
-          />
-        ))}
-      </div>
+      {campers.length > 5 ? (
+        <div className="overflow-x-auto scrollbar-hide">
+          <div className="flex gap-4 min-w-full pb-4">
+            {campers.map((camper, index) => (
+              <div key={index} className="min-w-[300px] max-w-[300px] flex-shrink-0">
+                <CamperCard
+                  imageUrl={camper.imageUrl}
+                  title={camper.property.title}
+                  rating={camper.property.avg_rating}
+                  seat_cap={camper.property.seat_cap}
+                  sleep_cap={camper.property.sleep_cap}
+                  regular_price={parseInt(camper.property.regular_price)}
+                  discount_price={parseInt(camper.property.discount_price)}
+                  period="night"
+                  favoriteText={camper.property.rule || ""}
+                  images={camper.images}
+                  city={camper.property.city}
+                />
+              </div>
+            ))}
+          </div>
+        </div>
+      ) : (
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+          {campers.map((camper, index) => (
+            <CamperCard
+              key={index}
+              imageUrl={camper.imageUrl}
+              title={camper.property.title}
+              rating={camper.property.avg_rating}
+              seat_cap={camper.property.seat_cap}
+              sleep_cap={camper.property.sleep_cap}
+              regular_price={parseInt(camper.property.regular_price)}
+              discount_price={parseInt(camper.property.discount_price)}
+              period="night"
+              favoriteText={camper.property.rule || ""}
+              images={camper.images}
+              city={camper.property.city}
+            />
+          ))}
+        </div>
+      )}
 
       <Link href="/discover">
         <button className="px-[20px] py-[12px] text-sm font-medium text-gray-700 border border-gray-300 rounded-[60px] text-center m-auto block md:hidden mt-6">
@@ -246,10 +267,8 @@ function CamperCard({
 
         <div className="py-3">
           <div className="flex justify-between items-start">
-            <h3
-              className={`${plusJakartaSans.className} text-[15px] text-[#222222] font-semibold`}
-            >
-              {title} {city && ` , ${city}`}
+            <h3 className={`${plusJakartaSans.className} text-[15px] text-[#222222] font-semibold`}>
+              {title} {city && `, ${city}`}
             </h3>
             <div className="flex text-[14px] items-center gap-1">
               <span>★</span>
