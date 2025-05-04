@@ -1,5 +1,5 @@
 "use client"
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useCallback  } from 'react';
 import { LocationIcon, CheckInIcon, CheckOutIcon, GuestIcon, SearchIcon, ActivelyIcon } from "@/public/assets/CustomIcon"
 import { GuestCounter } from './searchcomponents/guest-counter';
 import { LocationSearch } from './searchcomponents/location-search';
@@ -296,6 +296,14 @@ export default function SearchFilter({ activeTab = 'campervan' }) {
     }
   };
 
+  const handleGuestCountChange = useCallback((counts: {
+    adults: number;
+    children: number;
+    infants: number;
+  }) => {
+    setGuestCount(counts);
+  }, []);
+
   // Validate all required fields before search
   const validateSearch = () => {
     const errors: {
@@ -389,9 +397,20 @@ export default function SearchFilter({ activeTab = 'campervan' }) {
   // Handle search button click
   const handleSearchClick = () => {
     if (validateSearch()) {
-      router.push('/discover');
+      // Construct the query parameters
+      const queryParams = new URLSearchParams({
+        category_id: '1',  // Example category_id (you can dynamically change it)
+        from_date: dateTimeRange.checkIn?.date?.toISOString().split('T')[0] || '',
+        to_date: dateTimeRange.checkOut?.date?.toISOString().split('T')[0] || '',
+        from_place: fromLocationInput,
+        to_place: toLocationInput
+      });
+
+      // Redirect to /discover with the search query params
+      router.push(`/discover?${queryParams.toString()}`);
     }
-  };
+};
+
 
   return (
     <div className="hidden md:block relative max-w-7xl mx-auto">
@@ -664,10 +683,9 @@ export default function SearchFilter({ activeTab = 'campervan' }) {
                 ref={guestPopupRef}
                 className="absolute top-full right-0 mt-2 z-50 shadow-lg"
               >
+
                 <GuestCounter 
-                  onGuestCountChange={(counts) => {
-                    setGuestCount(counts);
-                  }}
+                  onGuestCountChange={handleGuestCountChange}
                   activeTab={activeTab}
                 />
               </div>

@@ -1,216 +1,183 @@
-/* eslint-disable @typescript-eslint/ban-ts-comment */
 "use client";
-import Image1 from "@/public/assets/Camper Van/Image 1.png";
-import Image2 from "@/public/assets/Camper Van/image 2.png";
-import Image3 from "@/public/assets/Camper Van/image 3.png";
-import Image4 from "@/public/assets/Camper Van/image 4.png";
-import { Plus_Jakarta_Sans } from "next/font/google"; // Corrected import path
-import { Heart, ChevronLeft, ChevronRight } from "lucide-react";
-import Image from "next/image";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import axios from "axios";
+import { Plus_Jakarta_Sans } from "next/font/google";
 import Link from "next/link";
+import Image from "next/image";
+import { Heart, ChevronLeft, ChevronRight } from "lucide-react";
 
 const plusJakartaSans = Plus_Jakarta_Sans({
   subsets: ["latin"],
   weight: ["400", "500", "600", "700"],
 });
 
-const campers = [
-  {
-    imageUrl: Image1,
-    title: "New Camper Van, Jaipur",
-    rating: 4.91,
-    seats: 4,
-    sleeps: 2,
-    favoriteText: "Guest Favourite",
-    price: 2890,
-    period: "day",
-    images: [Image1, Image2, Image3, Image4], // Specific images for this camper
-  },
-  {
-    imageUrl: Image2,
-    title: "New Camper Van, Jaipur",
-    rating: 4.91,
-    seats: 4,
-    sleeps: 2,
-    price: 2890,
-    period: "night",
-    images: [Image3, Image4, Image1, Image2], // Specific images for this camper
-  },
-  {
-    imageUrl: Image3,
-    title: "New Camper Van, Jaipur",
-    rating: 4.91,
-    seats: 4,
-    sleeps: 2,
-    price: 2890,
-    period: "night",
-    images: [Image2, Image3, Image4, Image1], // Specific images for this camper
-  },
-  {
-    imageUrl: Image4,
-    title: "New Camper Van, Jaipur",
-    rating: 4.91,
-    seats: 4,
-    sleeps: 2,
-    favoriteText: "Guest Favourite",
-    price: 2890,
-    period: "night",
-    images: [Image1, Image4, Image3, Image2], // Specific images for this camper
-  },
-  {
-    imageUrl: Image4,
-    title: "New Camper Van, Jaipur",
-    rating: 4.91,
-    seats: 4,
-    sleeps: 2,
-    favoriteText: "Guest Favourite",
-    price: 2890,
-    period: "night",
-    images: [Image1, Image4, Image3, Image2], // Specific images for this camper
-  },
-  {
-    imageUrl: Image4,
-    title: "New Camper Van, Jaipur",
-    rating: 4.91,
-    seats: 4,
-    sleeps: 2,
-    favoriteText: "Guest Favourite",
-    price: 2890,
-    period: "night",
-    images: [Image1, Image4, Image3, Image2], // Specific images for this camper
-  },
-  {
-    imageUrl: Image4,
-    title: "New Camper Van, Jaipur",
-    rating: 4.91,
-    seats: 4,
-    sleeps: 2,
-    favoriteText: "Guest Favourite",
-    price: 2890,
-    period: "night",
-    images: [Image1, Image4, Image3, Image2], // Specific images for this camper
-  },
-  {
-    imageUrl: Image4,
-    title: "New Camper Van, Jaipur",
-    rating: 4.91,
-    seats: 4,
-    sleeps: 2,
-    favoriteText: "Guest Favourite",
-    price: 2890,
-    period: "night",
-    images: [Image1, Image4, Image3, Image2], // Specific images for this camper
-  },
-  {
-    imageUrl: Image4,
-    title: "New Camper Van, Jaipur",
-    rating: 4.91,
-    seats: 4,
-    sleeps: 2,
-    favoriteText: "Guest Favourite",
-    price: 2890,
-    period: "night",
-    images: [Image1, Image4, Image3, Image2], // Specific images for this camper
-  },
-];
 
-export default function Card() {
+interface PropertyData {
+  title: string;
+  description: string;
+  rule: string;
+  city: string;
+  state: string;
+  discount_price: string;
+  regular_price: string;
+  images: string[];
+}
+
+interface CamperCardProps {
+  property: PropertyData;
+  images: string[];
+}
+
+const DiscoverPage = () => {
+  const [properties, setProperties] = useState<CamperCardProps[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchProperties = async () => {
+      try {
+        setLoading(true);
+        const response = await axios.get(
+          "http://localhost:5000/api/properties/available",
+          {
+            params: {
+              category_id: 1,
+              from_date: "",
+              to_date: "",
+              from_place: "",
+              to_place: "",
+            },
+          }
+        );
+
+        console.log("API Response:", response);
+
+        if (response.data && Array.isArray(response.data.properties)) {
+          const updatedProperties = response.data.properties.map((property: any) => ({
+            property: {
+              title: property.property.title,
+              description: property.property.description,
+              rule: property.property.rule,
+              city: property.property.city,
+              state: property.property.state,
+              discount_price: property.property.discount_price,
+              regular_price: property.property.regular_price,
+              images: property.images || [], 
+            },
+            images: property.images || [],
+          }));
+          setProperties(updatedProperties);
+        } else {
+          setError("Invalid data format.");
+        }
+      } catch (error) {
+        console.error("Error fetching data:", error);
+        setError("Error fetching data.");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProperties();
+  }, []); 
+
   return (
-    <>
     <section className="py-12 mx-[1rem] w-full">
       <div className="flex justify-between items-center mb-8">
         <div>
           <h2 className="md:text-2xl text-[20px] font-bold mb-2">
-          Results (234)
+            Results ({properties.length})
           </h2>
         </div>
-        <Link href="/discover"> 
-        <button className="hidden md:block text-gray-900 font-medium hover:underline">
-          Discover more
-        </button>
+        <Link href="/discover">
+          <button className="hidden md:block text-gray-900 font-medium hover:underline">
+            Discover more
+          </button>
         </Link>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 w-full">
-        {campers.map((camper, index) => (
-          //@ts-expect-error
-          <CamperCard key={index} {...camper} />
-        ))}
-      </div>
-<Link href="/discover"> 
-      <button className="px-[20px] py-[12px] text-sm font-medium text-gray-700 border border-gray-300 rounded-[60px] text-center m-auto block md:hidden">
-        Discover more
-      </button>
+      {/* Show loading, error, or properties */}
+      {loading ? (
+        <section className="px-4 mt-[3rem] lg:mx-auto max-w-7xl animate-pulse">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            {[...Array(4)].map((_, index) => (
+              <div key={index} className="flex flex-col h-full">
+                <div className="w-full h-[204px] bg-gray-300 rounded-[12px]" />
+                <div className="py-3 space-y-2">
+                  <div className="h-4 bg-gray-300 rounded w-3/4"></div>
+                  <div className="h-3 bg-gray-200 rounded w-1/2"></div>
+                  <div className="h-5 bg-gray-300 rounded w-2/3 mt-2"></div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
+      ) : error ? (
+        <p>{error}</p>
+      ) : !Array.isArray(properties) || properties.length === 0 ? (
+        <p>No properties available</p>
+      ) : (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 w-full">
+          {properties.map((property, index) => (
+            <CamperCard key={index} {...property} />
+          ))}
+        </div>
+      )}
+
+      <Link href="/discover">
+        <button className="px-[20px] py-[12px] text-sm font-medium text-gray-700 border border-gray-300 rounded-[60px] text-center m-auto block md:hidden">
+          Discover more
+        </button>
       </Link>
 
-      <p className={`${plusJakartaSans.className} text-center font-semibold my-[3rem]`}>View More</p>
-
+      <p className={`${plusJakartaSans.className} text-center font-semibold my-[3rem]`}>
+        View More
+      </p>
     </section>
-
-
-
-</>
   );
-}
+};
 
-interface CamperCardProps {
-  imageUrl: string;
-  title: string;
-  rating: number;
-  seats: number;
-  sleeps: number;
-  price: number;
-  period: string;
-  favoriteText: string;
-  images: string[]; // Added images prop
-}
+export default DiscoverPage;
+
 
 function CamperCard({
-  title,
-  rating,
-  seats,
-  sleeps,
-  price,
-  period,
-  favoriteText,
+  property: {
+    title,
+    description,
+    rule,
+    city,
+    state,
+    discount_price,
+    regular_price,
+  },
   images,
 }: CamperCardProps) {
   const [isFavorite, setIsFavorite] = useState(false);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [isHovered, setIsHovered] = useState(false);
 
-  // Create an extended array of images for infinite scrolling effect
-  const extendedImages = [...images, ...images, ...images]; // Triple the images
+  const extendedImages = [...images, ...images, ...images];
   const totalImages = images.length;
+
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      setCurrentImageIndex((prev) => (prev + 1) % totalImages);
+    }, 3000);
+    return () => clearInterval(intervalId); 
+  }, [totalImages]);
 
   const handlePrevImage = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
-    
-    setCurrentImageIndex((prev) => {
-      // When we reach the beginning of the middle set, jump to the end of the first set
-      if (prev === 0) {
-        return totalImages * 2 - 1;
-      }
-      return prev - 1;
-    });
+    setCurrentImageIndex((prev) => (prev === 0 ? totalImages * 2 - 1 : prev - 1));
   };
 
   const handleNextImage = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
-    
-    setCurrentImageIndex((prev) => {
-      // When we reach the end of the middle set, jump to the beginning of the last set
-      if (prev === totalImages * 2 - 1) {
-        return 0;
-      }
-      return prev + 1;
-    });
+    setCurrentImageIndex((prev) => (prev === totalImages * 2 - 1 ? 0 : prev + 1));
   };
 
-  // Calculate the actual image index to display in the dots
   const displayImageIndex = currentImageIndex % totalImages;
 
   return (
@@ -241,8 +208,7 @@ function CamperCard({
               </div>
             ))}
           </div>
-          
-          {/* Carousel Navigation Arrows - Always enabled for infinite scrolling */}
+
           {isHovered && (
             <>
               <button
@@ -262,7 +228,6 @@ function CamperCard({
             </>
           )}
 
-          {/* Favorite Button */}
           <button
             onClick={(e) => {
               e.preventDefault();
@@ -272,29 +237,21 @@ function CamperCard({
             className="absolute top-3 right-3 p-2 rounded-full z-10"
           >
             <Heart
-              className={`w-5 h-5 ${
-                isFavorite
-                  ? "fill-red-500 stroke-red-500"
-                  : "stroke-white fill-gray-400"
-              }`}
+              className={`w-5 h-5 ${isFavorite ? "fill-red-500 stroke-red-500" : "stroke-white fill-gray-400"}`}
             />
           </button>
 
-          {/* Favorite Text */}
-          {favoriteText && (
+          {rule && (
             <div className="absolute top-3 left-3 bg-white/90 px-3 py-1 rounded-[4px] z-10">
-              <span className="text-sm font-medium">{favoriteText}</span>
+              <span className="text-sm font-medium">{rule}</span>
             </div>
           )}
 
-          {/* Carousel Dots - Show based on the original image set */}
           <div className="absolute bottom-3 left-0 right-0 flex justify-center gap-1.5 z-10">
             {images.map((_, index) => (
               <div
                 key={index}
-                className={`w-1.5 h-1.5 rounded-full bg-white ${
-                  index === displayImageIndex ? "opacity-100" : "opacity-60"
-                }`}
+                className={`w-1.5 h-1.5 rounded-full bg-white ${index === displayImageIndex ? "opacity-100" : "opacity-60"}`}
               />
             ))}
           </div>
@@ -302,28 +259,31 @@ function CamperCard({
 
         <div className="py-3">
           <div className="flex justify-between items-start">
-            <h3
-              className={`${plusJakartaSans.className} text-[15px] text-[#222222] font-semibold`}
-            >
-              {title}
+            <h3 className={`${plusJakartaSans.className} text-[15px] text-[#222222] font-semibold`}>
+              {title}, {city}
             </h3>
-            <div className="flex text-[14px] items-center gap-1">
+            {/* <div className="flex text-[14px] items-center gap-1">
               <span>★</span>
-              <span>{rating}</span>
+              <span>{avg_rating || "N/A"}</span>
+            </div> */}
+              <div className="flex text-[14px] items-center gap-1">
+              <span>★</span>
+              <span>4</span>
             </div>
           </div>
 
-          <p className="text-[#5E5E5E] text-[14px] mb-1">
-            {seats} Seats / {sleeps} Sleeps
+          {/* <p className="text-[#5E5E5E] text-[14px] mb-1">
+            {seat_cap} Seats / {sleep_cap} Sleeps
+          </p> */}
+           <p className="text-[#5E5E5E] text-[14px] mb-1">
+            2 Seats / 2 Sleeps
           </p>
 
           <div className="flex justify-between items-center text-[14px]">
             <div>
-              <span className="text-[#5E5E5E] line-through">₹{price}</span>
-              <span className="ml-2 text-lg font-bold text-[#222222]">
-                ₹{price}
-              </span>
-              <span className="text-[#222222]">/{period}</span>
+              <span className="text-[#5E5E5E] line-through">₹{discount_price}</span>
+              <span className="ml-2 text-lg font-bold text-[#222222]">₹{regular_price}</span>
+              <span className="text-[#222222]">/night</span>
             </div>
           </div>
         </div>
