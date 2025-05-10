@@ -11,12 +11,11 @@ import { ProductHero } from "@/components/products/ProductHero";
 import { Reviews } from "@/components/products/Reviews";
 import { StickyNav } from "@/components/products/StickyNav";
 import { StickyPrice } from "@/components/products/StickyPrice";
-import { ArrowRightIcon } from "@/public/assets/CustomIcon"
+import { ArrowRightIcon } from "@/public/assets/CustomIcon";
 import Exclusions from "@/components/products/exclusions";
 import PolicyRules from "@/components/products/PolicyRules";
 import { useRouter } from "next/navigation";
 import TopRatedStays from "@/components/products/TopStayed";
-
 
 export default function Product() {
   const router = useRouter();
@@ -24,27 +23,27 @@ export default function Product() {
   useEffect(() => {
     // Add scroll padding to allow for the sticky header
     document.documentElement.style.scrollPaddingTop = "120px";
-    
+
     const handleScroll = () => {
-      const stickyPrice = document.getElementById('sticky-price');
-      const topRatedSection = document.getElementById('top-rated-section');
-      
+      const stickyPrice = document.getElementById("sticky-price");
+      const topRatedSection = document.getElementById("top-rated-section");
+
       if (stickyPrice && topRatedSection) {
         const topRatedRect = topRatedSection.getBoundingClientRect();
-        
+
         if (topRatedRect.top <= 100) {
-          stickyPrice.classList.add('lg:col-span-2');
-          stickyPrice.classList.remove('lg:col-span-1');
+          stickyPrice.classList.add("lg:col-span-2");
+          stickyPrice.classList.remove("lg:col-span-1");
         } else {
-          stickyPrice.classList.remove('lg:col-span-2');
-          stickyPrice.classList.add('lg:col-span-1');
+          stickyPrice.classList.remove("lg:col-span-2");
+          stickyPrice.classList.add("lg:col-span-1");
         }
       }
     };
 
-    window.addEventListener('scroll', handleScroll);
+    window.addEventListener("scroll", handleScroll);
     return () => {
-      window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener("scroll", handleScroll);
       document.documentElement.style.scrollPaddingTop = "";
     };
   }, []);
@@ -83,31 +82,31 @@ export default function Product() {
             <section id="overview" className="pt-6">
               <Overview hidePrice />
             </section>
-            
+
             <section id="amenities" className="pt-6">
               <Amenities />
             </section>
-            
+
             <section id="inclusions" className="pt-6">
               <Inclusions />
             </section>
-            
+
             <section id="exclusions" className="pt-6">
               <Exclusions />
             </section>
-            
-            <section id="policy&rules" className="pt-6">
+
+            <section id="policyrules" className="pt-6">
               <PolicyRules />
             </section>
-            
+
             <section id="reviews" className="pt-6">
               <Reviews />
             </section>
-            
+
             <section id="ownerdetails" className="pt-6">
               <OwnerDetails />
             </section>
-            
+
             <div id="top-rated-section"></div>
           </div>
 

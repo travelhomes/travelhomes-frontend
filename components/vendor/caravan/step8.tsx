@@ -4,18 +4,13 @@ import { Input } from "@/components/ui/input";
 import { useState, useRef } from "react";
 import StepProgress from "../StepProgress";
 import StepNavigation from "../StepNavigation";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+import Select from "react-select";
+
+import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import VendorBar from "./vendorbar";
 import Link from "next/link";
 import { ArrowRightIcon } from "@/public/assets/CustomIcon";
-import { Button } from "@/components/ui/button";
 
 interface Step8Props {
   onNext: () => void;
@@ -24,7 +19,39 @@ interface Step8Props {
   totalSteps: number;
 }
 
-export default function Step8({ onNext, onBack, currentStep, totalSteps }: Step8Props) {
+export default function Step8({
+  onNext,
+  onBack,
+  currentStep,
+  totalSteps,
+}: Step8Props) {
+  const stateOptions = [
+    { value: "delhi", label: "Delhi" },
+    { value: "maharashtra", label: "Maharashtra" },
+    { value: "karnataka", label: "Karnataka" },
+    { value: "tamilnadu", label: "Tamil Nadu" },
+  ];
+
+  const cityOptions = [
+    { value: "goa", label: "Goa" },
+    { value: "Mumbai", label: "Mumbai" },
+    { value: "kerala", label: "Kerala" },
+    { value: "bangalore", label: "Bangalore" },
+  ];
+
+  const maritalOptions = [
+    { value: "single", label: "Single" },
+    { value: "married", label: "Married" },
+    { value: "dicorced", label: "Divorced" },
+    { value: "widowed", label: "Widowed" },
+  ];
+
+  const idOptions = [
+    { value: "aadhar", label: "Aadhar No" },
+    { value: "pan", label: "PAN" },
+    { value: "driving", label: "Driving License" },
+  ];
+
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
@@ -35,22 +62,67 @@ export default function Step8({ onNext, onBack, currentStep, totalSteps }: Step8
     idProof: "",
   });
 
+  const [formErrors, setFormErrors] = useState<{ [key: string]: string }>({});
+
+  const validateForm = () => {
+    const errors: { [key: string]: string } = {};
+
+    if (!formData.firstName.trim()) {
+      errors.firstName = "First Name is required.";
+    }
+    if (!formData.lastName.trim()) {
+      errors.lastName = "Last Name is required.";
+    }
+    if (!formData.city.trim()) {
+      errors.city = "City is required.";
+    }
+    if (!formData.state.trim()) {
+      errors.state = "State is required.";
+    }
+    if (!formData.dateOfBirth.trim()) {
+      errors.dateOfBirth = "Date of Birth is required.";
+    } else if (
+      !/^(0[1-9]|[12][0-9]|3[01])\/(0[1-9]|1[0-2])\/\d{4}$/.test(
+        formData.dateOfBirth
+      )
+    ) {
+      errors.dateOfBirth = "Enter DOB in valid format (DD/MM/YYYY).";
+    }
+    if (!formData.maritalStatus.trim()) {
+      errors.maritalStatus = "Marital Status is required.";
+    }
+    if (!formData.idProof.trim()) {
+      errors.idProof = "ID Proof is required.";
+    }
+
+    setFormErrors(errors);
+    return Object.keys(errors).length === 0;
+  };
+
+  const handleNext = () => {
+    if (validateForm()) {
+      onNext();
+    }
+  };
+
   const [idPhoto, setIdPhoto] = useState<string>("");
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const dateInputRef = useRef<HTMLInputElement>(null);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
-      [name]: value
+      [name]: value,
     }));
   };
 
   const handleSelectChange = (name: string) => (value: string) => {
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
-      [name]: value
+      [name]: value,
     }));
+    console.log(formData);
   };
 
   const handlePhotoUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -68,6 +140,28 @@ export default function Step8({ onNext, onBack, currentStep, totalSteps }: Step8
     }
   };
 
+  // Function to open the native date picker
+  const openDatePicker = () => {
+    if (dateInputRef.current) {
+      dateInputRef.current.showPicker();
+    }
+  };
+
+  // Handle date change from the date input
+  const handleDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const date = new Date(e.target.value);
+    const day = String(date.getDate()).padStart(2, "0");
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const year = date.getFullYear();
+
+    const formattedDate = `${day}/${month}/${year}`;
+
+    setFormData((prev) => ({
+      ...prev,
+      dateOfBirth: formattedDate,
+    }));
+  };
+
   return (
     <div className="flex flex-col min-h-screen">
       <div className="hidden md:block">
@@ -76,17 +170,17 @@ export default function Step8({ onNext, onBack, currentStep, totalSteps }: Step8
 
       {/* Mobile: Top navigation with back button and progress bar */}
       <div className="flex md:hidden items-center justify-between px-4 sm:px-6 mt-10 mb-6">
-        <Link href="" className="inline-flex items-center  text-muted-foreground hover:text-primary">
+        <Link
+          href=""
+          className="inline-flex items-center text-muted-foreground hover:text-primary"
+        >
           <span className="mr-2">
             <ArrowRightIcon />
           </span>
         </Link>
-        
+
         <div className="flex-grow flex justify-center">
-          <StepProgress 
-            currentStep={currentStep} 
-            totalSteps={totalSteps} 
-          />
+          <StepProgress currentStep={currentStep} totalSteps={totalSteps} />
         </div>
       </div>
 
@@ -104,7 +198,7 @@ export default function Step8({ onNext, onBack, currentStep, totalSteps }: Step8
               {/* First Name and Last Name */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
-                  <label className=" text-[#334054] block mb-2">
+                  <label className="text-[#334054] block mb-2">
                     First Name
                   </label>
                   <Input
@@ -112,157 +206,222 @@ export default function Step8({ onNext, onBack, currentStep, totalSteps }: Step8
                     value={formData.firstName}
                     onChange={handleInputChange}
                     placeholder="First Name"
-                    className="border-[#E7E8E9] h-[50px] bg-white focus:ring-0 focus:border-[#B0B0B0]"
+                    className="border-[#E7E8E9] h-10 bg-white focus:ring-0 focus:border-[#B0B0B0]"
                   />
+                  {formErrors.firstName && (
+                    <p className="text-red-500 text-sm mt-1">
+                      {formErrors.firstName}
+                    </p>
+                  )}
                 </div>
-                
+
                 <div>
-                  <label className=" text-[#334054] block mb-2">
-                    Last Name
-                  </label>
+                  <label className="text-[#334054] block mb-2">Last Name</label>
                   <Input
                     name="lastName"
                     value={formData.lastName}
                     onChange={handleInputChange}
                     placeholder="Last Name"
-                    className="border-[#E7E8E9] h-[50px] bg-white focus:ring-0 focus:border-[#B0B0B0]"
+                    className="border-[#E7E8E9] h-10 bg-white focus:ring-0 focus:border-[#B0B0B0]"
                   />
+
+                  {formErrors.lastName && (
+                    <p className="text-red-500 text-sm mt-1">
+                      {formErrors.lastName}
+                    </p>
+                  )}
                 </div>
               </div>
 
               {/* State and City */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
-                  <label className=" text-[#334054] block mb-2">
-                    State
-                  </label>
-                  <Select value={formData.state} onValueChange={handleSelectChange("state")}>
-                    <SelectTrigger className="border-[#E7E8E9] h-[50px] bg-white focus:ring-0 focus:border-[#B0B0B0]">
-                      <SelectValue placeholder="Select" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="delhi">Delhi</SelectItem>
-                      <SelectItem value="maharashtra">Maharashtra</SelectItem>
-                      <SelectItem value="karnataka">Karnataka</SelectItem>
-                      <SelectItem value="tamilnadu">Tamil Nadu</SelectItem>
-                    </SelectContent>
-                  </Select>
+                  <label className="text-[#334054] block mb-2">State</label>
+                  <Select
+                    options={stateOptions}
+                    onChange={(selectedOption) =>
+                      handleSelectChange("state")(selectedOption?.value || "")
+                    }
+                    placeholder="Select or type state"
+                    classNamePrefix="react-select"
+                    isClearable
+                  />
+
+                  {formErrors.state && (
+                    <p className="text-red-500 text-sm mt-1">
+                      {formErrors.state}
+                    </p>
+                  )}
                 </div>
-                
+
                 <div>
-                  <label className=" text-[#334054] block mb-2">
-                    City
-                  </label>
-                  <Select value={formData.city} onValueChange={handleSelectChange("city")}>
-                    <SelectTrigger className="border-[#E7E8E9] h-[50px] bg-white focus:ring-0 focus:border-[#B0B0B0]">
-                      <SelectValue placeholder="Select" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="newdelhi">New Delhi</SelectItem>
-                      <SelectItem value="mumbai">Mumbai</SelectItem>
-                      <SelectItem value="bangalore">Bangalore</SelectItem>
-                      <SelectItem value="chennai">Chennai</SelectItem>
-                    </SelectContent>
-                  </Select>
+                  <label className="text-[#334054] block mb-2">City</label>
+                  <Select
+                    options={cityOptions}
+                    onChange={(selectedOption) =>
+                      handleSelectChange("city")(selectedOption?.value || "")
+                    }
+                    placeholder="Select or type city"
+                    classNamePrefix="react-select"
+                    isClearable
+                  />
+
+                  {formErrors.city && (
+                    <p className="text-red-500 text-sm mt-1">
+                      {formErrors.city}
+                    </p>
+                  )}
                 </div>
               </div>
 
               {/* Date of Birth and Marital Status */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
-                  <label className=" text-[#334054] block mb-2">
+                  <label className="text-[#334054] block mb-2">
                     Date of Birth
                   </label>
-                  <Input
-                    name="dateOfBirth"
-                    value={formData.dateOfBirth}
-                    onChange={handleInputChange}
-                    placeholder="DD/MM/YYYY"
-                    className="border-[#E7E8E9] h-[50px] bg-white focus:ring-0 focus:border-[#B0B0B0]"
-                  />
+                  <div className="relative">
+                    <div
+                      className="cursor-pointer border border-[#E7E8E9] h-10 flex items-center px-3 rounded-md"
+                      onClick={openDatePicker}
+                    >
+                      <span
+                        className={
+                          formData.dateOfBirth ? "text-black" : "text-gray-400"
+                        }
+                      >
+                        {formData.dateOfBirth || "DD/MM/YYYY"}
+                      </span>
+                      <svg
+                        className="absolute right-3 top-2.5 h-5 w-5 opacity-50"
+                        width="20"
+                        height="20"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      >
+                        <rect
+                          width="18"
+                          height="18"
+                          x="3"
+                          y="4"
+                          rx="2"
+                          ry="2"
+                        />
+                        <line x1="16" x2="16" y1="2" y2="6" />
+                        <line x1="8" x2="8" y1="2" y2="6" />
+                        <line x1="3" x2="21" y1="10" y2="10" />
+                      </svg>
+                    </div>
+                    <input
+                      ref={dateInputRef}
+                      type="date"
+                      onChange={handleDateChange}
+                      className="sr-only"
+                      min="1900-01-01"
+                      max={new Date().toISOString().split("T")[0]}
+                    />
+                  </div>
+
+                  {formErrors.dateOfBirth && (
+                    <p className="text-red-500 text-sm mt-1">
+                      {formErrors.dateOfBirth}
+                    </p>
+                  )}
                 </div>
-                
+
                 <div>
-                  <label className=" text-[#334054] block mb-2">
+                  <label className="text-[#334054] block mb-2">
                     Marital Status
                   </label>
-                  <Select value={formData.maritalStatus} onValueChange={handleSelectChange("maritalStatus")}>
-                    <SelectTrigger className="border-[#E7E8E9] h-[50px] bg-white focus:ring-0 focus:border-[#B0B0B0]">
-                      <SelectValue placeholder="Select" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="single">Single</SelectItem>
-                      <SelectItem value="married">Married</SelectItem>
-                      <SelectItem value="divorced">Divorced</SelectItem>
-                      <SelectItem value="widowed">Widowed</SelectItem>
-                    </SelectContent>
-                  </Select>
+                  <Select
+                    options={maritalOptions}
+                    onChange={(selectedOption) =>
+                      handleSelectChange("maritalStatus")(
+                        selectedOption?.value || ""
+                      )
+                    }
+                    placeholder="Select or type status"
+                    classNamePrefix="react-select"
+                    isClearable
+                  />
+
+                  {formErrors.maritalStatus && (
+                    <p className="text-red-500 text-sm mt-1">
+                      {formErrors.maritalStatus}
+                    </p>
+                  )}
                 </div>
               </div>
 
               {/* ID Proof */}
               <div>
-                <label className=" text-[#334054] block mb-2">
-                  ID Proof
-                </label>
-                <Select value={formData.idProof} onValueChange={handleSelectChange("idProof")}>
-                  <SelectTrigger className="border-[#E7E8E9] h-[50px] bg-white focus:ring-0 focus:border-[#B0B0B0]">
-                    <SelectValue placeholder="Select" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="aadhar">Aadhar Card</SelectItem>
-                    <SelectItem value="pan">PAN Card</SelectItem>
-                    <SelectItem value="passport">Passport</SelectItem>
-                    <SelectItem value="driving">Driving License</SelectItem>
-                  </SelectContent>
-                </Select>
+                <label className="text-[#334054] block mb-2">ID Proof</label>
+                <Select
+                  options={idOptions}
+                  onChange={(selectedOption) =>
+                    handleSelectChange("idProof")(selectedOption?.value || "")
+                  }
+                  placeholder="Select or type ID"
+                  classNamePrefix="react-select"
+                  isClearable
+                />
+
+                {formErrors.idProof && (
+                  <p className="text-red-500 text-sm mt-1">
+                    {formErrors.idProof}
+                  </p>
+                )}
               </div>
 
               {/* ID Photos */}
-              <div>
-                <label className=" text-[#334054] block mb-2">
-                  ID Photos
-                </label>
-                <input
-                  type="file"
-                  ref={fileInputRef}
-                  className="hidden"
-                  accept="image/*"
-                  onChange={handlePhotoUpload}
-                />
-                <div 
-                  onClick={() => fileInputRef.current?.click()}
-                  className="cursor-pointer border border-dashed border-[#E7E8E9] rounded-lg w-[250px] h-[180px] flex flex-col items-center justify-center bg-[#F9FAFB] hover:bg-[#F0F1F3] transition-colors relative overflow-hidden"
-                >
-                  {idPhoto ? (
-                    <Image
-                      src={idPhoto}
-                      alt="ID Photo"
-                      fill
-                      style={{ objectFit: "contain" }}
-                    />
-                  ) : (
-                    <div className="flex flex-col items-center gap-1">
-                      <svg
-                        width="24"
-                        height="24"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <path
-                          d="M12 5V19M5 12H19"
-                          stroke="#667085"
-                          strokeWidth="2"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                        />
-                      </svg>
-                      <span className=" text-[#667085]">Upload here</span>
-                    </div>
-                  )}
+              {formData.idProof && (
+                <div>
+                  <label className="text-[#334054] block mb-2">ID Photos</label>
+                  <input
+                    type="file"
+                    ref={fileInputRef}
+                    className="hidden"
+                    accept="image/*"
+                    onChange={handlePhotoUpload}
+                  />
+                  <div
+                    onClick={() => fileInputRef.current?.click()}
+                    className="cursor-pointer border border-dashed border-[#E7E8E9] rounded-lg w-[250px] h-[180px] flex flex-col items-center justify-center bg-[#F9FAFB] hover:bg-[#F0F1F3] transition-colors relative overflow-hidden"
+                  >
+                    {idPhoto ? (
+                      <Image
+                        src={idPhoto}
+                        alt="ID Photo"
+                        fill
+                        style={{ objectFit: "contain" }}
+                      />
+                    ) : (
+                      <div className="flex flex-col items-center gap-1">
+                        <svg
+                          width="24"
+                          height="24"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path
+                            d="M12 5V19M5 12H19"
+                            stroke="#667085"
+                            strokeWidth="2"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                          />
+                        </svg>
+                        <span className="text-[#667085]">Upload here</span>
+                      </div>
+                    )}
+                  </div>
                 </div>
-              </div>
+              )}
             </div>
           </div>
         </div>
@@ -271,7 +430,7 @@ export default function Step8({ onNext, onBack, currentStep, totalSteps }: Step8
       {/* Mobile: Full width Next button - fixed at bottom */}
       <div className="md:hidden fixed bottom-0 left-0 right-0 bg-white px-4 py-4 shadow-[0_-4px_10px_rgba(0,0,0,0.05)]">
         <Button
-          onClick={onNext}
+          onClick={handleNext}
           className="w-full bg-black text-white hover:bg-black/90 rounded-[60px] py-[14px] px-[32px]"
         >
           Next
@@ -280,15 +439,12 @@ export default function Step8({ onNext, onBack, currentStep, totalSteps }: Step8
 
       {/* Desktop: Original navigation with progress and next/back buttons - fixed at bottom */}
       <div className="hidden md:flex fixed bottom-0 left-0 right-0 bg-white justify-between items-center border-t border-[#E7E8E9] pt-6 pb-6 px-4 sm:px-6 md:px-8 lg:px-[7rem] shadow-[0_-4px_10px_rgba(0,0,0,0.05)]">
-        <StepProgress 
-          currentStep={currentStep} 
-          totalSteps={totalSteps} 
-        />
-        <StepNavigation 
-          onNext={onNext}
+        <StepProgress currentStep={currentStep} totalSteps={totalSteps} />
+        <StepNavigation
+          onNext={handleNext}
           onBack={onBack}
           isFirstStep={false}
-          isNextDisabled={false}
+          isNextDisabled={Object.values(formData).some((value) => !value)}
         />
       </div>
     </div>

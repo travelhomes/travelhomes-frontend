@@ -31,7 +31,9 @@
     "lucide-react": "^0.471.2",
     "next": "^15.1.4",
     "react": "^19.0.0",
+    "react-day-picker": "^9.6.7",
     "react-dom": "^19.0.0",
+    "react-select": "^5.10.1",
     "recharts": "^2.15.1",
     "tailwind-merge": "^2.6.0",
     "tailwindcss-animate": "^1.0.7"

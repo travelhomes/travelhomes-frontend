@@ -1,14 +1,23 @@
-"use client"
+"use client";
 import Link from "next/link";
 import { useState, useEffect, useRef } from "react";
-import { Calendar as CalendarIcon, ChevronDown, Users, X, AlertCircle } from "lucide-react";
+import {
+  Calendar as CalendarIcon,
+  ChevronDown,
+  Users,
+  X,
+  AlertCircle,
+} from "lucide-react";
 import { Calendar } from "@/components/landingPage/searchcomponents/calendar";
 import { GuestCounter } from "@/components/landingPage/searchcomponents/guest-counter";
 
 export function StickyPrice() {
   // State for managing the dates
   const [selectedDates, setSelectedDates] = useState<Date[]>([]);
-  const [formattedDates, setFormattedDates] = useState<{ start: string; end: string }>({
+  const [formattedDates, setFormattedDates] = useState<{
+    start: string;
+    end: string;
+  }>({
     start: "",
     end: "",
   });
@@ -24,11 +33,11 @@ export function StickyPrice() {
   // State for toggling dropdowns
   const [showCalendar, setShowCalendar] = useState(false);
   const [showGuestCounter, setShowGuestCounter] = useState(false);
-  
+
   // State for validation errors
   const [errors, setErrors] = useState({
     dates: "",
-    guests: ""
+    guests: "",
   });
 
   // Ref to prevent useEffect from running on initial render
@@ -38,11 +47,11 @@ export function StickyPrice() {
   useEffect(() => {
     if (!isInitialMount.current) {
       isInitialMount.current = false;
-      
+
       // No need to call handleGuestCountChange since we already set default values in useState
       const totalAdults = guestCounts.adults;
       if (totalAdults > 0) {
-        setTotalGuests(`${totalAdults} Adult${totalAdults !== 1 ? 's' : ''}`);
+        setTotalGuests(`${totalAdults} Adult${totalAdults !== 1 ? "s" : ""}`);
       }
     }
   }, [guestCounts.adults]);
@@ -56,43 +65,51 @@ export function StickyPrice() {
         end: formatDate(dates[1]),
       });
       setShowCalendar(false);
-      setErrors(prev => ({ ...prev, dates: "" }));
+      setErrors((prev) => ({ ...prev, dates: "" }));
     }
   };
 
   // Handle guest count changes
-  const handleGuestCountChange = (counts: { adults: number; children: number; infants: number }) => {
+  const handleGuestCountChange = (counts: {
+    adults: number;
+    children: number;
+    infants: number;
+  }) => {
     setGuestCounts(counts);
-    
+
     // Format the guest text
     let guestText = "";
-    
+
     if (counts.adults > 0) {
-      guestText += `${counts.adults} Adult${counts.adults !== 1 ? 's' : ''}`;
+      guestText += `${counts.adults} Adult${counts.adults !== 1 ? "s" : ""}`;
     }
-    
+
     if (counts.children > 0) {
-      guestText += guestText ? `, ${counts.children} Child${counts.children !== 1 ? 'ren' : ''}` : `${counts.children} Child${counts.children !== 1 ? 'ren' : ''}`;
+      guestText += guestText
+        ? `, ${counts.children} Child${counts.children !== 1 ? "ren" : ""}`
+        : `${counts.children} Child${counts.children !== 1 ? "ren" : ""}`;
     }
-    
+
     if (counts.infants > 0) {
-      guestText += guestText ? `, ${counts.infants} Infant${counts.infants !== 1 ? 's' : ''}` : `${counts.infants} Infant${counts.infants !== 1 ? 's' : ''}`;
+      guestText += guestText
+        ? `, ${counts.infants} Infant${counts.infants !== 1 ? "s" : ""}`
+        : `${counts.infants} Infant${counts.infants !== 1 ? "s" : ""}`;
     }
-    
+
     setTotalGuests(guestText || "Add guests");
-    
+
     // Clear guest error if there are adults
     if (counts.adults > 0) {
-      setErrors(prev => ({ ...prev, guests: "" }));
+      setErrors((prev) => ({ ...prev, guests: "" }));
     }
   };
 
   // Format date helper
   const formatDate = (date: Date): string => {
-    return date.toLocaleDateString('en-US', {
-      day: '2-digit',
-      month: 'long',
-      year: 'numeric'
+    return date.toLocaleDateString("en-US", {
+      day: "2-digit",
+      month: "long",
+      year: "numeric",
     });
   };
 
@@ -101,30 +118,30 @@ export function StickyPrice() {
     if (showCalendar) setShowCalendar(false);
     if (showGuestCounter) setShowGuestCounter(false);
   };
-  
+
   // Validate form before submission
   const handleReserveClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     const newErrors = {
       dates: "",
-      guests: ""
+      guests: "",
     };
-    
+
     let hasErrors = false;
-    
+
     // Validate dates
     if (selectedDates.length < 2) {
       newErrors.dates = "Please select check-in and check-out dates";
       hasErrors = true;
     }
-    
+
     // Validate guests
     if (guestCounts.adults === 0) {
       newErrors.guests = "At least 1 adult is required";
       hasErrors = true;
     }
-    
+
     setErrors(newErrors);
-    
+
     if (hasErrors) {
       e.preventDefault();
     }
@@ -133,11 +150,14 @@ export function StickyPrice() {
   return (
     <>
       <div className="hidden lg:block">
-        <div className="sticky top-[100px] transition-all duration-300 lg:col-span-1" id="sticky-price">
+        <div
+          className="sticky top-[100px] transition-all duration-300 lg:col-span-1"
+          id="sticky-price"
+        >
           <div className="bg-white rounded-3xl shadow-md p-6 space-y-4">
             {/* Date Card */}
             <div className="bg-white border border-gray-200 rounded-2xl p-4 relative">
-              <div 
+              <div
                 className="flex items-center justify-between mb-4 cursor-pointer"
                 onClick={() => {
                   setShowCalendar(!showCalendar);
@@ -148,9 +168,14 @@ export function StickyPrice() {
                   <CalendarIcon className="text-gray-600" size={20} />
                   <span className="text-gray-600 font-medium">Date</span>
                 </div>
-                <ChevronDown className={`text-gray-600 transition-transform ${showCalendar ? 'rotate-180' : ''}`} size={20} />
+                <ChevronDown
+                  className={`text-gray-600 transition-transform ${
+                    showCalendar ? "rotate-180" : ""
+                  }`}
+                  size={20}
+                />
               </div>
-              
+
               <div className="flex items-center justify-between">
                 <span className="text-black font-medium">
                   {formattedDates.start || "Add dates"}
@@ -159,10 +184,11 @@ export function StickyPrice() {
                   <span className="text-gray-500 mx-2">→</span>
                 )}
                 <span className="text-black font-medium">
-                  {formattedDates.end || (formattedDates.start ? "Add end date" : "")}
+                  {formattedDates.end ||
+                    (formattedDates.start ? "Add end date" : "")}
                 </span>
               </div>
-              
+
               {errors.dates && (
                 <div className="flex items-center mt-2 text-red-500 text-sm">
                   <AlertCircle size={14} className="mr-1" />
@@ -173,7 +199,7 @@ export function StickyPrice() {
 
             {/* Guest Card */}
             <div className="bg-white border border-gray-200 rounded-2xl p-4 relative">
-              <div 
+              <div
                 className="flex items-center justify-between mb-4 cursor-pointer"
                 onClick={() => {
                   setShowGuestCounter(!showGuestCounter);
@@ -184,15 +210,18 @@ export function StickyPrice() {
                   <Users className="text-gray-600" size={20} />
                   <span className="text-gray-600 font-medium">Guest</span>
                 </div>
-                <ChevronDown className={`text-gray-600 transition-transform ${showGuestCounter ? 'rotate-180' : ''}`} size={20} />
+                <ChevronDown
+                  className={`text-gray-600 transition-transform ${
+                    showGuestCounter ? "rotate-180" : ""
+                  }`}
+                  size={20}
+                />
               </div>
-              
+
               <div>
-                <span className="text-black font-medium">
-                  {totalGuests}
-                </span>
+                <span className="text-black font-medium">{totalGuests}</span>
               </div>
-              
+
               {errors.guests && (
                 <div className="flex items-center mt-2 text-red-500 text-sm">
                   <AlertCircle size={14} className="mr-1" />
@@ -214,7 +243,7 @@ export function StickyPrice() {
 
             {/* Reserve Button */}
             <Link href="/payment" className="block">
-              <button 
+              <button
                 className="w-full bg-black text-white rounded-full py-4 text-lg font-medium hover:bg-gray-900 transition-colors"
                 onClick={handleReserveClick}
               >
@@ -231,7 +260,7 @@ export function StickyPrice() {
           <div className="bg-white rounded-2xl shadow-xl max-w-[90vw] max-h-[90vh] overflow-y-auto p-4">
             <div className="flex justify-between items-center mb-4">
               <h3 className="text-lg font-medium">Select dates</h3>
-              <button 
+              <button
                 className="p-1 rounded-full bg-gray-100 hover:bg-gray-200"
                 onClick={() => setShowCalendar(false)}
               >
@@ -248,14 +277,17 @@ export function StickyPrice() {
           <div className="bg-white rounded-2xl shadow-xl max-w-[90vw] max-h-[90vh] overflow-y-auto p-4">
             <div className="flex justify-between items-center mb-4">
               <h3 className="text-lg font-medium">Select guests</h3>
-              <button 
+              <button
                 className="p-1 rounded-full bg-gray-100 hover:bg-gray-200"
                 onClick={() => setShowGuestCounter(false)}
               >
                 <X size={20} />
               </button>
             </div>
-            <GuestCounter onGuestCountChange={handleGuestCountChange} activeTab="campervan" />
+            <GuestCounter
+              onGuestCountChange={handleGuestCountChange}
+              activeTab="campervan"
+            />
           </div>
         </div>
       )}
@@ -269,7 +301,7 @@ export function StickyPrice() {
           </div>
         </div>
         <Link href="/payment">
-          <button 
+          <button
             className="bg-black text-white rounded-full px-6 py-3 text-base font-medium"
             onClick={handleReserveClick}
           >
@@ -277,14 +309,14 @@ export function StickyPrice() {
           </button>
         </Link>
       </div>
-      
+
       {/* Click outside overlay */}
       {(showCalendar || showGuestCounter) && (
-        <div 
-          className="fixed inset-0 bg-black bg-opacity-50 z-[50]" 
+        <div
+          className="fixed inset-0 bg-black bg-opacity-50 z-[50]"
           onClick={handleClickOutside}
         />
       )}
     </>
   );
-} 
+}
