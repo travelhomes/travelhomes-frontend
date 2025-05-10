@@ -187,17 +187,23 @@ function CamperCard({
 
   const displayImageIndex = currentImageIndex % totalImages;
 
-  useEffect(() => {
-    if (!isHovered) {
-      const interval = setInterval(() => {
-        setCurrentImageIndex((prev) =>
-          prev === totalImages * 2 - 1 ? 0 : prev + 1
-        );
-      }, 3000); // Change image every 3 seconds
-
-      return () => clearInterval(interval);
-    }
-  }, [isHovered, totalImages]);
+  // useEffect(() => {
+  //   let interval: NodeJS.Timeout;
+  
+  //   if (!isHovered) {
+  //     interval = setInterval(() => {
+  //       setCurrentImageIndex((prev) =>
+  //         prev === totalImages * 2 - 1 ? 0 : prev + 1
+  //       );
+  //     }, 3000); // Change image every 3 seconds
+  //   }
+  
+  //   // Clear the interval when the component is unmounted or hovered over
+  //   return () => {
+  //     clearInterval(interval);
+  //   };
+  // }, [isHovered, totalImages]); // Only change the interval if `isHovered` or `totalImages` changes
+  
 
   return (
     <Link href="/product">
