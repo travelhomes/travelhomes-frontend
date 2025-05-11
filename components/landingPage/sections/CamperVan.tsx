@@ -12,6 +12,7 @@ const plusJakartaSans = Plus_Jakarta_Sans({
 });
 
 interface PropertyData {
+  id: number;
   title: string;
   avg_rating: number;
   seat_cap: number;
@@ -91,43 +92,62 @@ export default function CamperListing() {
       {campers.length > 5 ? (
         <div className="overflow-x-auto scrollbar-hide">
           <div className="flex gap-4 min-w-full pb-4">
-            {campers.map((camper, index) => (
-              <div key={index} className="min-w-[300px] max-w-[300px] flex-shrink-0">
-                <CamperCard
-                  imageUrl={camper.imageUrl}
-                  title={camper.property.title}
-                  rating={camper.property.avg_rating}
-                  seat_cap={camper.property.seat_cap}
-                  sleep_cap={camper.property.sleep_cap}
-                  regular_price={parseInt(camper.property.regular_price)}
-                  discount_price={parseInt(camper.property.discount_price)}
-                  period="night"
-                  favoriteText={camper.property.rule || ""}
-                  images={camper.images}
-                  city={camper.property.city}
-                />
-              </div>
-            ))}
+            {campers.map((camper) => {
+              if (!camper || !camper.id) {
+                // Log the structure of camper to debug
+                console.error('Camper property missing id:', camper);
+                return null;
+              }
+
+              return (
+                <div key={camper.id} className="min-w-[300px] max-w-[300px] flex-shrink-0">
+                  <CamperCard
+                    id={camper.id}
+                    imageUrl={camper.imageUrl}
+                    title={camper.title}
+                    rating={camper.avg_rating}
+                    seat_cap={camper.seat_cap}
+                    sleep_cap={camper.sleep_cap}
+                    regular_price={parseInt(camper.regular_price)}
+                    discount_price={parseInt(camper.discount_price)}
+                    period="night"
+                    favoriteText={camper.rule || ""}
+                    images={camper.images}
+                    city={camper.city}
+                  />
+                </div>
+              );
+            })}
           </div>
         </div>
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-          {campers.map((camper, index) => (
-            <CamperCard
-              key={index}
-              imageUrl={camper.imageUrl}
-              title={camper.property.title}
-              rating={camper.property.avg_rating}
-              seat_cap={camper.property.seat_cap}
-              sleep_cap={camper.property.sleep_cap}
-              regular_price={parseInt(camper.property.regular_price)}
-              discount_price={parseInt(camper.property.discount_price)}
-              period="night"
-              favoriteText={camper.property.rule || ""}
-              images={camper.images}
-              city={camper.property.city}
-            />
-          ))}
+          {campers.map((camper) => {
+            if (!camper || !camper.id) {
+              // Log the structure of camper to debug
+              console.error('Camper property missing id:', camper);
+              return null;
+            }
+
+            return (
+              <div key={camper.id} className="min-w-[300px] max-w-[300px] flex-shrink-0">
+                <CamperCard
+                  id={camper.id}
+                  imageUrl={camper.imageUrl}
+                  title={camper.title}
+                  rating={camper.avg_rating}
+                  seat_cap={camper.seat_cap}
+                  sleep_cap={camper.sleep_cap}
+                  regular_price={parseInt(camper.regular_price)}
+                  discount_price={parseInt(camper.discount_price)}
+                  period="night"
+                  favoriteText={camper.rule || ""}
+                  images={camper.images}
+                  city={camper.city}
+                />
+              </div>
+            );
+          })}
         </div>
       )}
 
@@ -141,6 +161,7 @@ export default function CamperListing() {
 }
 
 interface CamperCardProps {
+  id: number;
   imageUrl: string;
   title: string;
   rating: number;
@@ -155,6 +176,7 @@ interface CamperCardProps {
 }
 
 function CamperCard({
+  id,
   title,
   rating,
   seat_cap,
@@ -187,20 +209,8 @@ function CamperCard({
 
   const displayImageIndex = currentImageIndex % totalImages;
 
-  useEffect(() => {
-    if (!isHovered) {
-      const interval = setInterval(() => {
-        setCurrentImageIndex((prev) =>
-          prev === totalImages * 2 - 1 ? 0 : prev + 1
-        );
-      }, 3000); // Change image every 3 seconds
-
-      return () => clearInterval(interval);
-    }
-  }, [isHovered, totalImages]);
-
   return (
-    <Link href="/product">
+    <Link href={`/product?id=${id}`}>
       <div className="flex flex-col h-full">
         <div
           className="relative w-full h-[204px] overflow-hidden rounded-[12px]"
@@ -255,8 +265,7 @@ function CamperCard({
             className="absolute top-3 right-3 p-2 rounded-full"
           >
             <Heart
-              className={`w-5 h-5 ${isFavorite ? "fill-red-500 stroke-red-500" : "stroke-white fill-gray-400"
-                }`}
+              className={`w-5 h-5 ${isFavorite ? "fill-red-500 stroke-red-500" : "stroke-white fill-gray-400"}`}
             />
           </button>
 
@@ -270,8 +279,7 @@ function CamperCard({
             {images.map((_, index) => (
               <div
                 key={index}
-                className={`w-1.5 h-1.5 rounded-full bg-white ${index === displayImageIndex ? "opacity-100" : "opacity-60"
-                  }`}
+                className={`w-1.5 h-1.5 rounded-full bg-white ${index === displayImageIndex ? "opacity-100" : "opacity-60"}`}
               />
             ))}
           </div>

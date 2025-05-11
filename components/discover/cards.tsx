@@ -5,6 +5,7 @@ import { Plus_Jakarta_Sans } from "next/font/google";
 import Link from "next/link";
 import Image from "next/image";
 import { Heart, ChevronLeft, ChevronRight } from "lucide-react";
+import { BASE_URL } from "@/config/config"  
 
 const plusJakartaSans = Plus_Jakarta_Sans({
   subsets: ["latin"],
@@ -38,7 +39,7 @@ const DiscoverPage = () => {
       try {
         setLoading(true);
         const response = await axios.get(
-          "http://localhost:5000/api/properties/available",
+          `${BASE_URL}/api/properties/available`,
           {
             params: {
               category_id: 1,

@@ -1,19 +1,19 @@
-import image1 from "@/public/assets/product/car1.png";
-import image2 from "@/public/assets/product/car2.png";
-import image3 from "@/public/assets/product/card3.png";
-import image4 from "@/public/assets/product/card4.png";
-import Image from "next/image";
+"use client";
 import { useState, useEffect } from "react";
+import Image from "next/image";
 import { X, ChevronLeft, ChevronRight } from "lucide-react";
-import { StaticImageData } from "next/image";
 
 // Define the type for image objects
 interface ImageData {
-  src: StaticImageData;
+  src: string; // Changed to string for image URL
   alt: string;
 }
 
-export function ProductHero() {
+interface ProductHeroProps {
+  propertyData: any; // Pass dynamic property data
+}
+
+export function ProductHero({ propertyData }: ProductHeroProps) {
   const [showModal, setShowModal] = useState(false);
   const [selectedImage, setSelectedImage] = useState<ImageData | null>(null);
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -22,14 +22,16 @@ export function ProductHero() {
   const [touchEnd, setTouchEnd] = useState<number | null>(null);
 
   useEffect(() => {
-    // Collect all images for the gallery view
-    setAllImages([
-      { src: image1, alt: "image 1" },
-      { src: image2, alt: "image 2" },
-      { src: image3, alt: "image 3" },
-      { src: image4, alt: "image 4" },
-    ]);
-  }, []);
+    if (propertyData?.image_url) {
+      // Map the image URLs from the property data to ImageData array
+      setAllImages(
+        propertyData.image_url.map((url: string, index: number) => ({
+          src: url,
+          alt: `image ${index + 1}`,
+        }))
+      );
+    }
+  }, [propertyData]);
 
   // Disable body scroll when modal is open
   useEffect(() => {
@@ -127,67 +129,68 @@ export function ProductHero() {
 
   return (
     <>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-8">
-        <div className="col-span-1">
-          <div
-            className="cursor-pointer"
-            onClick={() => handleImageClick(allImages[0])}
-          >
-            <Image
-              src={image1}
-              alt="image 1"
-              width={500}
-              height={500}
-              className="w-full h-[300px] md:h-full object-cover md:rounded-tl-[24px] md:rounded-bl-[24px]"
-            />
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-[2rem]">
+        {/* Image Display */}
+        {allImages.slice(0, 1).map((image, index) => (
+          <div key={index} className="col-span-1">
+            <div
+              className="cursor-pointer"
+              onClick={() => handleImageClick(image)}
+            >
+              <Image
+                src={image.src}
+                alt={image.alt}
+                width={500}
+                height={500}
+                className="w-full h-[300px] md:h-full object-cover md:rounded-tl-[24px] md:rounded-bl-[24px]"
+              />
+            </div>
           </div>
-        </div>
+        ))}
+
         <div className="col-span-1 grid grid-rows-2 gap-4">
           <div className="grid grid-cols-2 gap-4">
-            <div
-              className="cursor-pointer"
-              onClick={() => handleImageClick(allImages[1])}
-            >
-              <Image
-                src={image2}
-                alt="image 2"
-                width={500}
-                height={500}
-                className="w-full h-[150px] md:h-full object-cover md:rounded-none"
-              />
-            </div>
-            <div
-              className="cursor-pointer"
-              onClick={() => handleImageClick(allImages[2])}
-            >
-              <Image
-                src={image3}
-                alt="image 3"
-                width={500}
-                height={500}
-                className="w-full h-[150px] md:h-full object-cover md:rounded-tr-[24px]"
-              />
-            </div>
+            {allImages.slice(1, 3).map((image, index) => (
+              <div
+                key={index}
+                className="cursor-pointer"
+                onClick={() => handleImageClick(image)}
+              >
+                <Image
+                  src={image.src}
+                  alt={image.alt}
+                  width={500}
+                  height={500}
+                  className="w-full h-[150px] md:h-[300px] object-cover md:rounded-none"
+                />
+              </div>
+            ))}
           </div>
+
           <div className="relative">
-            <div
-              className="cursor-pointer"
-              onClick={() => handleImageClick(allImages[3])}
-            >
-              <Image
-                src={image4}
-                alt="image 4"
-                width={500}
-                height={500}
-                className="w-full h-[150px] md:h-full object-cover md:rounded-br-[24px]"
-              />
-            </div>
-            <button
-              onClick={viewAllPhotos}
-              className="absolute bottom-4 right-4 px-4 py-2 bg-white text-black rounded-full shadow-md text-sm md:text-base"
-            >
-              View all photos
-            </button>
+            {allImages.slice(3, 4).map((image, index) => (
+              <div
+                key={index}
+                className="cursor-pointer"
+                onClick={() => handleImageClick(image)}
+              >
+                <Image
+                  src={image.src}
+                  alt={image.alt}
+                  width={500}
+                  height={500}
+                  className="w-full h-[150px] md:h-[300px] object-cover md:rounded-br-[24px]"
+                />
+              </div>
+            ))}
+            {allImages.length > 3 && (
+              <button
+                onClick={viewAllPhotos}
+                className="absolute bottom-4 right-4 px-[16px] md:px-[24px] py-[8px] md:py-[12px] bg-white text-black rounded-full shadow-md text-sm md:text-base"
+              >
+                View all photos
+              </button>
+            )}
           </div>
         </div>
       </div>

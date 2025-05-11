@@ -14,6 +14,8 @@ import { Calendar } from "./searchcomponents/calendar";
 import { TimeSelector } from "./searchcomponents/time-selector";
 import { useRouter } from "next/navigation";
 import { AlertCircle } from "lucide-react";
+import axios from 'axios';
+import { BASE_URL } from '@/config/config';
 
 interface DateTimeRange {
   checkIn?: {
@@ -34,18 +36,10 @@ interface EditSelectionModal {
   type: "checkIn" | "checkOut";
 }
 
-const dummyLocations = [
-  "Bangkok",
-  "Phuket",
-  "Manali",
-  "Shimla",
-  "Goa",
-  "Mumbai",
-  "Delhi",
-  "Bangalore",
-  "Chennai",
-  "Kolkata",
-];
+interface City {
+  id: number;
+  name: string;
+}
 
 const dummyActivities = [
   "Trekking",
@@ -77,7 +71,8 @@ export default function SearchFilter({ activeTab = "campervan" }) {
   );
   const [editSelectionModal, setEditSelectionModal] =
     useState<EditSelectionModal>({ show: false, type: "checkIn" });
-
+  const [locations, setLocations] = useState<string[]>([]);
+  
   // Added for selected dates storage
   const [selectedDates, setSelectedDates] = useState<Date[]>([]);
 
@@ -127,6 +122,32 @@ export default function SearchFilter({ activeTab = "campervan" }) {
     activity?: string;
   }>({});
 
+  
+  useEffect(() => {
+    const fetchLocations = async () => {
+      try {
+        const BASE_URL = process.env.NEXT_PUBLIC_BACKEND_URL || "http://3.7.52.212:5000";
+  
+        const response = await axios.get(`${BASE_URL}/api/auth/cities/country/101`);
+        const data = response.data || [];
+  
+        // Safely extract city names, avoiding duplicates and non-string values
+        const cityNames = data
+          .map((loc: any) => typeof loc === 'string' ? loc : loc?.name)
+          .filter((name :any): name is string => typeof name === 'string');
+  
+        // Remove duplicates to avoid React key errors
+        const uniqueCityNames : any = Array.from(new Set(cityNames));
+  
+        setLocations(uniqueCityNames);
+      } catch (error) {
+        console.error("Error fetching locations:", error);
+      }
+    };
+  
+    fetchLocations();
+  }, []);
+  
   // Close all popups
   const closeAllPopups = () => {
     setGuestCounterOpen(false);
@@ -309,7 +330,7 @@ export default function SearchFilter({ activeTab = "campervan" }) {
 
   const handleLocationSearch = (input: string, type: "from" | "to") => {
     const value = input.toLowerCase();
-    const filtered = dummyLocations.filter((location) =>
+    const filtered = locations.filter(location => 
       location.toLowerCase().includes(value)
     );
 
