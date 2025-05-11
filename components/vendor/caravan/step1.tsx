@@ -12,9 +12,9 @@ import Link from "next/link";
 import { ArrowRightIcon } from "@/public/assets/CustomIcon";
 import { Plus_Jakarta_Sans } from "next/font/google";
 
-const plusJakartaSans = Plus_Jakarta_Sans({ 
+const plusJakartaSans = Plus_Jakarta_Sans({
   subsets: ["latin"],
-  weight: ['400', '500', '600', '700'],
+  weight: ["400", "500", "600", "700"],
 });
 
 interface Step1Props {
@@ -24,13 +24,18 @@ interface Step1Props {
   totalSteps: number;
 }
 
-export default function Step1({ onNext, onBack, currentStep, totalSteps }: Step1Props) {
+export default function Step1({
+  onNext,
+  onBack,
+  currentStep,
+  totalSteps,
+}: Step1Props) {
   const [formData, setFormData] = useState({
     name: "",
     description: "",
   });
 
-  const [rulesArray, setRulesArray] = useState<string[]>(['']);
+  const [rulesArray, setRulesArray] = useState<string[]>([""]);
   const [errors, setErrors] = useState<{
     name?: string;
     description?: string;
@@ -50,21 +55,23 @@ export default function Step1({ onNext, onBack, currentStep, totalSteps }: Step1
   const [activeUpload, setActiveUpload] = useState<string>("");
 
   // Handle form input changes
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleInputChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
     const { name, value } = e.target;
-    
+
     // Apply character limits based on field name
     if (name === "name" && value.length > 50) {
       return; // Prevent input if name exceeds 50 characters
     }
-    
+
     if (name === "description" && value.length > 200) {
       return; // Prevent input if description exceeds 200 characters
     }
-    
-    setFormData(prev => ({
+
+    setFormData((prev) => ({
       ...prev,
-      [name]: value
+      [name]: value,
     }));
   };
 
@@ -77,7 +84,7 @@ export default function Step1({ onNext, onBack, currentStep, totalSteps }: Step1
 
   // Add a new rule field
   const addRuleField = () => {
-    setRulesArray([...rulesArray, '']);
+    setRulesArray([...rulesArray, ""]);
   };
 
   const handleImageClick = (position: string) => {
@@ -111,32 +118,34 @@ export default function Step1({ onNext, onBack, currentStep, totalSteps }: Step1
       rules?: string;
       images?: string;
     } = {};
-    
+
     // Check name
     if (!formData.name.trim()) {
       newErrors.name = "Name is required";
     }
-    
+
     // Check description
     if (!formData.description.trim()) {
       newErrors.description = "Description is required";
     }
-    
+
     // Check rules
-    const hasRules = rulesArray.some(rule => rule.trim() !== '');
+    const hasRules = rulesArray.some((rule) => rule.trim() !== "");
     if (!hasRules) {
       newErrors.rules = "At least one rule is required";
     }
-    
+
     // Check images
     // Count valid images (non-empty strings)
-    const validImageCount = Object.values(images).filter(img => img !== "").length;
+    const validImageCount = Object.values(images).filter(
+      (img) => img !== ""
+    ).length;
     if (validImageCount < 2) {
       newErrors.images = "At least 2 photos are required";
     } else if (!images.cover) {
       newErrors.images = "Cover photo is required";
     }
-    
+
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -145,25 +154,28 @@ export default function Step1({ onNext, onBack, currentStep, totalSteps }: Step1
   const handleSubmit = () => {
     if (validateForm()) {
       // Combine all rules into a single string or pass as array
-      const allRules = rulesArray.filter(rule => rule.trim() !== '');
-      
+      const allRules = rulesArray.filter((rule) => rule.trim() !== "");
+
       // Save form data and rules to localStorage or state management
       const formDataWithRules = {
         ...formData,
         rules: allRules,
-        images: images
+        images: images,
       };
-      
+
       // You can save to localStorage or pass to parent component
-      localStorage.setItem('caravanFormStep1', JSON.stringify(formDataWithRules));
-      
+      localStorage.setItem(
+        "caravanFormStep1",
+        JSON.stringify(formDataWithRules)
+      );
+
       // Proceed to next step
       onNext();
     } else {
       // Scroll to the first error
-      const firstError = document.querySelector('.border-red-500');
+      const firstError = document.querySelector(".border-red-500");
       if (firstError) {
-        firstError.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        firstError.scrollIntoView({ behavior: "smooth", block: "center" });
       }
     }
   };
@@ -176,17 +188,17 @@ export default function Step1({ onNext, onBack, currentStep, totalSteps }: Step1
 
       {/* Mobile: Top navigation with back button and progress bar */}
       <div className="flex md:hidden items-center justify-between px-4 sm:px-6 mt-10 mb-6">
-        <Link href="" className="inline-flex items-center text-sm text-muted-foreground hover:text-primary">
+        <Link
+          href=""
+          className="inline-flex items-center text-sm text-muted-foreground hover:text-primary"
+        >
           <span className="mr-2">
             <ArrowRightIcon />
           </span>
         </Link>
-        
+
         <div className="flex-grow flex justify-center">
-          <StepProgress 
-            currentStep={currentStep} 
-            totalSteps={totalSteps} 
-          />
+          <StepProgress currentStep={currentStep} totalSteps={totalSteps} />
         </div>
       </div>
 
@@ -203,7 +215,7 @@ export default function Step1({ onNext, onBack, currentStep, totalSteps }: Step1
             <div className="space-y-4 md:space-y-6 w-full">
               {/* Name Input */}
               <div>
-                <label className=" font-normal text-[#334054] block mb-2">
+                <label className="font-normal text-[#334054] block mb-2">
                   Name
                 </label>
                 <Input
@@ -211,10 +223,14 @@ export default function Step1({ onNext, onBack, currentStep, totalSteps }: Step1
                   value={formData.name}
                   onChange={handleInputChange}
                   placeholder="Name"
-                  className={`border-[#EAECF0] h-11 outline-none focus:ring-0 focus:border-[#B0B0B0] ${errors.name ? 'border-red-500' : ''}`}
+                  className={`border-[#EAECF0] h-11 outline-none focus:ring-0 focus:border-[#B0B0B0] ${
+                    errors.name ? "border-red-500" : ""
+                  }`}
                 />
                 <div className="flex justify-between mt-1">
-                  <span className="text-xs text-red-500">{errors.name || ''}</span>
+                  <span className="text-xs text-red-500">
+                    {errors.name || ""}
+                  </span>
                   <span className="text-right text-xs text-[#334054]">
                     {formData.name.length}/50
                   </span>
@@ -231,10 +247,14 @@ export default function Step1({ onNext, onBack, currentStep, totalSteps }: Step1
                   value={formData.description}
                   onChange={handleInputChange}
                   placeholder="Write here..."
-                  className={`border-[#EAECF0] min-h-[120px] bg-white focus:ring-0 focus:border-[#B0B0B0] resize-none ${errors.description ? 'border-red-500' : ''}`}
+                  className={`border-[#EAECF0] min-h-[120px] bg-white focus:ring-0 focus:border-[#B0B0B0] resize-none ${
+                    errors.description ? "border-red-500" : ""
+                  }`}
                 />
                 <div className="flex justify-between mt-1">
-                  <span className="text-xs text-red-500">{errors.description || ''}</span>
+                  <span className="text-xs text-red-500">
+                    {errors.description || ""}
+                  </span>
                   <span className="text-right text-xs text-[#334054]">
                     {formData.description.length}/200
                   </span>
@@ -254,11 +274,17 @@ export default function Step1({ onNext, onBack, currentStep, totalSteps }: Step1
                       value={rule}
                       onChange={(e) => handleRuleChange(index, e.target.value)}
                       placeholder="Write here..."
-                      className={`border-[#EAECF0] h-11 bg-white focus:ring-0 focus:border-[#B0B0B0] w-full ${errors.rules && index === 0 ? 'border-red-500' : ''}`}
+                      className={`border-[#EAECF0] h-11 bg-white focus:ring-0 focus:border-[#B0B0B0] w-full ${
+                        errors.rules && index === 0 ? "border-red-500" : ""
+                      }`}
                     />
                   </div>
                 ))}
-                {errors.rules && <div className="text-xs text-red-500 mb-2">{errors.rules}</div>}
+                {errors.rules && (
+                  <div className="text-xs text-red-500 mb-2">
+                    {errors.rules}
+                  </div>
+                )}
                 <Button
                   variant="ghost"
                   onClick={addRuleField}
@@ -376,7 +402,11 @@ export default function Step1({ onNext, onBack, currentStep, totalSteps }: Step1
                 <p className="text-right mt-2 text-[14px] text-[#667085]">
                   (Minimum 5 photo required)
                 </p>
-                {errors.images && <div className="text-xs text-red-500 mt-1">{errors.images}</div>}
+                {errors.images && (
+                  <div className="text-xs text-red-500 mt-1">
+                    {errors.images}
+                  </div>
+                )}
               </div>
             </div>
           </div>
@@ -395,11 +425,8 @@ export default function Step1({ onNext, onBack, currentStep, totalSteps }: Step1
 
       {/* Desktop: Original navigation with progress and next/back buttons - fixed at bottom */}
       <div className="hidden md:flex fixed bottom-0 left-0 right-0 bg-white justify-between items-center border-t border-[#E7E8E9] pt-6 pb-6 px-4 sm:px-6 md:px-8 lg:px-[7rem] ">
-        <StepProgress 
-          currentStep={currentStep} 
-          totalSteps={totalSteps} 
-        />
-        <StepNavigation 
+        <StepProgress currentStep={currentStep} totalSteps={totalSteps} />
+        <StepNavigation
           onNext={handleSubmit}
           onBack={onBack}
           isFirstStep={currentStep === 1}

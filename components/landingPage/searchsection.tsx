@@ -1,12 +1,19 @@
-"use client"
-import React, { useState, useRef, useEffect, useCallback  } from 'react';
-import { LocationIcon, CheckInIcon, CheckOutIcon, GuestIcon, SearchIcon, ActivelyIcon } from "@/public/assets/CustomIcon"
-import { GuestCounter } from './searchcomponents/guest-counter';
-import { LocationSearch } from './searchcomponents/location-search';
-import { Calendar } from './searchcomponents/calendar';
-import { TimeSelector } from './searchcomponents/time-selector';
-import { useRouter } from 'next/navigation';
-import { AlertCircle } from 'lucide-react';
+"use client";
+import React, { useState, useRef, useEffect, useCallback } from "react";
+import {
+  LocationIcon,
+  CheckInIcon,
+  CheckOutIcon,
+  GuestIcon,
+  SearchIcon,
+  ActivelyIcon,
+} from "@/public/assets/CustomIcon";
+import { GuestCounter } from "./searchcomponents/guest-counter";
+import { LocationSearch } from "./searchcomponents/location-search";
+import { Calendar } from "./searchcomponents/calendar";
+import { TimeSelector } from "./searchcomponents/time-selector";
+import { useRouter } from "next/navigation";
+import { AlertCircle } from "lucide-react";
 import axios from 'axios';
 import { BASE_URL } from '@/config/config';
 
@@ -14,39 +21,25 @@ interface DateTimeRange {
   checkIn?: {
     date: Date;
     time?: string;
-    period?: 'AM' | 'PM';
+    period?: "AM" | "PM";
   };
   checkOut?: {
     date: Date;
     time?: string;
-    period?: 'AM' | 'PM';
+    period?: "AM" | "PM";
   };
 }
 
 // Add this interface for the edit selection modal
 interface EditSelectionModal {
   show: boolean;
-  type: 'checkIn' | 'checkOut';
+  type: "checkIn" | "checkOut";
 }
-
 
 interface City {
   id: number;
   name: string;
 }
-
-// const dummyLocations = [
-//   "Bangkok",
-//   "Phuket",
-//   "Manali",
-//   "Shimla",
-//   "Goa",
-//   "Mumbai",
-//   "Delhi",
-//   "Bangalore",
-//   "Chennai",
-//   "Kolkata"
-// ];
 
 const dummyActivities = [
   "Trekking",
@@ -63,18 +56,21 @@ const dummyActivities = [
   "Photography",
   "Wildlife Safari",
   "River Rafting",
-  "Zip Lining"
+  "Zip Lining",
 ];
 
-export default function SearchFilter({ activeTab = 'campervan' }) {
+export default function SearchFilter({ activeTab = "campervan" }) {
   const router = useRouter();
   const [isGuestCounterOpen, setGuestCounterOpen] = useState(false);
   const [isLocationSearchOpen, setLocationSearchOpen] = useState(false);
   const [isCalendarOpen, setCalendarOpen] = useState(false);
   const [isActivitySearchOpen, setActivitySearchOpen] = useState(false);
   const [isTimePickerOpen, setTimePickerOpen] = useState(false);
-  const [timePickerType, setTimePickerType] = useState<'checkIn' | 'checkOut'>('checkIn');
-  const [editSelectionModal, setEditSelectionModal] = useState<EditSelectionModal>({ show: false, type: 'checkIn' });
+  const [timePickerType, setTimePickerType] = useState<"checkIn" | "checkOut">(
+    "checkIn"
+  );
+  const [editSelectionModal, setEditSelectionModal] =
+    useState<EditSelectionModal>({ show: false, type: "checkIn" });
   const [locations, setLocations] = useState<string[]>([]);
   
   // Added for selected dates storage
@@ -108,7 +104,7 @@ export default function SearchFilter({ activeTab = 'campervan' }) {
   const [guestCount, setGuestCount] = useState({
     adults: 0,
     children: 0,
-    infants: 0
+    infants: 0,
   });
 
   const [activityInput, setActivityInput] = useState("Trekking");
@@ -161,69 +157,94 @@ export default function SearchFilter({ activeTab = 'campervan' }) {
     setCalendarOpen(false);
     setActivitySearchOpen(false);
     setTimePickerOpen(false);
-    setEditSelectionModal({ show: false, type: 'checkIn' });
+    setEditSelectionModal({ show: false, type: "checkIn" });
   };
 
   // Handle click outside
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       // Guest Counter popup
-      if (isGuestCounterOpen && 
-          !guestPopupRef.current?.contains(event.target as Node) && 
-          !guestButtonRef.current?.contains(event.target as Node)) {
+      if (
+        isGuestCounterOpen &&
+        !guestPopupRef.current?.contains(event.target as Node) &&
+        !guestButtonRef.current?.contains(event.target as Node)
+      ) {
         setGuestCounterOpen(false);
       }
-      
+
       // Location Search popup
-      if (isLocationSearchOpen && 
-          !locationPopupRef.current?.contains(event.target as Node) && 
-          !locationButtonRef.current?.contains(event.target as Node)) {
+      if (
+        isLocationSearchOpen &&
+        !locationPopupRef.current?.contains(event.target as Node) &&
+        !locationButtonRef.current?.contains(event.target as Node)
+      ) {
         setLocationSearchOpen(false);
       }
-      
+
       // Calendar popup
-      if (isCalendarOpen && 
-          !calendarPopupRef.current?.contains(event.target as Node) && 
-          !checkInButtonRef.current?.contains(event.target as Node) && 
-          !checkOutButtonRef.current?.contains(event.target as Node)) {
+      if (
+        isCalendarOpen &&
+        !calendarPopupRef.current?.contains(event.target as Node) &&
+        !checkInButtonRef.current?.contains(event.target as Node) &&
+        !checkOutButtonRef.current?.contains(event.target as Node)
+      ) {
         setCalendarOpen(false);
       }
 
       // Activity popup
-      if (isActivitySearchOpen && 
-          !activityPopupRef.current?.contains(event.target as Node) && 
-          !activityButtonRef.current?.contains(event.target as Node)) {
+      if (
+        isActivitySearchOpen &&
+        !activityPopupRef.current?.contains(event.target as Node) &&
+        !activityButtonRef.current?.contains(event.target as Node)
+      ) {
         setActivitySearchOpen(false);
       }
 
       // Time picker popup
-      if (isTimePickerOpen && 
-          !timePickerRef.current?.contains(event.target as Node)) {
+      if (
+        isTimePickerOpen &&
+        !timePickerRef.current?.contains(event.target as Node)
+      ) {
         setTimePickerOpen(false);
       }
 
       // Edit selection modal
-      if (editSelectionModal.show && 
-          !editSelectionModalRef.current?.contains(event.target as Node)) {
-        setEditSelectionModal({ show: false, type: 'checkIn' });
+      if (
+        editSelectionModal.show &&
+        !editSelectionModalRef.current?.contains(event.target as Node)
+      ) {
+        setEditSelectionModal({ show: false, type: "checkIn" });
       }
 
       // From Location Search popup
-      if (isFromLocationSearchOpen && 
-          !fromLocationPopupRef.current?.contains(event.target as Node)) {
+      if (
+        isFromLocationSearchOpen &&
+        !fromLocationPopupRef.current?.contains(event.target as Node)
+      ) {
         setFromLocationSearchOpen(false);
       }
-      
+
       // To Location Search popup
-      if (isToLocationSearchOpen && 
-          !toLocationPopupRef.current?.contains(event.target as Node)) {
+      if (
+        isToLocationSearchOpen &&
+        !toLocationPopupRef.current?.contains(event.target as Node)
+      ) {
         setToLocationSearchOpen(false);
       }
     };
 
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, [isFromLocationSearchOpen, isToLocationSearchOpen, isGuestCounterOpen, isCalendarOpen, isActivitySearchOpen, isTimePickerOpen, isLocationSearchOpen, editSelectionModal.show]);
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [
+    isFromLocationSearchOpen,
+    isToLocationSearchOpen,
+    isGuestCounterOpen,
+    isCalendarOpen,
+    isActivitySearchOpen,
+    isTimePickerOpen,
+    isLocationSearchOpen,
+    editSelectionModal.show,
+  ]);
 
   const toggleGuestCounter = () => {
     closeAllPopups();
@@ -240,7 +261,7 @@ export default function SearchFilter({ activeTab = 'campervan' }) {
     setCalendarOpen(true);
   };
 
-  const handleCheckInOutClick = (type: 'checkIn' | 'checkOut') => {
+  const handleCheckInOutClick = (type: "checkIn" | "checkOut") => {
     // If no dates or times are selected yet, or we want to start fresh, open the time picker
     closeAllPopups();
     setTimePickerType(type);
@@ -256,29 +277,32 @@ export default function SearchFilter({ activeTab = 'campervan' }) {
     return formattedDate;
   };
 
-  const handleTimeSelect = (timeWithPeriod: string, type: 'checkIn' | 'checkOut') => {
-    setDateTimeRange(prev => ({
+  const handleTimeSelect = (
+    timeWithPeriod: string,
+    type: "checkIn" | "checkOut"
+  ) => {
+    setDateTimeRange((prev) => ({
       ...prev,
       [type]: {
         ...prev[type],
-        time: timeWithPeriod
-      }
+        time: timeWithPeriod,
+      },
     }));
-    
+
     // We don't close the picker automatically now as users can set both times at once
     // The picker will be closed when the user clicks "Done" button
   };
 
   // Handler for when user wants to edit date
-  const handleEditDate = (type: 'checkIn' | 'checkOut') => {
-    setEditSelectionModal({ show: false, type: 'checkIn' });
+  const handleEditDate = (type: "checkIn" | "checkOut") => {
+    setEditSelectionModal({ show: false, type: "checkIn" });
     setTimePickerType(type);
     setCalendarOpen(true);
   };
 
   // Handler for when user wants to edit time
-  const handleEditTime = (type: 'checkIn' | 'checkOut') => {
-    setEditSelectionModal({ show: false, type: 'checkIn' });
+  const handleEditTime = (type: "checkIn" | "checkOut") => {
+    setEditSelectionModal({ show: false, type: "checkIn" });
     setTimePickerType(type);
     setTimePickerOpen(true);
   };
@@ -286,12 +310,12 @@ export default function SearchFilter({ activeTab = 'campervan' }) {
   const formatGuestCount = () => {
     const total = guestCount.adults + guestCount.children + guestCount.infants;
     if (total === 0) return "Add guests";
-    return `${total} guest${total > 1 ? 's' : ''}`;
+    return `${total} guest${total > 1 ? "s" : ""}`;
   };
 
   const handleActivitySearch = (input: string) => {
     const value = input.toLowerCase();
-    const filtered = dummyActivities.filter(activity => 
+    const filtered = dummyActivities.filter((activity) =>
       activity.toLowerCase().includes(value)
     );
     setActivityInput(input);
@@ -304,13 +328,13 @@ export default function SearchFilter({ activeTab = 'campervan' }) {
     setActivitySearchOpen(false);
   };
 
-  const handleLocationSearch = (input: string, type: 'from' | 'to') => {
+  const handleLocationSearch = (input: string, type: "from" | "to") => {
     const value = input.toLowerCase();
     const filtered = locations.filter(location => 
       location.toLowerCase().includes(value)
     );
-    
-    if (type === 'from') {
+
+    if (type === "from") {
       setFromLocationInput(input);
       setFromSuggestions(filtered);
     } else {
@@ -319,8 +343,8 @@ export default function SearchFilter({ activeTab = 'campervan' }) {
     }
   };
 
-  const selectLocation = (location: string, type: 'from' | 'to') => {
-    if (type === 'from') {
+  const selectLocation = (location: string, type: "from" | "to") => {
+    if (type === "from") {
       setFromLocationInput(location);
       setFromSuggestions([]);
       setFromLocationSearchOpen(false);
@@ -331,13 +355,12 @@ export default function SearchFilter({ activeTab = 'campervan' }) {
     }
   };
 
-  const handleGuestCountChange = useCallback((counts: {
-    adults: number;
-    children: number;
-    infants: number;
-  }) => {
-    setGuestCount(counts);
-  }, []);
+  const handleGuestCountChange = useCallback(
+    (counts: { adults: number; children: number; infants: number }) => {
+      setGuestCount(counts);
+    },
+    []
+  );
 
   // Validate all required fields before search
   const validateSearch = () => {
@@ -351,80 +374,80 @@ export default function SearchFilter({ activeTab = 'campervan' }) {
       guests?: string;
       activity?: string;
     } = {};
-    
+
     let isValid = true;
-    
-    if (activeTab === 'campervan') {
+
+    if (activeTab === "campervan") {
       // Validate from and to locations
       if (!fromLocationInput.trim()) {
-        errors.fromLocation = 'Please enter departure location';
+        errors.fromLocation = "Please enter departure location";
         isValid = false;
       }
-      
+
       if (!toLocationInput.trim()) {
-        errors.toLocation = 'Please enter destination location';
+        errors.toLocation = "Please enter destination location";
         isValid = false;
       }
-      
+
       // Validate check-in and check-out dates and times
       if (!dateTimeRange.checkIn?.date) {
-        errors.checkIn = 'Please select check-in date and time';
+        errors.checkIn = "Please select check-in date and time";
         isValid = false;
       } else if (!dateTimeRange.checkIn?.time) {
-        errors.checkIn = 'Please select check-in time';
+        errors.checkIn = "Please select check-in time";
         isValid = false;
       }
-      
+
       if (!dateTimeRange.checkOut?.date) {
-        errors.checkOut = 'Please select check-out date and time';
+        errors.checkOut = "Please select check-out date and time";
         isValid = false;
       } else if (!dateTimeRange.checkOut?.time) {
-        errors.checkOut = 'Please select check-out time';
+        errors.checkOut = "Please select check-out time";
         isValid = false;
       }
-    } else if (activeTab === 'uniquestay') {
+    } else if (activeTab === "uniquestay") {
       // Validate location
       if (!selectedLocation || selectedLocation === "Thailand") {
-        errors.location = 'Please select a location';
+        errors.location = "Please select a location";
         isValid = false;
       }
-      
+
       // Validate check-in and check-out dates
       if (!dateTimeRange.checkIn?.date) {
-        errors.checkIn = 'Please select check-in date';
+        errors.checkIn = "Please select check-in date";
         isValid = false;
       }
-      
+
       if (!dateTimeRange.checkOut?.date) {
-        errors.checkOut = 'Please select check-out date';
+        errors.checkOut = "Please select check-out date";
         isValid = false;
       }
-    } else if (activeTab === 'activity') {
+    } else if (activeTab === "activity") {
       // Validate location
       if (!selectedLocation || selectedLocation === "Thailand") {
-        errors.location = 'Please select a location';
+        errors.location = "Please select a location";
         isValid = false;
       }
-      
+
       // Validate date
       if (!dateTimeRange.checkIn?.date) {
-        errors.dates = 'Please select a date';
+        errors.dates = "Please select a date";
         isValid = false;
       }
-      
+
       // Validate activity
       if (!activityInput.trim()) {
-        errors.activity = 'Please select an activity';
+        errors.activity = "Please select an activity";
         isValid = false;
       }
     }
-    
+
     // Validate guests - require at least one adult, not just any guest
     if (guestCount.adults === 0) {
-      errors.guests = 'Please select at least one adult';
+      errors.guests = "Please select at least one adult";
       isValid = false;
     }
-    
+
     setValidationErrors(errors);
     return isValid;
   };
@@ -434,24 +457,25 @@ export default function SearchFilter({ activeTab = 'campervan' }) {
     if (validateSearch()) {
       // Construct the query parameters
       const queryParams = new URLSearchParams({
-        category_id: '1',  // Example category_id (you can dynamically change it)
-        from_date: dateTimeRange.checkIn?.date?.toISOString().split('T')[0] || '',
-        to_date: dateTimeRange.checkOut?.date?.toISOString().split('T')[0] || '',
+        category_id: "1", // Example category_id (you can dynamically change it)
+        from_date:
+          dateTimeRange.checkIn?.date?.toISOString().split("T")[0] || "",
+        to_date:
+          dateTimeRange.checkOut?.date?.toISOString().split("T")[0] || "",
         from_place: fromLocationInput,
-        to_place: toLocationInput
+        to_place: toLocationInput,
       });
 
       // Redirect to /discover with the search query params
       router.push(`/discover?${queryParams.toString()}`);
     }
-};
-
+  };
 
   return (
     <div className="hidden md:block relative max-w-7xl mx-auto">
-      <div className="flex h-[100px] items-center gap-2 bg-[#F6F6F6] px-[2rem] py-[18px] rounded-[20px]">
+      <div className="flex h-[120px] items-center gap-2 bg-[#F6F6F6] px-[2rem] py-[18px] rounded-[20px]">
         <div className="flex items-center gap-2 flex-1">
-          {activeTab === 'campervan' ? (
+          {activeTab === "campervan" ? (
             <>
               <div className="flex flex-col flex-1 relative">
                 <div className="text-sm text-gray-500 flex items-center gap-2">
@@ -463,13 +487,13 @@ export default function SearchFilter({ activeTab = 'campervan' }) {
                 <input
                   type="text"
                   value={fromLocationInput}
-                  onChange={(e) => handleLocationSearch(e.target.value, 'from')}
+                  onChange={(e) => handleLocationSearch(e.target.value, "from")}
                   onFocus={() => setFromLocationSearchOpen(true)}
                   placeholder="Enter location"
                   className="bg-transparent text-[#211C16] text-[18px] font-medium focus:outline-none ml-2 w-full"
                 />
                 {validationErrors.fromLocation && (
-                  <div className="absolute top-full left-0 text-red-500 text-xs font-medium mt-1 ml-2">
+                  <div className="absolute top-full -left-1 text-red-500 text-xs font-medium mt-1">
                     <span className="flex items-center">
                       <AlertCircle className="h-3 w-3 mr-1 inline-flex" />
                       {validationErrors.fromLocation}
@@ -477,14 +501,14 @@ export default function SearchFilter({ activeTab = 'campervan' }) {
                   </div>
                 )}
                 {isFromLocationSearchOpen && fromSuggestions.length > 0 && (
-                  <div 
+                  <div
                     ref={fromLocationPopupRef}
-                    className="absolute top-full left-0 mt-2 z-50 bg-white rounded-lg shadow-lg w-full"
+                    className="absolute top-full -left-1 mt-2 z-50 bg-white rounded-lg shadow-lg w-full"
                   >
                     {fromSuggestions.map((location) => (
                       <button
                         key={location}
-                        onClick={() => selectLocation(location, 'from')}
+                        onClick={() => selectLocation(location, "from")}
                         className="w-full  text-left px-4 py-2 hover:bg-gray-100"
                       >
                         {location}
@@ -506,13 +530,13 @@ export default function SearchFilter({ activeTab = 'campervan' }) {
                 <input
                   type="text"
                   value={toLocationInput}
-                  onChange={(e) => handleLocationSearch(e.target.value, 'to')}
+                  onChange={(e) => handleLocationSearch(e.target.value, "to")}
                   onFocus={() => setToLocationSearchOpen(true)}
                   placeholder="Enter location"
                   className="bg-transparent text-[#211C16] text-[18px] font-medium focus:outline-none ml-2 w-full"
                 />
                 {validationErrors.toLocation && (
-                  <div className="absolute top-full left-0 text-red-500 text-xs font-medium mt-1 ml-2">
+                  <div className="absolute top-full -left-1 text-red-500 text-xs font-medium mt-1">
                     <span className="flex items-center">
                       <AlertCircle className="h-3 w-3 mr-1 inline-flex" />
                       {validationErrors.toLocation}
@@ -520,14 +544,14 @@ export default function SearchFilter({ activeTab = 'campervan' }) {
                   </div>
                 )}
                 {isToLocationSearchOpen && toSuggestions.length > 0 && (
-                  <div 
+                  <div
                     ref={toLocationPopupRef}
                     className="absolute top-full left-0 mt-2 z-50 bg-white rounded-lg shadow-lg w-full"
                   >
                     {toSuggestions.map((location) => (
                       <button
                         key={location}
-                        onClick={() => selectLocation(location, 'to')}
+                        onClick={() => selectLocation(location, "to")}
                         className="w-full text-left px-4 py-2 hover:bg-gray-100"
                       >
                         {location}
@@ -545,15 +569,15 @@ export default function SearchFilter({ activeTab = 'campervan' }) {
                 </span>
                 Location
               </div>
-              <button 
+              <button
                 ref={locationButtonRef}
-                onClick={toggleLocationSearch} 
+                onClick={toggleLocationSearch}
                 className="bg-transparent text-[#211C16] text-[18px] font-medium focus:outline-none ml-2 text-left"
               >
                 {selectedLocation}
               </button>
               {validationErrors.location && (
-                <div className="absolute top-full left-0 text-red-500 text-xs font-medium mt-1 ml-2">
+                <div className="absolute top-full -left-1 text-red-500 text-xs font-medium mt-1">
                   <span className="flex items-center">
                     <AlertCircle className="h-3 w-3 mr-1 inline-flex" />
                     {validationErrors.location}
@@ -561,14 +585,16 @@ export default function SearchFilter({ activeTab = 'campervan' }) {
                 </div>
               )}
               {isLocationSearchOpen && (
-                <div 
+                <div
                   ref={locationPopupRef}
                   className="absolute top-full left-0 mt-2 z-50 shadow-lg"
                 >
-                  <LocationSearch onLocationSelect={(location) => {
-                    setSelectedLocation(location);
-                    setLocationSearchOpen(false);
-                  }} />
+                  <LocationSearch
+                    onLocationSelect={(location) => {
+                      setSelectedLocation(location);
+                      setLocationSearchOpen(false);
+                    }}
+                  />
                 </div>
               )}
             </div>
@@ -576,22 +602,24 @@ export default function SearchFilter({ activeTab = 'campervan' }) {
 
           <div className="w-px h-12 bg-[#D6D6D6]" />
 
-          {activeTab === 'activity' ? (
+          {activeTab === "activity" ? (
             <>
               <div className="flex flex-col flex-1 ml-[20px] relative">
                 <div className="text-sm text-gray-500 mb-1 flex items-center gap-2">
                   <CheckInIcon />
                   Date
                 </div>
-                <button 
+                <button
                   ref={checkInButtonRef}
                   onClick={toggleCalendar}
                   className="bg-transparent text-[18px] font-medium focus:outline-none ml-1 text-left"
                 >
-                  {dateTimeRange.checkIn?.date ? dateTimeRange.checkIn.date.toLocaleDateString() : "Add date"}
+                  {dateTimeRange.checkIn?.date
+                    ? dateTimeRange.checkIn.date.toLocaleDateString()
+                    : "Add date"}
                 </button>
                 {validationErrors.dates && (
-                  <div className="absolute top-full left-0 text-red-500 text-xs font-medium mt-1 ml-1">
+                  <div className="absolute top-full -left-1 text-red-500 text-xs font-medium mt-1 ">
                     <span className="flex items-center">
                       <AlertCircle className="h-3 w-3 mr-1 inline-flex" />
                       {validationErrors.dates}
@@ -616,7 +644,7 @@ export default function SearchFilter({ activeTab = 'campervan' }) {
                   className="bg-transparent text-[#211C16] text-[18px] font-medium focus:outline-none ml-1 w-full"
                 />
                 {validationErrors.activity && (
-                  <div className="absolute top-full left-0 text-red-500 text-xs font-medium mt-1 ml-1">
+                  <div className="absolute top-full -left-1 text-red-500 text-xs font-medium mt-1">
                     <span className="flex items-center">
                       <AlertCircle className="h-3 w-3 mr-1 inline-flex" />
                       {validationErrors.activity}
@@ -624,7 +652,7 @@ export default function SearchFilter({ activeTab = 'campervan' }) {
                   </div>
                 )}
                 {isActivitySearchOpen && activitySuggestions.length > 0 && (
-                  <div 
+                  <div
                     ref={activityPopupRef}
                     className="absolute top-full left-0 mt-2 z-50 bg-white rounded-lg shadow-lg w-full"
                   >
@@ -648,15 +676,20 @@ export default function SearchFilter({ activeTab = 'campervan' }) {
                   <CheckInIcon />
                   Check in
                 </div>
-                <button 
+                <button
                   ref={checkInButtonRef}
-                  onClick={() => handleCheckInOutClick('checkIn')}
-                  className="bg-transparent text-[#211C16] text-[18px] font-medium focus:outline-none ml-1 text-left"
+                  onClick={() => handleCheckInOutClick("checkIn")}
+                  className={`bg-transparent text-[18px] font-medium focus:outline-none ml-1 text-left ${
+                    formatDateTime(dateTimeRange.checkIn) === "Add date"
+                      ? "text-gray-400"
+                      : "text-[#"
+                  }`}
                 >
                   {formatDateTime(dateTimeRange.checkIn)}
                 </button>
+
                 {validationErrors.checkIn && (
-                  <div className="absolute top-full left-0 text-red-500 text-xs font-medium mt-1 ml-1">
+                  <div className="absolute top-full -left-7 text-red-500 text-xs font-medium mt-1">
                     <span className="flex items-center">
                       <AlertCircle className="h-3 w-3 mr-1 inline-flex" />
                       {validationErrors.checkIn}
@@ -672,15 +705,19 @@ export default function SearchFilter({ activeTab = 'campervan' }) {
                   <CheckOutIcon />
                   Check out
                 </label>
-                <button 
-                  ref={checkOutButtonRef}
-                  onClick={() => handleCheckInOutClick('checkOut')}
-                  className="bg-transparent text-[#211C16] text-[18px] font-medium focus:outline-none ml-1 text-left"
+                <button
+                  ref={checkInButtonRef}
+                  onClick={() => handleCheckInOutClick("checkOut")}
+                  className={`bg-transparent font-medium text-[18px] focus:outline-none ml-1 text-left ${
+                    formatDateTime(dateTimeRange.checkOut) === "Add date"
+                      ? "text-gray-400"
+                      : "text-[#211C16]"
+                  }`}
                 >
                   {formatDateTime(dateTimeRange.checkOut)}
                 </button>
                 {validationErrors.checkOut && (
-                  <div className="absolute top-full left-0 text-red-500 text-xs font-medium mt-1 ml-1">
+                  <div className="absolute top-full -left-[29px] text-red-500 text-xs font-medium mt-1">
                     <span className="flex items-center">
                       <AlertCircle className="h-3 w-3 mr-1 inline-flex" />
                       {validationErrors.checkOut}
@@ -698,15 +735,20 @@ export default function SearchFilter({ activeTab = 'campervan' }) {
               <GuestIcon />
               Guests
             </label>
-            <button 
+            <button
               ref={guestButtonRef}
-              onClick={toggleGuestCounter} 
-              className="bg-transparent text-left text-[#211C16] text-[18px] font-medium focus:outline-none ml-1"
+              onClick={toggleGuestCounter}
+              className={`bg-transparent font-medium text-left text-[18px]  focus:outline-none ml-1
+                ${
+                  formatGuestCount() === "Add guests"
+                    ? "text-gray-400"
+                    : "text-[#211C16]"
+                }`}
             >
               {formatGuestCount()}
             </button>
             {validationErrors.guests && (
-              <div className="absolute top-full left-0 text-red-500 text-xs font-medium mt-1 ml-1">
+              <div className="absolute top-full left-0 text-red-500 text-xs font-medium mt-1">
                 <span className="flex items-center">
                   <AlertCircle className="h-3 w-3 mr-1 inline-flex" />
                   {validationErrors.guests}
@@ -714,12 +756,11 @@ export default function SearchFilter({ activeTab = 'campervan' }) {
               </div>
             )}
             {isGuestCounterOpen && (
-              <div 
+              <div
                 ref={guestPopupRef}
                 className="absolute top-full right-0 mt-2 z-50 shadow-lg"
               >
-
-                <GuestCounter 
+                <GuestCounter
                   onGuestCountChange={handleGuestCountChange}
                   activeTab={activeTab}
                 />
@@ -728,7 +769,7 @@ export default function SearchFilter({ activeTab = 'campervan' }) {
           </div>
         </div>
 
-        <button 
+        <button
           onClick={handleSearchClick}
           className="bg-black text-white p-4 rounded-full hover:bg-gray-800 transition-colors"
         >
@@ -737,23 +778,23 @@ export default function SearchFilter({ activeTab = 'campervan' }) {
       </div>
 
       {isCalendarOpen && (
-        <div 
+        <div
           ref={calendarPopupRef}
           className="absolute top-full left-1/2 -translate-x-1/2 mt-2 z-50 shadow-lg bg-white rounded-lg"
         >
-          <Calendar 
+          <Calendar
             onDateSelect={(dates) => {
-              if (activeTab === 'activity') {
+              if (activeTab === "activity") {
                 setDateTimeRange({
-                  checkIn: { date: dates[0] }
+                  checkIn: { date: dates[0] },
                 });
               } else {
                 setDateTimeRange({
                   checkIn: { date: dates[0] },
-                  checkOut: { date: dates[1] }
+                  checkOut: { date: dates[1] },
                 });
-                if (activeTab === 'campervan') {
-                  setTimePickerType('checkIn');
+                if (activeTab === "campervan") {
+                  setTimePickerType("checkIn");
                   setTimePickerOpen(true);
                 }
               }
@@ -763,12 +804,12 @@ export default function SearchFilter({ activeTab = 'campervan' }) {
         </div>
       )}
 
-      {isTimePickerOpen && activeTab === 'campervan' && (
-        <div 
+      {isTimePickerOpen && activeTab === "campervan" && (
+        <div
           ref={timePickerRef}
           className="absolute top-full left-1/2 -translate-x-1/2 mt-2 z-50"
         >
-          <TimeSelector 
+          <TimeSelector
             checkInTime={dateTimeRange.checkIn?.time || null}
             checkOutTime={dateTimeRange.checkOut?.time || null}
             onTimeSelect={handleTimeSelect}
@@ -780,7 +821,7 @@ export default function SearchFilter({ activeTab = 'campervan' }) {
               setSelectedDates(dates);
               setDateTimeRange({
                 checkIn: { date: dates[0] },
-                checkOut: { date: dates[1] }
+                checkOut: { date: dates[1] },
               });
             }}
             initialDates={selectedDates}
@@ -790,38 +831,49 @@ export default function SearchFilter({ activeTab = 'campervan' }) {
 
       {/* Edit Selection Modal */}
       {editSelectionModal.show && (
-        <div 
+        <div
           ref={editSelectionModalRef}
           className="fixed inset-0 z-[100] flex items-center justify-center"
         >
-          <div className="absolute inset-0 bg-black bg-opacity-50" onClick={() => setEditSelectionModal({ show: false, type: 'checkIn' })}></div>
+          <div
+            className="absolute inset-0 bg-black bg-opacity-50"
+            onClick={() =>
+              setEditSelectionModal({ show: false, type: "checkIn" })
+            }
+          ></div>
           <div className="bg-white rounded-xl shadow-lg p-6 max-w-md w-full mx-4 relative z-10">
             <h3 className="text-xl font-medium mb-4 text-center">
-              Edit {editSelectionModal.type === 'checkIn' ? 'Check-in' : 'Check-out'}
+              Edit{" "}
+              {editSelectionModal.type === "checkIn" ? "Check-in" : "Check-out"}
             </h3>
             <div className="flex flex-col gap-3">
-              <button 
+              <button
                 onClick={() => handleEditDate(editSelectionModal.type)}
                 className="w-full py-3 px-4 bg-[#F6F6F6] rounded-lg text-left hover:bg-gray-200 transition-colors"
               >
                 <span className="font-medium">Edit Date</span>
                 <p className="text-sm text-gray-500 mt-1">
-                  {dateTimeRange[editSelectionModal.type]?.date?.toLocaleDateString()}
+                  {dateTimeRange[
+                    editSelectionModal.type
+                  ]?.date?.toLocaleDateString()}
                 </p>
               </button>
-              
-              <button 
+
+              <button
                 onClick={() => handleEditTime(editSelectionModal.type)}
                 className="w-full py-3 px-4 bg-[#F6F6F6] rounded-lg text-left hover:bg-gray-200 transition-colors"
               >
                 <span className="font-medium">Edit Time</span>
                 <p className="text-sm text-gray-500 mt-1">
-                  {dateTimeRange[editSelectionModal.type]?.time || 'No time selected'}
+                  {dateTimeRange[editSelectionModal.type]?.time ||
+                    "No time selected"}
                 </p>
               </button>
-              
-              <button 
-                onClick={() => setEditSelectionModal({ show: false, type: 'checkIn' })}
+
+              <button
+                onClick={() =>
+                  setEditSelectionModal({ show: false, type: "checkIn" })
+                }
                 className="w-full py-3 bg-black text-white rounded-lg mt-2 hover:bg-gray-800 transition-colors"
               >
                 Cancel

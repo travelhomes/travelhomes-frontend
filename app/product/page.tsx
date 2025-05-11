@@ -24,6 +24,35 @@ export default function Product() {
   const [loading, setLoading] = useState(true); // Manage loading state
 
   useEffect(() => {
+    // Add scroll padding to allow for the sticky header
+    document.documentElement.style.scrollPaddingTop = "120px";
+
+    const handleScroll = () => {
+      const stickyPrice = document.getElementById("sticky-price");
+      const topRatedSection = document.getElementById("top-rated-section");
+
+      if (stickyPrice && topRatedSection) {
+        const topRatedRect = topRatedSection.getBoundingClientRect();
+
+        if (topRatedRect.top <= 100) {
+          stickyPrice.classList.add("lg:col-span-2");
+          stickyPrice.classList.remove("lg:col-span-1");
+        } else {
+          stickyPrice.classList.remove("lg:col-span-2");
+          stickyPrice.classList.add("lg:col-span-1");
+        }
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      document.documentElement.style.scrollPaddingTop = "";
+    };
+  }, []);
+
+  useEffect(() => {
     // Ensure id is available before making the API call
     if (!id) return;  // Skip fetching if no id
 
@@ -114,7 +143,7 @@ export default function Product() {
               <Exclusions />
             </section>
 
-            <section id="policy&rules" className="pt-6">
+            <section id="policyrules" className="pt-6">
               <PolicyRules />
             </section>
 
