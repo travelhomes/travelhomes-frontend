@@ -1,3 +1,4 @@
+"use client";
 import { useState, useEffect } from "react";
 import Image from "next/image";
 import { X } from "lucide-react";
@@ -99,7 +100,7 @@ export function ProductHero({ propertyData }: ProductHeroProps) {
                   alt={image.alt}
                   width={500}
                   height={500}
-                  className="w-full h-[150px] md:h-full object-cover md:rounded-none"
+                  className="w-full h-[150px] md:h-[300px] object-cover md:rounded-none"
                 />
               </div>
             ))}
@@ -117,7 +118,7 @@ export function ProductHero({ propertyData }: ProductHeroProps) {
                   alt={image.alt}
                   width={500}
                   height={500}
-                  className="w-full h-[150px] md:h-full object-cover md:rounded-br-[24px]"
+                  className="w-full h-[150px] md:h-[300px] object-cover md:rounded-br-[24px]"
                 />
               </div>
             ))}
