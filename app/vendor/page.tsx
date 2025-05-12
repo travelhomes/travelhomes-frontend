@@ -1,41 +1,67 @@
-"use client"
+"use client";
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Button } from "@/components/ui/button";
+import { Label } from "@/components/ui/label";
+import { cn } from "@/lib/utils";
+import { ArrowRightIcon, BusIcon, StayIcon, ActiveIcon } from "@/public/assets/CustomIcon";
+import Image from "next/image";
+import VendorServiceIllustration from "@/public/van.png";
+import Treehouse from "@/public/stay.png";
+import Activity from "@/public/activity.png";
+import { useAuth } from "@/context/AuthContext"; // Import the useAuth hook
+import axios from "axios";
+import Link from "next/link";
 
-import { useState } from "react"
-import Link from "next/link"
-import { useRouter } from "next/navigation"
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
-import { Button } from "@/components/ui/button"
-import { Label } from "@/components/ui/label"
-import { cn } from "@/lib/utils"
-import { ArrowRightIcon, BusIcon, StayIcon, ActiveIcon } from "@/public/assets/CustomIcon"
-import Image from "next/image"
-import VendorServiceIllustration from "@/public/van.png"
-import Treehouse from "@/public/stay.png"
-import Activity from "@/public/activity.png"
+export default function ServiceSelection() {
+  const [selectedService, setSelectedService] = useState<string>(""); // State to hold the selected service
+  const router = useRouter();
+  const { user } = useAuth(); // Get the user from context, which contains the token
 
+  const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL || "http://3.7.52.212:5000";
+  const API_URL = `${BACKEND_URL}/api/properties/createPropertyStep1`;
 
-export default function ServiceSelection() {    
-  const [selectedService, setSelectedService] = useState<string>("")
-  const router = useRouter()
-
-  const handleNext = () => {
-    if (selectedService) {
-      router.push(`/vendor/${selectedService}`)
+  // Function to handle the next button click
+  const handleNext = async () => {
+    console.log(user, "check")
+    if (selectedService && user?.token) {
+      // Send the selected service and category to the backend
+      try {
+        const response = await axios.post(
+          API_URL,
+          {
+            category: 1, // Assuming category is fixed as 1, but you can dynamically pass it
+            service: selectedService, // Send selected service
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${user.token}`, // Use token from AuthContext
+            },
+          }
+        );
+        console.log("Property data created:", response.data);
+        // Redirect to the service page with the selected service
+        router.push(`/vendor/${selectedService}`);
+      } catch (error) {
+        console.error("Error creating property:", error);
+      }
     }
-  }
+  };
 
+  // Function to get the image based on the selected service
   const getServiceImage = () => {
     switch (selectedService) {
       case 'caravan':
-        return VendorServiceIllustration
+        return VendorServiceIllustration;
       case 'stays':
-        return Treehouse
+        return Treehouse;
       case 'activity':
-        return Activity
+        return Activity;
       default:
-        return VendorServiceIllustration
+        return VendorServiceIllustration;
     }
-  }
+  };
 
   return (
     <div className="h-screen flex flex-col overflow-hidden ">
@@ -62,15 +88,15 @@ export default function ServiceSelection() {
                     htmlFor="caravan"
                     className={cn(
                       "flex items-center rounded-lg border-2 p-3 cursor-pointer relative transition-all h-[110px] mb-[4px]",
-                      selectedService === "caravan" 
-                        ? "border-black bg-[#FDFDFD]" 
+                      selectedService === "caravan"
+                        ? "border-black bg-[#FDFDFD]"
                         : "border-[#E7E8E9] bg-[#FDFDFD] hover:border-gray-300"
                     )}
                   >
                     <div
                       className={cn(
                         "absolute top-3 right-3 h-5 w-5 rounded-full border",
-                        selectedService === "caravan" 
+                        selectedService === "caravan"
                           ? "border-black flex items-center justify-center"
                           : "border-[#717171]"
                       )}
@@ -97,15 +123,15 @@ export default function ServiceSelection() {
                     htmlFor="stays"
                     className={cn(
                       "flex items-center gap-4 rounded-lg border-2 p-3 cursor-pointer relative transition-all h-[110px] mb-[4px]",
-                      selectedService === "stays" 
-                        ? "border-black bg-[#FDFDFD]" 
+                      selectedService === "stays"
+                        ? "border-black bg-[#FDFDFD]"
                         : "border-[#E7E8E9] bg-[#FDFDFD] hover:border-gray-300"
                     )}
                   >
                     <div
                       className={cn(
                         "absolute top-3 right-3 h-5 w-5 rounded-full border",
-                        selectedService === "stays" 
+                        selectedService === "stays"
                           ? "border-black flex items-center justify-center"
                           : "border-[#717171]"
                       )}
@@ -131,16 +157,16 @@ export default function ServiceSelection() {
                   <Label
                     htmlFor="activity"
                     className={cn(
-                      "flex items-center gap-4 rounded-lg border-2 p-3 cursor-pointer relative transition-all h-[110px]",
-                      selectedService === "activity" 
-                        ? "border-black bg-[#FDFDFD]" 
+                      "flex items-center gap-4 rounded-lg border-2 p-3 cursor-pointer relative transition-all h-[110px] mb-[4px]",
+                      selectedService === "activity"
+                        ? "border-black bg-[#FDFDFD]"
                         : "border-[#E7E8E9] bg-[#FDFDFD] hover:border-gray-300"
                     )}
                   >
                     <div
                       className={cn(
                         "absolute top-3 right-3 h-5 w-5 rounded-full border",
-                        selectedService === "activity" 
+                        selectedService === "activity"
                           ? "border-black flex items-center justify-center"
                           : "border-[#717171]"
                       )}
@@ -163,9 +189,8 @@ export default function ServiceSelection() {
               </RadioGroup>
             </div>
 
-
             <div className="mb-[4rem] w-full">
-              <Button 
+              <Button
                 onClick={handleNext}
                 disabled={!selectedService}
                 className="bg-black text-white hover:bg-black/90 rounded-full py-[14px] px-[32px] disabled:opacity-50 disabled:cursor-not-allowed h-[50px] mt-4 w-full md:w-auto"
@@ -176,13 +201,12 @@ export default function ServiceSelection() {
             </div>
           </div>
 
-
           <div className="hidden md:flex md:w-1/2 items-center justify-center">
             <div className="relative w-full h-[500px]">
-              <Image 
-                src={getServiceImage()} 
-                alt="Service illustration" 
-                fill 
+              <Image
+                src={getServiceImage()}
+                alt="Service illustration"
+                fill
                 className="object-contain"
                 priority
               />
@@ -191,5 +215,5 @@ export default function ServiceSelection() {
         </div>
       </div>
     </div>
-  )
+  );
 }

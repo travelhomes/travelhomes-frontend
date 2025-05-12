@@ -62,6 +62,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         token: data.token,
       };
 
+      console.log(userData, "hdddddddd")
+
       // Store user data in cookie
       Cookies.set('user', JSON.stringify(userData), { expires: 7 });
 
