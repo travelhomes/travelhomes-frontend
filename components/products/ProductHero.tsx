@@ -1,7 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
 import Image from "next/image";
-import { X } from "lucide-react";
+import { X, ChevronLeft, ChevronRight } from "lucide-react";
 
 // Define the type for image objects
 interface ImageData {
@@ -16,9 +16,10 @@ interface ProductHeroProps {
 export function ProductHero({ propertyData }: ProductHeroProps) {
   const [showModal, setShowModal] = useState(false);
   const [selectedImage, setSelectedImage] = useState<ImageData | null>(null);
-
-  // Set all images dynamically from API response
+  const [currentIndex, setCurrentIndex] = useState(0);
   const [allImages, setAllImages] = useState<ImageData[]>([]);
+  const [touchStart, setTouchStart] = useState<number | null>(null);
+  const [touchEnd, setTouchEnd] = useState<number | null>(null);
 
   useEffect(() => {
     if (propertyData?.image_url) {
@@ -46,6 +47,8 @@ export function ProductHero({ propertyData }: ProductHeroProps) {
   }, [showModal]);
 
   const handleImageClick = (image: ImageData) => {
+    const index = allImages.findIndex((img) => img.src === image.src);
+    setCurrentIndex(index);
     setSelectedImage(image);
     setShowModal(true);
   };
@@ -62,9 +65,67 @@ export function ProductHero({ propertyData }: ProductHeroProps) {
   };
 
   const viewAllPhotos = () => {
-    setSelectedImage(allImages[0]); // Default to the first image
+    setCurrentIndex(0);
+    setSelectedImage(allImages[0]);
     setShowModal(true);
   };
+
+  const nextImage = () => {
+    const newIndex = (currentIndex + 1) % allImages.length;
+    setCurrentIndex(newIndex);
+    setSelectedImage(allImages[newIndex]);
+  };
+
+  const prevImage = () => {
+    const newIndex = (currentIndex - 1 + allImages.length) % allImages.length;
+    setCurrentIndex(newIndex);
+    setSelectedImage(allImages[newIndex]);
+  };
+
+  // Handling touch events for swiping
+  const handleTouchStart = (e: React.TouchEvent) => {
+    setTouchStart(e.targetTouches[0].clientX);
+  };
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    setTouchEnd(e.targetTouches[0].clientX);
+  };
+
+  const handleTouchEnd = () => {
+    if (!touchStart || !touchEnd) return;
+
+    const distance = touchStart - touchEnd;
+    const isLeftSwipe = distance > 50;
+    const isRightSwipe = distance < -50;
+
+    if (isLeftSwipe) {
+      nextImage();
+    } else if (isRightSwipe) {
+      prevImage();
+    }
+
+    // Reset values
+    setTouchStart(null);
+    setTouchEnd(null);
+  };
+
+  // Handle keyboard navigation
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (!showModal) return;
+
+      if (e.key === "ArrowRight") {
+        nextImage();
+      } else if (e.key === "ArrowLeft") {
+        prevImage();
+      } else if (e.key === "Escape") {
+        closeModal();
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [showModal, currentIndex]);
 
   return (
     <>
@@ -149,15 +210,48 @@ export function ProductHero({ propertyData }: ProductHeroProps) {
               <X size={24} className="text-black" />
             </button>
 
-            <div className="bg-transparent rounded-lg overflow-hidden max-h-[90vh]">
-              <Image
-                src={selectedImage.src}
-                alt={selectedImage.alt}
-                width={1200}
-                height={800}
-                className="w-full h-auto object-contain"
-                priority
-              />
+            <div className="flex items-center justify-center">
+              {/* Navigation Arrows */}
+              <button
+                className="absolute left-4 z-10 p-2 bg-white bg-opacity-50 rounded-full hidden md:block"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  prevImage();
+                }}
+              >
+                <ChevronLeft size={24} className="text-black" />
+              </button>
+
+              <div
+                className="bg-transparent rounded-lg overflow-hidden max-h-[90vh] w-full"
+                onTouchStart={handleTouchStart}
+                onTouchMove={handleTouchMove}
+                onTouchEnd={handleTouchEnd}
+              >
+                <Image
+                  src={selectedImage.src}
+                  alt={selectedImage.alt}
+                  width={1200}
+                  height={800}
+                  className="w-full h-auto object-contain"
+                  priority
+                />
+              </div>
+
+              <button
+                className="absolute right-4 z-10 p-2 bg-white bg-opacity-50 rounded-full hidden md:block"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  nextImage();
+                }}
+              >
+                <ChevronRight size={24} className="text-black" />
+              </button>
+            </div>
+
+            {/* Image Counter */}
+            <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 bg-black bg-opacity-50 text-white px-4 py-1 rounded-full text-sm">
+              {currentIndex + 1} / {allImages.length}
             </div>
           </div>
         </div>

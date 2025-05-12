@@ -1,9 +1,19 @@
 "use client";
 import React, { useState } from "react";
-import { Star, X, Check, ArrowLeft, AlertCircle, Calendar as CalendarIcon, Users, MapPin, Save } from "lucide-react";
+import {
+  Star,
+  X,
+  Check,
+  ArrowLeft,
+  AlertCircle,
+  Calendar as CalendarIcon,
+  Users,
+  MapPin,
+  Save,
+} from "lucide-react";
 import Image from "next/image";
-import CamperImage from "@/public/Rectangle 8.png"
-import { EditIcon } from "@/public/assets/CustomIcon"
+import CamperImage from "@/public/Rectangle 8.png";
+import { EditIcon } from "@/public/assets/CustomIcon";
 import { Calendar } from "@/components/landingPage/searchcomponents/calendar";
 import { GuestCounter } from "@/components/landingPage/searchcomponents/guest-counter";
 import { LocationSearch } from "@/components/landingPage/searchcomponents/location-search";
@@ -19,24 +29,24 @@ export default function Payment() {
     address: "",
     city: "",
     state: "",
-    postalCode: ""
+    postalCode: "",
   });
-  
+
   // Booking details data (date, guest, location)
   const [bookingDetails, setBookingDetails] = useState({
     date: "27-28 Jan",
     guests: "2",
-    location: "Mumbai"
+    location: "Mumbai",
   });
-  
+
   // State to track if booking details are being edited
   const [isEditingBooking, setIsEditingBooking] = useState(false);
-  
+
   // State to track which component modal is open
   const [showCalendar, setShowCalendar] = useState(false);
   const [showGuestCounter, setShowGuestCounter] = useState(false);
   const [showLocationSearch, setShowLocationSearch] = useState(false);
-  
+
   const [errors, setErrors] = useState({
     name: "",
     phone: "",
@@ -44,9 +54,10 @@ export default function Payment() {
     address: "",
     city: "",
     state: "",
-    postalCode: ""
+    postalCode: "",
+    guests: "",
   });
-  
+
   const [showSuccess, setShowSuccess] = useState(false);
   const [formError, setFormError] = useState("");
   const [touched, setTouched] = useState<Record<string, boolean>>({});
@@ -59,66 +70,90 @@ export default function Payment() {
   // Toggle edit mode for booking details
   const toggleEditBooking = () => {
     setIsEditingBooking(!isEditingBooking);
-    
+
     // Close any open components when toggling edit mode
     setShowCalendar(false);
     setShowGuestCounter(false);
     setShowLocationSearch(false);
   };
-  
-  
+
   // Save booking details and exit edit mode
   const saveBookingDetails = () => {
-    setIsEditingBooking(false);
-    
-    // Close any open components
-    setShowCalendar(false);
-    setShowGuestCounter(false);
-    setShowLocationSearch(false);
+    // Validate guests before saving
+    const guestsError = validateField("guests", bookingDetails.guests);
+    setErrors((prev) => ({
+      ...prev,
+      guests: guestsError,
+    }));
+
+    if (!guestsError) {
+      setIsEditingBooking(false);
+      // Close any open components
+      setShowCalendar(false);
+      setShowGuestCounter(false);
+      setShowLocationSearch(false);
+    }
   };
-  
+
   // Handle date selection from Calendar component
   const handleDateSelect = (dates: Date[]) => {
     if (dates.length === 2) {
       const startDate = formatDate(dates[0]);
       const endDate = formatDate(dates[1]);
-      
-      setBookingDetails(prev => ({
+
+      setBookingDetails((prev) => ({
         ...prev,
-        date: `${startDate} - ${endDate}`
+        date: `${startDate} - ${endDate}`,
       }));
-      
+
       setShowCalendar(false);
     }
   };
-  
+
   // Format date helper
   const formatDate = (date: Date): string => {
     const day = date.getDate();
-    const month = date.toLocaleString('default', { month: 'short' });
+    const month = date.toLocaleString("default", { month: "short" });
     return `${day} ${month}`;
   };
-  
+
   // Handle guest count changes
-  const handleGuestCountChange = (counts: { adults: number; children: number; infants: number }) => {
+  const handleGuestCountChange = (counts: {
+    adults: number;
+    children: number;
+    infants: number;
+  }) => {
     const totalGuests = counts.adults + counts.children;
-    
-    setBookingDetails(prev => ({
+
+    setBookingDetails((prev) => ({
       ...prev,
-      guests: totalGuests.toString()
+      guests: totalGuests.toString(),
     }));
+
+    // Clear guest error if guests > 0
+    if (totalGuests > 0) {
+      setErrors((prev) => ({
+        ...prev,
+        guests: "",
+      }));
+    } else {
+      setErrors((prev) => ({
+        ...prev,
+        guests: "Guests should be more than 0",
+      }));
+    }
   };
-  
+
   // Handle location selection
   const handleLocationSelect = (location: string) => {
-    setBookingDetails(prev => ({
+    setBookingDetails((prev) => ({
       ...prev,
-      location
+      location,
     }));
-    
+
     setShowLocationSearch(false);
   };
-  
+
   // Close all modals when clicking outside
   const handleClickOutside = () => {
     setShowCalendar(false);
@@ -128,14 +163,20 @@ export default function Payment() {
 
   const validateField = (name: string, value: string) => {
     let error = "";
-    
+
     switch (name) {
+      case "guests":
+        if (parseInt(value) === 0) {
+          error = "Guests should be more than 0";
+        }
+        break;
+
       case "name":
         if (!value.trim()) {
           error = "Name is required";
         }
         break;
-        
+
       case "phone":
         if (!value.trim()) {
           error = "Phone number is required";
@@ -143,7 +184,7 @@ export default function Payment() {
           error = "Please enter a valid phone number";
         }
         break;
-        
+
       case "email":
         if (!value.trim()) {
           error = "Email is required";
@@ -151,35 +192,35 @@ export default function Payment() {
           error = "Please enter a valid email address";
         }
         break;
-        
+
       case "address":
         if (!value.trim()) {
           error = "Address is required";
         }
         break;
-        
+
       case "city":
         if (!value.trim()) {
           error = "City is required";
         }
         break;
-        
+
       case "state":
         if (!value.trim()) {
           error = "State is required";
         }
         break;
-        
+
       case "postalCode":
         if (!value.trim()) {
           error = "Postal code is required";
         }
         break;
-        
+
       default:
         break;
     }
-    
+
     return error;
   };
 
@@ -196,26 +237,32 @@ export default function Payment() {
       city: string;
       state: string;
       postalCode: string;
+      guests: string;
     };
 
+    // Validate guest count as well
+    newErrors.guests = validateField("guests", bookingDetails.guests);
+
     setErrors(newErrors);
-    
+
     // Mark all fields as touched when submitting
     const allTouched = Object.keys(formData).reduce((acc, field) => {
       return { ...acc, [field]: true };
     }, {} as Record<string, boolean>);
-    
+
     setTouched(allTouched);
-    
+
     // Check if there are any errors
-    const hasErrors = Object.values(newErrors).some(error => error !== "");
-    
+    const hasErrors = Object.values(newErrors).some((error) => error !== "");
+
     if (hasErrors) {
-      setFormError("Error! This payment was not processed. Please fix the highlighted errors.");
+      setFormError(
+        "Error! This payment was not processed. Please fix the highlighted errors."
+      );
     } else {
       setFormError("");
     }
-    
+
     return !hasErrors;
   };
 
@@ -233,21 +280,21 @@ export default function Payment() {
       [name]: value,
     }));
   };
-  
+
   const handleBlur = (e: React.FocusEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    
+
     // Mark field as touched
-    setTouched(prev => ({
+    setTouched((prev) => ({
       ...prev,
-      [name]: true
+      [name]: true,
     }));
-    
+
     // Validate the field
     const error = validateField(name, value);
-    setErrors(prev => ({
+    setErrors((prev) => ({
       ...prev,
-      [name]: error
+      [name]: error,
     }));
   };
 
@@ -272,14 +319,16 @@ export default function Payment() {
                 {formError}
               </div>
             )}
-            
+
             <div className="bg-white rounded-xl shadow-sm p-6 mb-6 border-[1px]">
               <div className="flex justify-between items-start mb-6">
                 <h1 className="text-2xl font-semibold text-[#1C2939]">
                   Booking Details
                 </h1>
-                <button 
-                  onClick={isEditingBooking ? saveBookingDetails : toggleEditBooking}
+                <button
+                  onClick={
+                    isEditingBooking ? saveBookingDetails : toggleEditBooking
+                  }
                   className="flex items-center gap-1 text-[#1C2939] hover:text-gray-700 transition-colors"
                 >
                   {isEditingBooking ? (
@@ -313,7 +362,9 @@ export default function Payment() {
                         <CalendarIcon size={16} className="text-gray-400" />
                       </button>
                     ) : (
-                      <p className="text-[#717171] font-medium">{bookingDetails.date}</p>
+                      <p className="text-[#717171] font-medium">
+                        {bookingDetails.date}
+                      </p>
                     )}
                   </div>
                   <div>
@@ -322,19 +373,37 @@ export default function Payment() {
                       Guest
                     </h2>
                     {isEditingBooking ? (
-                      <button
-                        onClick={() => {
-                          setShowGuestCounter(!showGuestCounter);
-                          setShowCalendar(false);
-                          setShowLocationSearch(false);
-                        }}
-                        className="w-full px-3 py-1.5 border border-[#B0B0B0] rounded-[6px] outline-none text-[#717171] font-medium text-left flex justify-between items-center"
-                      >
-                        <span>{bookingDetails.guests} Guest{parseInt(bookingDetails.guests) !== 1 ? 's' : ''}</span>
-                        <Users size={16} className="text-gray-400" />
-                      </button>
+                      <>
+                        <button
+                          onClick={() => {
+                            setShowGuestCounter(!showGuestCounter);
+                            setShowCalendar(false);
+                            setShowLocationSearch(false);
+                          }}
+                          className={`w-full px-3 py-1.5 border ${
+                            errors.guests
+                              ? "border-red-500"
+                              : "border-[#B0B0B0]"
+                          } rounded-[6px] outline-none text-[#717171] font-medium text-left flex justify-between items-center`}
+                        >
+                          <span>
+                            {bookingDetails.guests} Guest
+                            {parseInt(bookingDetails.guests) !== 1 ? "s" : ""}
+                          </span>
+                          <Users size={16} className="text-gray-400" />
+                        </button>
+                        {errors.guests && (
+                          <div className="flex items-center mt-1 text-red-500 text-sm">
+                            <AlertCircle size={14} className="mr-1" />
+                            {errors.guests}
+                          </div>
+                        )}
+                      </>
                     ) : (
-                      <p className="text-[#717171] font-medium">{bookingDetails.guests} Guest{parseInt(bookingDetails.guests) !== 1 ? 's' : ''}</p>
+                      <p className="text-[#717171] font-medium">
+                        {bookingDetails.guests} Guest
+                        {parseInt(bookingDetails.guests) !== 1 ? "s" : ""}
+                      </p>
                     )}
                   </div>
                 </div>
@@ -357,7 +426,9 @@ export default function Payment() {
                       <MapPin size={16} className="text-gray-400" />
                     </button>
                   ) : (
-                    <p className="text-[#717171] font-medium">{bookingDetails.location}</p>
+                    <p className="text-[#717171] font-medium">
+                      {bookingDetails.location}
+                    </p>
                   )}
                 </div>
 
@@ -376,7 +447,11 @@ export default function Payment() {
                         onChange={handleInputChange}
                         onBlur={handleBlur}
                         placeholder="Enter your name"
-                        className={`w-full px-4 py-2 border ${touched.name && errors.name ? 'border-red-500' : 'border-[#B0B0B0]'} rounded-[8px] outline-none`}
+                        className={`w-full px-4 py-2 border ${
+                          touched.name && errors.name
+                            ? "border-red-500"
+                            : "border-[#B0B0B0]"
+                        } rounded-[8px] outline-none`}
                       />
                       {touched.name && errors.name && (
                         <div className="flex items-center mt-1 text-red-500 text-sm">
@@ -396,7 +471,11 @@ export default function Payment() {
                         onChange={handleInputChange}
                         onBlur={handleBlur}
                         placeholder="+91 52024 42423"
-                        className={`w-full px-4 py-2 border ${touched.phone && errors.phone ? 'border-red-500' : 'border-[#B0B0B0]'} rounded-[8px] outline-none`}
+                        className={`w-full px-4 py-2 border ${
+                          touched.phone && errors.phone
+                            ? "border-red-500"
+                            : "border-[#B0B0B0]"
+                        } rounded-[8px] outline-none`}
                       />
                       {touched.phone && errors.phone && (
                         <div className="flex items-center mt-1 text-red-500 text-sm">
@@ -416,7 +495,11 @@ export default function Payment() {
                       onChange={handleInputChange}
                       onBlur={handleBlur}
                       placeholder="Enter your email"
-                      className={`w-[55%] px-4 py-2 border ${touched.email && errors.email ? 'border-red-500' : 'border-[#B0B0B0]'} rounded-[8px] outline-none`}
+                      className={`w-[55%] px-4 py-2 border ${
+                        touched.email && errors.email
+                          ? "border-red-500"
+                          : "border-[#B0B0B0]"
+                      } rounded-[8px] outline-none`}
                     />
                     {touched.email && errors.email && (
                       <div className="flex items-center mt-1 text-red-500 text-sm">
@@ -435,7 +518,11 @@ export default function Payment() {
                       onChange={handleInputChange}
                       onBlur={handleBlur}
                       placeholder="Locality"
-                      className={`w-full px-4 py-2 border ${touched.address && errors.address ? 'border-red-500' : 'border-[#B0B0B0]'} rounded-[8px] outline-none`}
+                      className={`w-full px-4 py-2 border ${
+                        touched.address && errors.address
+                          ? "border-red-500"
+                          : "border-[#B0B0B0]"
+                      } rounded-[8px] outline-none`}
                     />
                     {touched.address && errors.address && (
                       <div className="flex items-center mt-1 text-red-500 text-sm">
@@ -453,7 +540,11 @@ export default function Payment() {
                           onChange={handleInputChange}
                           onBlur={handleBlur}
                           placeholder="City"
-                          className={`w-full px-4 py-2 border ${touched.city && errors.city ? 'border-red-500' : 'border-[#B0B0B0]'} rounded-[8px] outline-none`}
+                          className={`w-full px-4 py-2 border ${
+                            touched.city && errors.city
+                              ? "border-red-500"
+                              : "border-[#B0B0B0]"
+                          } rounded-[8px] outline-none`}
                         />
                         {touched.city && errors.city && (
                           <div className="flex items-center mt-1 text-red-500 text-sm">
@@ -471,7 +562,11 @@ export default function Payment() {
                           onChange={handleInputChange}
                           onBlur={handleBlur}
                           placeholder="State"
-                          className={`w-full px-4 py-2 border ${touched.state && errors.state ? 'border-red-500' : 'border-[#B0B0B0]'} rounded-[8px] outline-none`}
+                          className={`w-full px-4 py-2 border ${
+                            touched.state && errors.state
+                              ? "border-red-500"
+                              : "border-[#B0B0B0]"
+                          } rounded-[8px] outline-none`}
                         />
                         {touched.state && errors.state && (
                           <div className="flex items-center mt-1 text-red-500 text-sm">
@@ -489,7 +584,11 @@ export default function Payment() {
                           onChange={handleInputChange}
                           onBlur={handleBlur}
                           placeholder="Postal Code"
-                          className={`w-full px-4 py-2 border ${touched.postalCode && errors.postalCode ? 'border-red-500' : 'border-[#B0B0B0]'} rounded-[8px] outline-none`}
+                          className={`w-full px-4 py-2 border ${
+                            touched.postalCode && errors.postalCode
+                              ? "border-red-500"
+                              : "border-[#B0B0B0]"
+                          } rounded-[8px] outline-none`}
                         />
                         {touched.postalCode && errors.postalCode && (
                           <div className="flex items-center mt-1 text-red-500 text-sm">
@@ -601,7 +700,7 @@ export default function Payment() {
           <div className="bg-white rounded-2xl p-6 relative z-10 max-w-md w-full mx-4">
             <div className="flex justify-between items-center mb-4">
               <h3 className="text-lg font-medium">Select dates</h3>
-              <button 
+              <button
                 onClick={() => setShowCalendar(false)}
                 className="p-1 rounded-full hover:bg-gray-100"
               >
@@ -623,18 +722,30 @@ export default function Payment() {
           <div className="bg-white rounded-2xl p-6 relative z-10 max-w-md w-full mx-4">
             <div className="flex justify-between items-center mb-4">
               <h3 className="text-lg font-medium">Select guests</h3>
-              <button 
+              <button
                 onClick={() => setShowGuestCounter(false)}
                 className="p-1 rounded-full hover:bg-gray-100"
               >
                 <X size={20} />
               </button>
             </div>
-            <GuestCounter onGuestCountChange={handleGuestCountChange} activeTab="campervan" />
+            <GuestCounter
+              onGuestCountChange={handleGuestCountChange}
+              activeTab="campervan"
+            />
             <div className="mt-4 flex justify-end">
-              <button 
-                onClick={() => setShowGuestCounter(false)}
-                className="px-4 py-2 bg-black text-white rounded-full font-medium"
+              <button
+                onClick={() => {
+                  if (parseInt(bookingDetails.guests) > 0) {
+                    setShowGuestCounter(false);
+                  }
+                }}
+                className={`px-4 py-2 ${
+                  parseInt(bookingDetails.guests) === 0
+                    ? "bg-gray-400"
+                    : "bg-black"
+                } text-white rounded-full font-medium`}
+                disabled={parseInt(bookingDetails.guests) === 0}
               >
                 Apply
               </button>
@@ -653,7 +764,7 @@ export default function Payment() {
           <div className="bg-white rounded-2xl p-6 relative z-10 max-w-md w-full mx-4">
             <div className="flex justify-between items-center mb-4">
               <h3 className="text-lg font-medium">Select location</h3>
-              <button 
+              <button
                 onClick={() => setShowLocationSearch(false)}
                 className="p-1 rounded-full hover:bg-gray-100"
               >

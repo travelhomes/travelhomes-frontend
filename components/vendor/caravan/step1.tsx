@@ -15,7 +15,7 @@ import Image from "next/image";
 
 const plusJakartaSans = Plus_Jakarta_Sans({
   subsets: ["latin"],
-  weight: ['400', '500', '600', '700'],
+  weight: ["400", "500", "600", "700"],
 });
 
 interface Step1Props {
@@ -31,7 +31,8 @@ export default function Step1({ onNext, onBack, currentStep, totalSteps }: Step1
     title: "",
     description: "",
   });
-  const [rulesArray, setRulesArray] = useState<string[]>(['']);
+
+  const [rulesArray, setRulesArray] = useState<string[]>([""]);
   const [errors, setErrors] = useState<{
     title?: string;
     description?: string;
@@ -48,8 +49,17 @@ export default function Step1({ onNext, onBack, currentStep, totalSteps }: Step1
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [activeUpload, setActiveUpload] = useState<string>("");
 
+
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
+
+    // Apply character limits based on field name
+    if (name === "title" && value.length > 50) {
+      return; // Prevent input if name exceeds 50 characters
+    }
+
+    if (name === "description" && value.length > 200) {
+      return; // Prevent input if description exceeds 200 characters
 
     // Clear the error for the field being typed in
     if (name === "title" && errors.title) {
@@ -58,6 +68,7 @@ export default function Step1({ onNext, onBack, currentStep, totalSteps }: Step1
     if (name === "description" && errors.description) {
       setErrors((prevErrors) => ({ ...prevErrors, description: "" }));
     }
+
 
     setFormData((prev) => ({
       ...prev,
@@ -77,7 +88,7 @@ export default function Step1({ onNext, onBack, currentStep, totalSteps }: Step1
   };
 
   const addRuleField = () => {
-    setRulesArray([...rulesArray, '']);
+    setRulesArray([...rulesArray, ""]);
   };
 
   const handleImageClick = (position: string) => {
@@ -156,7 +167,7 @@ export default function Step1({ onNext, onBack, currentStep, totalSteps }: Step1
     } else {
       const firstError = document.querySelector('.border-red-500');
       if (firstError) {
-        firstError.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        firstError.scrollIntoView({ behavior: "smooth", block: "center" });
       }
     }
   };
@@ -168,13 +179,18 @@ export default function Step1({ onNext, onBack, currentStep, totalSteps }: Step1
       </div>
 
       <div className="flex md:hidden items-center justify-between px-4 sm:px-6 mt-10 mb-6">
-        <Link href="" className="inline-flex items-center text-sm text-muted-foreground hover:text-primary">
+        <Link
+          href=""
+          className="inline-flex items-center text-sm text-muted-foreground hover:text-primary"
+        >
           <span className="mr-2">
             <ArrowRightIcon />
           </span>
         </Link>
 
+
         <div className="flex-grow flex justify-center">
+          <StepProgress currentStep={currentStep} totalSteps={totalSteps} />
           <StepProgress currentStep={currentStep} totalSteps={totalSteps} />
         </div>
       </div>
@@ -213,7 +229,9 @@ export default function Step1({ onNext, onBack, currentStep, totalSteps }: Step1
                   value={formData.description}
                   onChange={handleInputChange}
                   placeholder="Write here..."
-                  className={`border-[#EAECF0] min-h-[120px] bg-white focus:ring-0 focus:border-[#B0B0B0] resize-none ${errors.description ? 'border-red-500' : ''}`}
+                  className={`border-[#EAECF0] min-h-[120px] bg-white focus:ring-0 focus:border-[#B0B0B0] resize-none ${
+                    errors.description ? "border-red-500" : ""
+                  }`}
                 />
                 <div className="flex justify-between mt-1">
                   <span className="text-xs text-red-500">{errors.description || ''}</span>
@@ -232,7 +250,9 @@ export default function Step1({ onNext, onBack, currentStep, totalSteps }: Step1
                       value={rule}
                       onChange={(e) => handleRuleChange(index, e.target.value)}
                       placeholder="Write here..."
-                      className={`border-[#EAECF0] h-11 bg-white focus:ring-0 focus:border-[#B0B0B0] w-full ${errors.rules && index === 0 ? 'border-red-500' : ''}`}
+                      className={`border-[#EAECF0] h-11 bg-white focus:ring-0 focus:border-[#B0B0B0] w-full ${
+                        errors.rules && index === 0 ? "border-red-500" : ""
+                      }`}
                     />
                   </div>
                 ))}
