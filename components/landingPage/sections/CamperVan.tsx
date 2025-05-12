@@ -93,11 +93,11 @@ export default function CamperListing() {
         <div className="overflow-x-auto scrollbar-hide">
           <div className="flex gap-4 min-w-full pb-4">
             {campers.map((camper) => {
-              if (!camper || !camper.id) {
-                // Log the structure of camper to debug
-                console.error('Camper property missing id:', camper);
-                return null;
-              }
+              // if (!camper || !camper.id) {
+              //   // Log the structure of camper to debug
+              //   console.error('Camper property missing id:', camper);
+              //   return null;
+              // }
 
               return (
                 <div key={camper.id} className="min-w-[300px] max-w-[300px] flex-shrink-0">
@@ -123,11 +123,11 @@ export default function CamperListing() {
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
           {campers.map((camper) => {
-            if (!camper || !camper.id) {
-              // Log the structure of camper to debug
-              console.error('Camper property missing id:', camper);
-              return null;
-            }
+            // if (!camper || !camper.id) {
+            //   // Log the structure of camper to debug
+            //   console.error('Camper property missing id:', camper);
+            //   return null;
+            // }
 
             return (
               <div key={camper.id} className="min-w-[300px] max-w-[300px] flex-shrink-0">
