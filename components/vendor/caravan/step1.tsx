@@ -140,17 +140,17 @@ export default function Step1({
 
   const handleSubmit = async () => {
     // if (validateForm()) {
-      const allRules = rulesArray.filter(rule => rule.trim() !== '');
-      const formDataWithFiles = new FormData();
-      formDataWithFiles.append("title", formData.title);
-      formDataWithFiles.append("description", formData.description);
-      formDataWithFiles.append("rules", JSON.stringify(allRules));
+      // const allRules = rulesArray.filter(rule => rule.trim() !== '');
+      // const formDataWithFiles = new FormData();
+      // formDataWithFiles.append("title", formData.title);
+      // formDataWithFiles.append("description", formData.description);
+      // formDataWithFiles.append("rules", JSON.stringify(allRules));
 
-      Object.keys(images).forEach(key => {
-        if (images[key] && typeof images[key] !== "string") {
-          formDataWithFiles.append("images", images[key] as Blob);
-        }
-      });
+      // Object.keys(images).forEach(key => {
+      //   if (images[key] && typeof images[key] !== "string") {
+      //     formDataWithFiles.append("images", images[key] as Blob);
+      //   }
+      // });
 
       // try {
       //   const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL || "http://3.7.52.212:5000";
@@ -176,6 +176,7 @@ export default function Step1({
     //     firstError.scrollIntoView({ behavior: "smooth", block: "center" });
     //   }
     // }
+    onNext();
   };
 
   return (
