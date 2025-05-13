@@ -121,25 +121,25 @@ export default function Step1({
     }
   };
 
-  const validateForm = () => {
-    const newErrors: { title?: string; description?: string; rules?: string; images?: string } = {};
+  // const validateForm = () => {
+  //   const newErrors: { title?: string; description?: string; rules?: string; images?: string } = {};
 
-    if (!formData.title.trim()) newErrors.title = "Title is required";
-    if (!formData.description.trim()) newErrors.description = "Description is required";
+  //   if (!formData.title.trim()) newErrors.title = "Title is required";
+  //   if (!formData.description.trim()) newErrors.description = "Description is required";
 
-    const hasRules = rulesArray.some(rule => rule.trim() !== '');
-    if (!hasRules) newErrors.rules = "At least one rule is required";
+  //   const hasRules = rulesArray.some(rule => rule.trim() !== '');
+  //   if (!hasRules) newErrors.rules = "At least one rule is required";
 
-    const validImageCount = Object.values(images).filter(img => img !== "").length;
-    if (validImageCount < 2) newErrors.images = "At least 2 photos are required";
-    if (!images.cover) newErrors.images = "Cover photo is required";
+  //   const validImageCount = Object.values(images).filter(img => img !== "").length;
+  //   if (validImageCount < 2) newErrors.images = "At least 2 photos are required";
+  //   if (!images.cover) newErrors.images = "Cover photo is required";
 
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
-  };
+  //   setErrors(newErrors);
+  //   return Object.keys(newErrors).length === 0;
+  // };
 
   const handleSubmit = async () => {
-    if (validateForm()) {
+    // if (validateForm()) {
       const allRules = rulesArray.filter(rule => rule.trim() !== '');
       const formDataWithFiles = new FormData();
       formDataWithFiles.append("title", formData.title);
@@ -152,30 +152,30 @@ export default function Step1({
         }
       });
 
-      try {
-        const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL || "http://3.7.52.212:5000";
+      // try {
+      //   const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL || "http://3.7.52.212:5000";
 
-        const response = await axios.post(
-          `${BACKEND_URL}/api/properties/createPropertyStep2/100`,
-          formDataWithFiles,
-          {
-            headers: {
-              "Authorization": `Bearer ${user?.token}`,
-              "Content-Type": "multipart/form-data",
-            },
-          }
-        );
-        console.log("Property created:", response.data);
-        onNext();
-      } catch (error) {
-        console.error("Error creating property:", error);
-      }
-    } else {
-      const firstError = document.querySelector('.border-red-500');
-      if (firstError) {
-        firstError.scrollIntoView({ behavior: "smooth", block: "center" });
-      }
-    }
+      //   const response = await axios.post(
+      //     `${BACKEND_URL}/api/properties/createPropertyStep2/100`,
+      //     formDataWithFiles,
+      //     {
+      //       headers: {
+      //         "Authorization": `Bearer ${user?.token}`,
+      //         "Content-Type": "multipart/form-data",
+      //       },
+      //     }
+      //   );
+      //   console.log("Property created:", response.data);
+      //   onNext();
+      // } catch (error) {
+      //   console.error("Error creating property:", error);
+      // }
+    // } else {
+    //   const firstError = document.querySelector('.border-red-500');
+    //   if (firstError) {
+    //     firstError.scrollIntoView({ behavior: "smooth", block: "center" });
+    //   }
+    // }
   };
 
   return (
